@@ -1,9 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
-
 
 export const metadata: Metadata = {
   title: "RPG System",
@@ -16,9 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className="bg-dark text-light min-vh-100">
-         <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );
