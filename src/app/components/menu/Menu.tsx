@@ -1,9 +1,11 @@
+// src/components/Menu.tsx
 "use client";
+
 import Link from "next/link";
-import { useState } from "react";
+import { useMenu } from "./useMenu";
 
 export default function Menu() {
-  const [show, setShow] = useState(false);
+  const { show, openMenu, closeMenu, handleLogout } = useMenu();
 
   return (
     <>
@@ -12,7 +14,7 @@ export default function Menu() {
           <button
             className="navbar-toggler me-2"
             type="button"
-            onClick={() => setShow(true)}
+            onClick={openMenu}
             aria-label="Open menu"
           >
             <span className="navbar-toggler-icon" />
@@ -24,11 +26,15 @@ export default function Menu() {
       </nav>
 
       {/* Backdrop */}
-      {show && <div className="offcanvas-backdrop show" onClick={() => setShow(false)}></div>}
+      {show && (
+        <div className="offcanvas-backdrop show" onClick={closeMenu}></div>
+      )}
 
-      {/* Offcanvas - agora escuro */}
+      {/* Offcanvas */}
       <div
-        className={`offcanvas offcanvas-start bg-dark text-light${show ? " show" : ""}`}
+        className={`offcanvas offcanvas-start bg-dark text-light${
+          show ? " show" : ""
+        }`}
         style={{ visibility: show ? "visible" : "hidden" }}
       >
         <div className="offcanvas-header bg-dark text-light">
@@ -37,25 +43,45 @@ export default function Menu() {
             type="button"
             className="btn-close btn-close-white"
             aria-label="Close"
-            onClick={() => setShow(false)}
+            onClick={closeMenu}
           ></button>
         </div>
         <div className="offcanvas-body bg-dark">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link href="/" className="nav-link text-light" onClick={() => setShow(false)}>
+              <Link
+                href="/"
+                className="nav-link text-light"
+                onClick={closeMenu}
+              >
                 Personagens
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/campaign" className="nav-link text-light" onClick={() => setShow(false)}>
+              <Link
+                href="/campaign"
+                className="nav-link text-light"
+                onClick={closeMenu}
+              >
                 Campaign
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/my-characters" className="nav-link text-light" onClick={() => setShow(false)}>
+              <Link
+                href="/my-characters"
+                className="nav-link text-light"
+                onClick={closeMenu}
+              >
                 Characters
               </Link>
+            </li>
+            <li className="nav-item mt-3">
+              <button
+                className="btn btn-outline-light w-100"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>

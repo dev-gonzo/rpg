@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Menu from "../components/Menu";
+import Menu from "../components/menu/Menu";
 import Footer from "../components/Footer";
 
 type Props = {
