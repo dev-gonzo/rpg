@@ -1,0 +1,17 @@
+import { ReactNode } from "react";
+import Menu from "../components/Menu";
+import Footer from "../components/Footer";
+
+type Props = {
+  children: ReactNode;
+};
+
+export default function MainLayout({ children }: Props) {
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      <Menu />
+      <main className="flex-grow-1 px-4 ">{children}</main>
+      <Footer />
+    </div>
+  );
+}

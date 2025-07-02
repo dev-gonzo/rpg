@@ -1,0 +1,65 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"  // mantenha comentado para usar padrão
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Character {
+  id             String          @id @default(uuid())
+
+  // Dados básicos
+  name           String
+  socialClass    String?
+  profession     String?
+  birthDate      DateTime
+  birthPlace     String?
+  gender         String?
+  heightCm       Int?
+  weightKg       Int?
+  apparentAge    Int?
+  religion       String?
+
+  // Dados místicos
+  secretSociety  String?
+  cabala         String?
+  rank           String?
+  mentor         String?
+  societyAllies  String[]        @default([])
+
+  // Relacionamentos complementares
+  relevantPeople RelevantPerson[]
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model RelevantPerson {
+  id              String    @id @default(uuid())
+  characterId     String
+  character       Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  category        String    // "enemies", "allies", "contacts", "relevantPeople"
+  name            String
+  apparentAge     Int?
+  city            String?
+  profession      String?
+  briefDescription String?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
