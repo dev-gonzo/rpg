@@ -44,6 +44,10 @@ model Character {
   // Relacionamentos complementares
   relevantPeople RelevantPerson[]
 
+  attributes  Attribute? @relation("CharacterAttribute")
+  improvements Improvement[]
+
+
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 }
@@ -62,4 +66,33 @@ model RelevantPerson {
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+}
+model Attribute {
+  id          String    @id @default(uuid())
+  character   Character @relation("CharacterAttribute", fields: [characterId], references: [id])
+  characterId String    @unique
+
+  CON         Int
+  FR          Int
+  DEX         Int
+  AGI         Int
+  INT         Int
+  WILL        Int
+  PER         Int
+  CAR         Int
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Improvement {
+  id           String    @id @default(uuid())
+  character    Character  @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  characterId  String   
+  name         String  
+  cost         Int     
+  kitValue     Int  
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
