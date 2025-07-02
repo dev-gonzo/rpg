@@ -70,53 +70,48 @@ export function GenericNumberInput({
         }
 
         return (
-          <div className="row">
-            <div className="mb-3 col-md-5 col-sm-8 gap-2">
-              <label
-                htmlFor={name}
-                className="form-label mb-1 text-center w-100"
+          <div className="mb-3 col-md-6 gap-2">
+            <label htmlFor={name} className="form-label mb-1 text-center w-100">
+              {label}
+            </label>
+            <div className="d-flex align-items-center gap-2">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={decrease}
+                disabled={value <= min}
+                aria-label={`Diminuir ${label}`}
               >
-                {label}
-              </label>
-              <div className="d-flex align-items-center gap-2">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={decrease}
-                  disabled={value <= min}
-                  aria-label={`Diminuir ${label}`}
-                >
-                  –
-                </button>
+                –
+              </button>
 
-                <div className="flex-grow-1">
-                  <input
-                    id={name}
-                    type="number"
-                    className="form-control bg-dark text-light border-secondary text-center"
-                    min={min}
-                    max={max}
-                    value={value}
-                    onChange={onInputChange}
-                    onFocus={handleFocusEmptyZero(value, field.onChange)}
-                    onBlur={handleBlurRemoveLeadingZeros(
-                      value,
-                      field.onChange,
-                      min
-                    )}
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={increase}
-                  disabled={value >= max}
-                  aria-label={`Aumentar ${label}`}
-                >
-                  +
-                </button>
+              <div className="flex-grow-1">
+                <input
+                  id={name}
+                  type="number"
+                  className="form-control bg-dark text-light border-secondary text-center"
+                  min={min}
+                  max={max}
+                  value={value}
+                  onChange={onInputChange}
+                  onFocus={handleFocusEmptyZero(value, field.onChange)}
+                  onBlur={handleBlurRemoveLeadingZeros(
+                    value,
+                    field.onChange,
+                    min
+                  )}
+                />
               </div>
+
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={increase}
+                disabled={value >= max}
+                aria-label={`Aumentar ${label}`}
+              >
+                +
+              </button>
             </div>
           </div>
         );

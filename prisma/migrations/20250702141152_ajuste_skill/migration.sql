@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Skill" ALTER COLUMN "group" DROP NOT NULL,
+ALTER COLUMN "attribute" DROP NOT NULL;

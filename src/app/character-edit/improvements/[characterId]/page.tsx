@@ -64,7 +64,7 @@ export default function Improvements() {
           response.status === 200 &&
           Array.isArray(response.data.improvements)
         ) {
-          setImprovements(response.data.improvements);
+          setImprovements(sortImprovements(response.data.improvements));
         }
       } catch {
       } finally {
@@ -98,7 +98,7 @@ export default function Improvements() {
       const response = await axios.post("/api/improvements", payload);
 
       if (response.status === 201) {
-        setImprovements((prev) => [...prev, response.data.improvement]);
+        setImprovements((prev) => sortImprovements([...prev, response.data.improvement]));
         setSuccessMessage("Aprimoramento adicionado com sucesso!");
         resetForm();
         setShowModal(false);
@@ -144,6 +144,18 @@ export default function Improvements() {
     }
   };
 
+  function sortImprovements(improvements: Improvement[]): Improvement[] {
+    return improvements.slice().sort((a, b) => {
+      // Coloca names nulos por último
+      if (a.name === null && b.name !== null) return 1;
+      if (a.name !== null && b.name === null) return -1;
+      if (a.name === null && b.name === null) return 0;
+
+      // Ambos nomes são strings: ordenar alfabeticamente
+      return a.name.localeCompare(b.name);
+    });
+  }
+
   if (isLoading) {
     return (
       <MainLayout>
@@ -171,7 +183,7 @@ export default function Improvements() {
         <div key={item?.id} className="card my-3">
           <div className="container-fluid">
             <div className="row my-3">
-              <div className="col-12 col-md-6 pb-2 mb-2 d-flex  justify-content-between border-bottom">
+              <div className="col-12  pb-2 mb-2 d-flex  justify-content-between border-bottom">
                 <span>
                   <strong>{item?.name}</strong>
                 </span>
@@ -225,7 +237,7 @@ export default function Improvements() {
         onAction={handleSubmit(onSubmit)}
         size="lg"
       >
-        <form>
+        <form className="row">
           <InputField
             name="name"
             label="Aprimoramento"

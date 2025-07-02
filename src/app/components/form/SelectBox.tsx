@@ -40,7 +40,7 @@ export function SelectBox<T extends FieldValues>({
         }`}
         {...register(name)}
       >
-        <option value="">Selecione...</option>
+        <option value="">Selecione</option>
         {options.map(({ value, label }) => (
           <option key={value} value={value}>
             {label}
