@@ -15,10 +15,13 @@ export async function POST(req: NextRequest) {
     await userRegisterSchema.validate(body);
 
     const existing = await prisma.user.findUnique({
-      where: { email: body.email }
+      where: { email: body.email },
     });
     if (existing) {
-      return NextResponse.json({ error: "Email already registered." }, { status: 409 });
+      return NextResponse.json(
+        { error: "Email already registered." },
+        { status: 409 }
+      );
     }
 
     const hash = await bcrypt.hash(body.password, 10);
@@ -27,17 +30,23 @@ export async function POST(req: NextRequest) {
       data: {
         name: body.name,
         email: body.email,
-        password: hash
-      }
+        password: hash,
+        isMaster: false,
+      },
     });
 
     const { password, ...userSafe } = user;
     return NextResponse.json({ user: userSafe }, { status: 201 });
-
   } catch (err: any) {
     if (err.name === "ValidationError" || err.name === "ValidationError") {
-      return NextResponse.json({ error: err.errors?.[0] || "Validation error" }, { status: 400 });
+      return NextResponse.json(
+        { error: err.errors?.[0] || "Validation error" },
+        { status: 400 }
+      );
     }
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }

@@ -1,4 +1,8 @@
 export type TitleProps = {
   children: React.ReactNode;
+  link?: {
+    path: string;
+    label: string;
+  };
   className?: string;
 };

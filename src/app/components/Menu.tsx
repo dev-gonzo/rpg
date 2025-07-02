@@ -43,8 +43,8 @@ export default function Menu() {
         <div className="offcanvas-body bg-dark">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link href="/restrict/home" className="nav-link text-light" onClick={() => setShow(false)}>
-                Home
+              <Link href="/" className="nav-link text-light" onClick={() => setShow(false)}>
+                Personagens
               </Link>
             </li>
             <li className="nav-item">

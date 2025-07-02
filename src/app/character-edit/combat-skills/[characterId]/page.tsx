@@ -12,31 +12,35 @@ import { InputField } from "@/app/components/form/InputField";
 import { AlertMessage } from "@/app/components/AlertMessage";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
 import { GenericNumberInput } from "@/app/components/form/GenericNumberInput";
-import { Attribute } from "@prisma/client";
 import { SelectBox } from "@/app/components/form/SelectBox";
+import { Attribute } from "@prisma/client";
 
-type Skill = {
+type CombatSkill = {
   id: string;
-  group: string;
+  group: string | null;
   skill: string;
   attribute: "CON" | "FR" | "DEX" | "AGI" | "INT" | "WILL" | "PER" | "CAR";
-  cost: number;
-  kitValue: number;
+  attackCost: number;
+  defenseCost: number;
+  attackKitValue: number;
+  defenseKitValue: number;
 };
 
-type SkillFormData = {
-  group: string;
+type CombatSkillFormData = {
+  group?: string;
   skill: string;
-  attribute: string;
-  cost: number;
-  kitValue: number;
+  attribute?: string;
+  attackCost: number;
+  defenseCost: number;
+  attackKitValue: number;
+  defenseKitValue: number;
 };
 
-export default function Skills() {
+export default function CombatSkillsPage() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const [skills, setSkills] = useState<Skill[]>([]);
+  const [combatSkills, setCombatSkills] = useState<CombatSkill[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverErrorDelete, setServerErrorDelete] = useState<string | null>(
@@ -46,7 +50,8 @@ export default function Skills() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
-  const [skillDelete, setSkillDelete] = useState<Skill | null>(null);
+  const [combatSkillDelete, setCombatSkillDelete] =
+    useState<CombatSkill | null>(null);
   const [isLoadingAttributes, setIsLoadingAttributes] = useState(true);
   const [attributes, setAttributes] = useState<Attribute | null>(null);
 
@@ -56,22 +61,25 @@ export default function Skills() {
     formState: { errors, isSubmitting },
     reset,
     control,
-  } = useForm<SkillFormData>({
+  } = useForm<CombatSkillFormData>({
     mode: "onBlur",
   });
 
   useEffect(() => {
-    async function fetchSkills() {
+    async function fetchCombatSkills() {
       setServerError(null);
       try {
-        const response = await axios.get("/api/skills", {
+        const response = await axios.get("/api/combat-skills", {
           params: { characterId },
         });
-        if (response.status === 200 && Array.isArray(response.data.skills)) {
-          setSkills(sortSkills(response.data.skills));
+        if (
+          response.status === 200 &&
+          Array.isArray(response.data.combatSkills)
+        ) {
+          setCombatSkills(sortCombatSkills(response.data.combatSkills));
         }
       } catch {
-        // Assume primeiro cadastro, não exibe erro
+        // assume primeiro cadastro, não exibe erro
       } finally {
         setIsLoading(false);
       }
@@ -93,8 +101,8 @@ export default function Skills() {
     }
 
     if (characterId) {
+      fetchCombatSkills();
       fetchAttributes();
-      fetchSkills();
     }
   }, [characterId]);
 
@@ -104,7 +112,7 @@ export default function Skills() {
     setSuccessMessage(null);
   };
 
-  const onSubmit: SubmitHandler<SkillFormData> = async (data) => {
+  const onSubmit: SubmitHandler<CombatSkillFormData> = async (data) => {
     setServerError(null);
     setSuccessMessage(null);
     setIsSaving(true);
@@ -112,38 +120,40 @@ export default function Skills() {
     try {
       const payload = {
         characterId,
-        ...data,
-        kitValue: Number(data.kitValue),
-        cost: Number(data.cost),
+        skill: data.skill,
         group: data.group || null,
         attribute: data.attribute || null,
+        attackCost: Number(data.attackCost),
+        defenseCost: Number(data.defenseCost),
+        attackKitValue: Number(data.attackKitValue),
+        defenseKitValue: Number(data.defenseKitValue),
       };
 
-      const response = await axios.post("/api/skills", payload);
+      const response = await axios.post("/api/combat-skills", payload);
 
       if (response.status === 201) {
-        setSkills((prev) => sortSkills([...prev, response.data.skill]));
-        setSuccessMessage("Perícia adicionada com sucesso!");
+        setCombatSkills((prev) =>
+          sortCombatSkills([...prev, response.data.combatSkill])
+        );
+        setSuccessMessage("Perícia de Combate adicionada com sucesso!");
         resetForm();
         setShowModal(false);
       } else {
-        setServerError("Erro ao adicionar perícia");
+        setServerError("Erro ao adicionar perícia de combate");
       }
     } catch {
-      setServerError("Erro inesperado ao adicionar perícia");
+      setServerError("Erro inesperado ao adicionar perícia de combate");
     } finally {
       setIsSaving(false);
       setTimeout(() => {
         setSuccessMessage(null);
-        setSuccessMessage(null);
         setServerError(null);
-      }, 1000)
-      
+      }, 3000);
     }
   };
 
-  const modalDelete = (skill: Skill) => {
-    setSkillDelete(skill);
+  const modalDelete = (combatSkill: CombatSkill) => {
+    setCombatSkillDelete(combatSkill);
     setShowModalDelete(true);
   };
 
@@ -152,39 +162,37 @@ export default function Skills() {
     setServerErrorDelete(null);
     setSuccessMessage(null);
     try {
-      const response = await axios.delete("/api/skills", {
-        params: { id: skillDelete?.id },
+      const response = await axios.delete("/api/combat-skills", {
+        params: { id: combatSkillDelete?.id },
       });
       if (response.status === 200) {
-        setSkills((prev) =>
-          prev.filter((item) => item?.id !== skillDelete?.id)
+        setCombatSkills((prev) =>
+          prev.filter((item) => item?.id !== combatSkillDelete?.id)
         );
-        setSuccessMessage("Perícia deletada com sucesso!");
+        setSuccessMessage("Perícia de Combate deletada com sucesso!");
       } else {
-        setServerErrorDelete("Erro ao deletar perícia");
+        setServerErrorDelete("Erro ao deletar perícia de combate");
       }
     } catch (error: any) {
       setServerErrorDelete(
-        error.response?.data?.error || "Erro ao deletar perícia"
+        error.response?.data?.error || "Erro ao deletar perícia de combate"
       );
     } finally {
       setShowModalDelete(false);
       setIsSaving(false);
       setTimeout(() => {
-        setSkillDelete(null);
+        setCombatSkillDelete(null);
         setSuccessMessage(null);
         setServerErrorDelete(null);
-      }, 1000)
+      }, 3000);
     }
   };
 
-  function sortSkills(skills: Skill[]): Skill[] {
+  function sortCombatSkills(skills: CombatSkill[]): CombatSkill[] {
     return skills.slice().sort((a, b) => {
-      // Ordena grupo null por último
       if (a.group === null && b.group !== null) return 1;
       if (a.group !== null && b.group === null) return -1;
 
-      // Se ambos grupos são null ou iguais, ordenar pelo skill (string)
       if (a.group && b.group) {
         const groupCompare = a.group.localeCompare(b.group);
         if (groupCompare !== 0) return groupCompare;
@@ -197,9 +205,9 @@ export default function Skills() {
   if (isLoading || isLoadingAttributes) {
     return (
       <MainLayout>
-        <Title>Perícias</Title>
+        <Title>Perícias de Combate</Title>
         <div className="container my-4 text-light">
-          <p>Carregando perícias...</p>
+          <p>Carregando perícias de combate...</p>
         </div>
       </MainLayout>
     );
@@ -207,19 +215,18 @@ export default function Skills() {
 
   return (
     <MainLayout>
-      <Title>Perícias</Title>
+      <Title>Perícias de Combate</Title>
 
       <div className="row gy-3">
-        {skills.length === 0 && (
+        {combatSkills.length === 0 && (
           <div className="col-12 col-md-6">
-            <p>Nenhuma perícia cadastrada.</p>
+            <p>Nenhuma perícia de combate cadastrada.</p>
           </div>
         )}
       </div>
 
-      {skills.map((item) => {
+      {combatSkills.map((item) => {
         const attributeValue = attributes && attributes[item.attribute];
-
         return (
           <div key={item?.id} className="card my-3">
             <div className="container-fluid">
@@ -233,32 +240,43 @@ export default function Skills() {
                   <button
                     className="btn btn-close"
                     onClick={() => modalDelete(item)}
-                    aria-label={`Excluir perícia ${item?.skill}`}
-                  ></button>
+                    aria-label={`Excluir perícia de combate ${item?.skill}`}
+                  />
                 </div>
                 <div className="col-4 text-center">
                   <strong>
-                    <small>Valor Kit</small>
-                  </strong>
-                  <br />
-                  <span>{item?.kitValue}</span>
-                </div>
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>Custo</small>
-                  </strong>
-                  <br />
-                  <span>{item?.cost}</span>
-                </div>
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>Total</small>
+                    <small>
+                      Custo <br /> Ataque/Defesa
+                    </small>
                   </strong>
                   <br />
                   <span>
-                    {item?.kitValue +
-                      item?.cost +
-                      (attributeValue ? attributeValue : 0)}%
+                    {item.attackCost} / {item.defenseCost}
+                  </span>
+                </div>
+
+                <div className="col-4 text-center">
+                  <strong>
+                    <small>
+                      Kit <br /> Ataque/Defesa
+                    </small>
+                  </strong>
+                  <br />
+                  <span>
+                    {item.attackKitValue} / {item.defenseKitValue}
+                  </span>
+                </div>
+
+                <div className="col-4 text-center">
+                  <strong>
+                    <small>
+                      Total <br /> Ataque/Defesa
+                    </small>
+                  </strong>
+                  <br />
+                  <span>
+                    {item.attackCost + item.attackKitValue + (attributeValue ? attributeValue : 0)}% /{" "}
+                    {item.defenseCost + item.defenseKitValue + (attributeValue ? attributeValue : 0)}%
                   </span>
                 </div>
               </div>
@@ -273,7 +291,7 @@ export default function Skills() {
             className="btn btn-outline-light mb-3"
             onClick={() => setShowModal(true)}
           >
-            Adicionar Perícia
+            Adicionar Perícia de Combate
           </button>
         </div>
       </div>
@@ -281,7 +299,7 @@ export default function Skills() {
       <ModalCustom
         show={showModal}
         onHide={() => setShowModal(false)}
-        title="Adicionar Perícia"
+        title="Adicionar Perícia de Combate"
         actionLabel={isSaving ? "Salvando..." : "Adicionar"}
         onAction={handleSubmit(onSubmit)}
         size="lg"
@@ -319,11 +337,25 @@ export default function Skills() {
             errors={errors}
           />
           <GenericNumberInput
-            name="kitValue"
-            label="Valor Kit"
+            name="attackCost"
+            label="Custo Ataque"
             control={control}
           />
-          <GenericNumberInput name="cost" label="Custo" control={control} />
+          <GenericNumberInput
+            name="defenseCost"
+            label="Custo Defesa"
+            control={control}
+          />
+          <GenericNumberInput
+            name="attackKitValue"
+            label="Kit Ataque"
+            control={control}
+          />
+          <GenericNumberInput
+            name="defenseKitValue"
+            label="Kit Defesa"
+            control={control}
+          />
 
           <AlertMessage error={serverError} success={successMessage} />
         </form>
@@ -332,14 +364,14 @@ export default function Skills() {
       <ModalCustom
         show={showModalDelete}
         onHide={() => setShowModalDelete(false)}
-        title="Excluir Perícia"
+        title="Excluir Perícia de Combate"
         actionLabel={isSaving ? "Salvando..." : "Excluir"}
         onAction={onDelete}
         size="lg"
       >
         <h4>
-          Deseja excluir a perícia:
-          <br /> {skillDelete?.skill}?
+          Deseja excluir a perícia de combate:
+          <br /> {combatSkillDelete?.skill}?
         </h4>
 
         <AlertMessage error={serverErrorDelete} success={successMessage} />
