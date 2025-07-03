@@ -81,7 +81,7 @@ export function useCharacterAttributes() {
         if (!data?.attribute) {
           setTimeout(() => {
             router.push(`/character-edit/skills/${characterId}`);
-          }, 1000);
+          }, 700);
         }
       } catch {
         setServerError("Erro inesperado ao salvar atributos");

@@ -14,6 +14,7 @@ import { SubmitButton } from "@/app/components/form/SubmitButton";
 import { GenericNumberInput } from "@/app/components/form/GenericNumberInput";
 import { Attribute } from "@prisma/client";
 import { SelectBox } from "@/app/components/form/SelectBox";
+import { useSkills } from "./useSkill";
 
 type Skill = {
   id: string;
@@ -33,177 +34,30 @@ type SkillFormData = {
 };
 
 export default function Skills() {
-  const params = useParams();
-  const characterId = params.characterId as string;
-
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [serverErrorDelete, setServerErrorDelete] = useState<string | null>(
-    null
-  );
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [showModalDelete, setShowModalDelete] = useState(false);
-  const [skillDelete, setSkillDelete] = useState<Skill | null>(null);
-  const [isLoadingAttributes, setIsLoadingAttributes] = useState(true);
-  const [attributes, setAttributes] = useState<Attribute | null>(null);
-
   const {
+    skills,
+    attributes,
+    serverError,
+    serverErrorDelete,
+    successMessage,
+    isLoading,
+    isSaving,
+    saving,
+    deleting,
+    showModal,
+    setShowModal,
+    showModalDelete,
+    setShowModalDelete,
+    skillDelete,
+    control,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-    control,
-  } = useForm<SkillFormData>({
-    mode: "onBlur",
-  });
-
-  useEffect(() => {
-    async function fetchSkills() {
-      setServerError(null);
-      try {
-        const response = await axios.get("/api/skills", {
-          params: { characterId },
-        });
-        if (response.status === 200 && Array.isArray(response.data.skills)) {
-          setSkills(sortSkills(response.data.skills));
-        }
-      } catch {
-        // Assume primeiro cadastro, não exibe erro
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function fetchAttributes() {
-      try {
-        const response = await axios.get("/api/attributes", {
-          params: { characterId },
-        });
-        if (response.status === 200 && response.data.attribute) {
-          setAttributes(response.data.attribute);
-        }
-      } catch {
-        // erro silencioso: assume primeiro cadastro
-      } finally {
-        setIsLoadingAttributes(false);
-      }
-    }
-
-    if (characterId) {
-      fetchAttributes();
-      fetchSkills();
-    }
-  }, [characterId]);
-
-  const resetForm = () => {
-    reset();
-    setServerError(null);
-    setSuccessMessage(null);
-  };
-
-  const onSubmit: SubmitHandler<SkillFormData> = async (data) => {
-    setServerError(null);
-    setSuccessMessage(null);
-    setIsSaving(true);
-
-    try {
-      const payload = {
-        characterId,
-        ...data,
-        kitValue: Number(data.kitValue),
-        cost: Number(data.cost),
-        group: data.group || null,
-        attribute: data.attribute || null,
-      };
-
-      const response = await axios.post("/api/skills", payload);
-
-      if (response.status === 201) {
-        setSkills((prev) => sortSkills([...prev, response.data.skill]));
-        setSuccessMessage("Perícia adicionada com sucesso!");
-        resetForm();
-        setShowModal(false);
-      } else {
-        setServerError("Erro ao adicionar perícia");
-      }
-    } catch {
-      setServerError("Erro inesperado ao adicionar perícia");
-    } finally {
-      setIsSaving(false);
-      setTimeout(() => {
-        setSuccessMessage(null);
-        setSuccessMessage(null);
-        setServerError(null);
-      }, 1000)
-      
-    }
-  };
-
-  const modalDelete = (skill: Skill) => {
-    setSkillDelete(skill);
-    setShowModalDelete(true);
-  };
-
-  const onDelete = async () => {
-    setIsSaving(true);
-    setServerErrorDelete(null);
-    setSuccessMessage(null);
-    try {
-      const response = await axios.delete("/api/skills", {
-        params: { id: skillDelete?.id },
-      });
-      if (response.status === 200) {
-        setSkills((prev) =>
-          prev.filter((item) => item?.id !== skillDelete?.id)
-        );
-        setSuccessMessage("Perícia deletada com sucesso!");
-      } else {
-        setServerErrorDelete("Erro ao deletar perícia");
-      }
-    } catch (error: any) {
-      setServerErrorDelete(
-        error.response?.data?.error || "Erro ao deletar perícia"
-      );
-    } finally {
-      setShowModalDelete(false);
-      setIsSaving(false);
-      setTimeout(() => {
-        setSkillDelete(null);
-        setSuccessMessage(null);
-        setServerErrorDelete(null);
-      }, 1000)
-    }
-  };
-
-  function sortSkills(skills: Skill[]): Skill[] {
-    return skills.slice().sort((a, b) => {
-      // Ordena grupo null por último
-      if (a.group === null && b.group !== null) return 1;
-      if (a.group !== null && b.group === null) return -1;
-
-      // Se ambos grupos são null ou iguais, ordenar pelo skill (string)
-      if (a.group && b.group) {
-        const groupCompare = a.group.localeCompare(b.group);
-        if (groupCompare !== 0) return groupCompare;
-      }
-
-      return a.skill.localeCompare(b.skill);
-    });
-  }
-
-  if (isLoading || isLoadingAttributes) {
-    return (
-      <MainLayout>
-        <Title>Perícias</Title>
-        <div className="container my-4 text-light">
-          <p>Carregando perícias...</p>
-        </div>
-      </MainLayout>
-    );
-  }
+    onSubmit,
+    errors,
+    isSubmitting,
+    modalDelete,
+    onDelete,
+  } = useSkills();
 
   return (
     <MainLayout>
@@ -218,7 +72,8 @@ export default function Skills() {
       </div>
 
       {skills.map((item) => {
-        const attributeValue = attributes && attributes[item.attribute];
+        const attributeValue =
+          attributes && item?.attribute ? attributes[item?.attribute] : null;
 
         return (
           <div key={item?.id} className="card my-3">
@@ -256,9 +111,10 @@ export default function Skills() {
                   </strong>
                   <br />
                   <span>
-                    {item?.kitValue +
-                      item?.cost +
-                      (attributeValue ? attributeValue : 0)}%
+                    {item?.kitValue
+                      ? item?.kitValue
+                      : 0 + item?.cost + (attributeValue ? attributeValue : 0)}
+                    %
                   </span>
                 </div>
               </div>
@@ -322,8 +178,14 @@ export default function Skills() {
             name="kitValue"
             label="Valor Kit"
             control={control}
+            errors={errors}
           />
-          <GenericNumberInput name="cost" label="Custo" control={control} />
+          <GenericNumberInput
+            name="cost"
+            label="Custo"
+            control={control}
+            errors={errors}
+          />
 
           <AlertMessage error={serverError} success={successMessage} />
         </form>

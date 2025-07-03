@@ -1,23 +1,36 @@
 "use client";
 
 import React from "react";
-import { Controller, Control } from "react-hook-form";
+import { Controller, Control, FieldErrors, FieldValues } from "react-hook-form";
 
-type GenericNumberInputProps = {
+type GenericNumberInputProps<T extends FieldValues> = {
   name: string;
   label: string;
   control: Control<any>;
   min?: number;
   max?: number;
+  errors?: FieldErrors<T>;
 };
 
-export function GenericNumberInput({
+export function GenericNumberInput<T extends FieldValues>({
   name,
   label,
   control,
   min = 0,
   max = 100,
-}: GenericNumberInputProps) {
+  errors,
+}: GenericNumberInputProps<T>) {
+  const errorMessage = errors && errors[name]?.message;
+
+  function handleBlurRemoveLeadingZeros2(value: string | number): number {
+  if (value === "" || value === null || value === undefined) {
+    return 0;
+  }
+  const strValue = String(value);
+  const replaced = strValue.replace(/^0+(?!$)/, "");
+  return replaced === "" ? 0 : Number(replaced);
+}
+ 
   return (
     <Controller
       control={control}
@@ -27,17 +40,21 @@ export function GenericNumberInput({
         const value = field.value ?? min;
 
         const decrease = () => {
-          if (value > min) field.onChange(value - 1);
+          if (value > 0) {
+            const newVal = value - 1;
+            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
+          }
         };
-
+        
         const increase = () => {
-          if (value < max) field.onChange(value + 1);
+            const newVal = value + 1;
+            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
         };
 
         const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const newVal = Number(e.target.value);
           if (newVal >= min && newVal <= max) {
-            field.onChange(newVal);
+            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
           }
         };
 
@@ -89,7 +106,9 @@ export function GenericNumberInput({
                 <input
                   id={name}
                   type="number"
-                  className="form-control bg-dark text-light border-secondary text-center"
+                  className={`form-control bg-dark text-light border-secondary text-center ${
+                    errorMessage ? "is-invalid" : ""
+                  }`}
                   min={min}
                   max={max}
                   value={value}
@@ -113,6 +132,14 @@ export function GenericNumberInput({
                 +
               </button>
             </div>
+
+            {errorMessage && (
+              <div
+                className={`invalid-feedback ${errorMessage ? "d-block" : ""}`}
+              >
+                {errorMessage as React.ReactNode}
+              </div>
+            )}
           </div>
         );
       }}

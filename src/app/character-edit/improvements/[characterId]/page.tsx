@@ -1,171 +1,37 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import axios from "axios";
-import { useForm, SubmitHandler } from "react-hook-form";
-
-import MainLayout from "@/app/layouts/MainLayout";
-import Title from "@/app/components/Title";
-import { ModalCustom } from "@/app/components/ModalCustom";
-import { InputField } from "@/app/components/form/InputField";
 import { AlertMessage } from "@/app/components/AlertMessage";
-import { SubmitButton } from "@/app/components/form/SubmitButton";
+import { ModalCustom } from "@/app/components/ModalCustom";
+import Title from "@/app/components/Title";
 import { GenericNumberInput } from "@/app/components/form/GenericNumberInput";
-
-type Improvement = {
-  id: string;
-  name: string;
-  kitValue: number;
-  cost: number;
-};
-
-type ImprovementFormData = {
-  name: string;
-  kitValue: number;
-  cost: number;
-};
+import { InputField } from "@/app/components/form/InputField";
+import MainLayout from "@/app/layouts/MainLayout";
+import { useImprovements } from "./useImprovements";
 
 export default function Improvements() {
-  const params = useParams();
-  const characterId = params.characterId as string;
-
-  const [improvements, setImprovements] = useState<Improvement[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [serverErrorDelete, setServerErrorDelete] = useState<string | null>(
-    null
-  );
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [showModalDelete, setShowModalDelete] = useState(false);
-  const [improvementDelete, setImprovementDelete] =
-    useState<Improvement | null>(null);
-
   const {
+    improvements,
+    serverError,
+    serverErrorDelete,
+    successMessage,
+    isLoading,
+    isSaving,
+    saving,
+    deleting,
+    showModal,
+    setShowModal,
+    showModalDelete,
+    setShowModalDelete,
+    improvementDelete,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
+    onSubmit,
+    errors,
+    isSubmitting,
+    modalDelete,
+    onDelete,
     control,
-  } = useForm<ImprovementFormData>({
-    mode: "onBlur",
-  });
-
-  useEffect(() => {
-    async function fetchImprovements() {
-      setServerError(null);
-      try {
-        const response = await axios.get("/api/improvements", {
-          params: { characterId },
-        });
-        if (
-          response.status === 200 &&
-          Array.isArray(response.data.improvements)
-        ) {
-          setImprovements(sortImprovements(response.data.improvements));
-        }
-      } catch {
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    if (characterId) {
-      fetchImprovements();
-    }
-  }, [characterId]);
-
-  const resetForm = () => {
-    reset();
-    setServerError(null);
-    setSuccessMessage(null);
-  };
-
-  const onSubmit: SubmitHandler<ImprovementFormData> = async (data) => {
-    setServerError(null);
-    setSuccessMessage(null);
-    setIsSaving(true);
-
-    try {
-      const payload = {
-        characterId,
-        ...data,
-        kitValue: Number(data.kitValue),
-        cost: Number(data.cost),
-      };
-
-      const response = await axios.post("/api/improvements", payload);
-
-      if (response.status === 201) {
-        setImprovements((prev) => sortImprovements([...prev, response.data.improvement]));
-        setSuccessMessage("Aprimoramento adicionado com sucesso!");
-        resetForm();
-        setShowModal(false);
-      } else {
-        setServerError("Erro ao adicionar aprimoramento");
-      }
-    } catch {
-      setServerError("Erro inesperado ao adicionar aprimoramento");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const modalDelete = (improvement: Improvement) => {
-    setImprovementDelete(improvement);
-    setShowModalDelete(true);
-  };
-
-  const onDelete = async () => {
-    try {
-      const response = await axios.delete("/api/improvements", {
-        params: { id: improvementDelete?.id },
-      });
-      if (
-        response.status === 200 &&
-        Array.isArray(response.data.improvements)
-      ) {
-        setImprovements(response.data.improvements);
-      }
-    } catch (error: any) {
-      setServerErrorDelete(
-        error.response?.data?.error || "Erro ao deletar aprimoramento"
-      );
-    } finally {
-      setShowModalDelete(false);
-      setIsLoading(false);
-      setImprovementDelete(null);
-      setTimeout(() => {
-        setImprovements((prev) =>
-          prev.filter((item) => item?.id != improvementDelete?.id)
-        );
-      }, 400);
-    }
-  };
-
-  function sortImprovements(improvements: Improvement[]): Improvement[] {
-    return improvements.slice().sort((a, b) => {
-      // Coloca names nulos por último
-      if (a.name === null && b.name !== null) return 1;
-      if (a.name !== null && b.name === null) return -1;
-      if (a.name === null && b.name === null) return 0;
-
-      // Ambos nomes são strings: ordenar alfabeticamente
-      return a.name.localeCompare(b.name);
-    });
-  }
-
-  if (isLoading) {
-    return (
-      <MainLayout>
-        <Title>Aprimoramentos</Title>
-        <div className="container my-4 text-light">
-          <p>Carregando aprimoramentos...</p>
-        </div>
-      </MainLayout>
-    );
-  }
+  } = useImprovements();
 
   return (
     <MainLayout>
@@ -211,7 +77,7 @@ export default function Improvements() {
                   <small>Total</small>
                 </strong>
                 <br />
-                <span>{item?.kitValue + item?.cost}</span>
+                <span>{item?.kitValue ? item?.kitValue : 0 + item?.cost}</span>
               </div>
             </div>
           </div>

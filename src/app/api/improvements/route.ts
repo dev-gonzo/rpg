@@ -1,14 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { isInternalRequest } from "@/lib/checkOrigin";
+import { prisma } from "@/lib/prisma";
+import { improvementSchema } from "@/shared/schemas/character/improvementSchema";
+import { NextRequest, NextResponse } from "next/server";
 import * as yup from "yup";
 
-const improvementSchema = yup.object({
-  characterId: yup.string().uuid().required(),
-  name: yup.string().trim().min(1).required(),
-  cost: yup.number().integer().min(0).required(),
-  kitValue: yup.number().integer().min(0).required(),
-});
+const extendedImprovementSchema = improvementSchema.concat(
+  yup.object({
+    characterId: yup
+      .string()
+      .uuid("ID inválido")
+      .required("Personagem é obrigatório"),
+  })
+);
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -38,7 +41,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    await improvementSchema.validate(body, { abortEarly: false });
+    await extendedImprovementSchema.validate(body, { abortEarly: false });
 
     const improvement = await prisma.improvement.create({
       data: {

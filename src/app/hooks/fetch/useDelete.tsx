@@ -11,7 +11,7 @@ export function useDelete() {
     setError(null);
     setSuccess(false);
     try {
-      await axios.delete(`${endpoint}/${id}`, {
+      await axios.delete(`${endpoint}?id=${id}`, {
         withCredentials: true,
       });
       setSuccess(true);

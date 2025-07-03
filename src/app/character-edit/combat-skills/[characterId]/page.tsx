@@ -1,206 +1,39 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import axios from "axios";
-import { useForm, SubmitHandler } from "react-hook-form";
-
-import MainLayout from "@/app/layouts/MainLayout";
-import Title from "@/app/components/Title";
-import { ModalCustom } from "@/app/components/ModalCustom";
-import { InputField } from "@/app/components/form/InputField";
 import { AlertMessage } from "@/app/components/AlertMessage";
-import { SubmitButton } from "@/app/components/form/SubmitButton";
+import { ModalCustom } from "@/app/components/ModalCustom";
+import Title from "@/app/components/Title";
 import { GenericNumberInput } from "@/app/components/form/GenericNumberInput";
+import { InputField } from "@/app/components/form/InputField";
 import { SelectBox } from "@/app/components/form/SelectBox";
-import { Attribute } from "@prisma/client";
-
-type CombatSkill = {
-  id: string;
-  group: string | null;
-  skill: string;
-  attribute: "CON" | "FR" | "DEX" | "AGI" | "INT" | "WILL" | "PER" | "CAR";
-  attackCost: number;
-  defenseCost: number;
-  attackKitValue: number;
-  defenseKitValue: number;
-};
-
-type CombatSkillFormData = {
-  group?: string;
-  skill: string;
-  attribute?: string;
-  attackCost: number;
-  defenseCost: number;
-  attackKitValue: number;
-  defenseKitValue: number;
-};
+import MainLayout from "@/app/layouts/MainLayout";
+import { useCombatSkills } from "./useCombatSkills";
 
 export default function CombatSkillsPage() {
-  const params = useParams();
-  const characterId = params.characterId as string;
-
-  const [combatSkills, setCombatSkills] = useState<CombatSkill[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [serverErrorDelete, setServerErrorDelete] = useState<string | null>(
-    null
-  );
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [showModalDelete, setShowModalDelete] = useState(false);
-  const [combatSkillDelete, setCombatSkillDelete] =
-    useState<CombatSkill | null>(null);
-  const [isLoadingAttributes, setIsLoadingAttributes] = useState(true);
-  const [attributes, setAttributes] = useState<Attribute | null>(null);
-
   const {
+    combatSkills,
+    showModal,
+    setShowModal,
+    serverError,
+    serverErrorDelete,
+    successMessage,
+    isLoading,
+    isSaving,
+    showModalDelete,
+    setShowModalDelete,
+    combatSkillDelete,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    errors,
+    isSubmitting,
     reset,
     control,
-  } = useForm<CombatSkillFormData>({
-    mode: "onBlur",
-  });
-
-  useEffect(() => {
-    async function fetchCombatSkills() {
-      setServerError(null);
-      try {
-        const response = await axios.get("/api/combat-skills", {
-          params: { characterId },
-        });
-        if (
-          response.status === 200 &&
-          Array.isArray(response.data.combatSkills)
-        ) {
-          setCombatSkills(sortCombatSkills(response.data.combatSkills));
-        }
-      } catch {
-        // assume primeiro cadastro, não exibe erro
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function fetchAttributes() {
-      try {
-        const response = await axios.get("/api/attributes", {
-          params: { characterId },
-        });
-        if (response.status === 200 && response.data.attribute) {
-          setAttributes(response.data.attribute);
-        }
-      } catch {
-        // erro silencioso: assume primeiro cadastro
-      } finally {
-        setIsLoadingAttributes(false);
-      }
-    }
-
-    if (characterId) {
-      fetchCombatSkills();
-      fetchAttributes();
-    }
-  }, [characterId]);
-
-  const resetForm = () => {
-    reset();
-    setServerError(null);
-    setSuccessMessage(null);
-  };
-
-  const onSubmit: SubmitHandler<CombatSkillFormData> = async (data) => {
-    setServerError(null);
-    setSuccessMessage(null);
-    setIsSaving(true);
-
-    try {
-      const payload = {
-        characterId,
-        skill: data.skill,
-        group: data.group || null,
-        attribute: data.attribute || null,
-        attackCost: Number(data.attackCost),
-        defenseCost: Number(data.defenseCost),
-        attackKitValue: Number(data.attackKitValue),
-        defenseKitValue: Number(data.defenseKitValue),
-      };
-
-      const response = await axios.post("/api/combat-skills", payload);
-
-      if (response.status === 201) {
-        setCombatSkills((prev) =>
-          sortCombatSkills([...prev, response.data.combatSkill])
-        );
-        setSuccessMessage("Perícia de Combate adicionada com sucesso!");
-        resetForm();
-        setShowModal(false);
-      } else {
-        setServerError("Erro ao adicionar perícia de combate");
-      }
-    } catch {
-      setServerError("Erro inesperado ao adicionar perícia de combate");
-    } finally {
-      setIsSaving(false);
-      setTimeout(() => {
-        setSuccessMessage(null);
-        setServerError(null);
-      }, 3000);
-    }
-  };
-
-  const modalDelete = (combatSkill: CombatSkill) => {
-    setCombatSkillDelete(combatSkill);
-    setShowModalDelete(true);
-  };
-
-  const onDelete = async () => {
-    setIsSaving(true);
-    setServerErrorDelete(null);
-    setSuccessMessage(null);
-    try {
-      const response = await axios.delete("/api/combat-skills", {
-        params: { id: combatSkillDelete?.id },
-      });
-      if (response.status === 200) {
-        setCombatSkills((prev) =>
-          prev.filter((item) => item?.id !== combatSkillDelete?.id)
-        );
-        setSuccessMessage("Perícia de Combate deletada com sucesso!");
-      } else {
-        setServerErrorDelete("Erro ao deletar perícia de combate");
-      }
-    } catch (error: any) {
-      setServerErrorDelete(
-        error.response?.data?.error || "Erro ao deletar perícia de combate"
-      );
-    } finally {
-      setShowModalDelete(false);
-      setIsSaving(false);
-      setTimeout(() => {
-        setCombatSkillDelete(null);
-        setSuccessMessage(null);
-        setServerErrorDelete(null);
-      }, 3000);
-    }
-  };
-
-  function sortCombatSkills(skills: CombatSkill[]): CombatSkill[] {
-    return skills.slice().sort((a, b) => {
-      if (a.group === null && b.group !== null) return 1;
-      if (a.group !== null && b.group === null) return -1;
-
-      if (a.group && b.group) {
-        const groupCompare = a.group.localeCompare(b.group);
-        if (groupCompare !== 0) return groupCompare;
-      }
-
-      return a.skill.localeCompare(b.skill);
-    });
-  }
+    onSubmit,
+    modalDelete,
+    onDelete,
+    attributes,
+    isLoadingAttributes,
+  } = useCombatSkills();
 
   if (isLoading || isLoadingAttributes) {
     return (
@@ -226,7 +59,8 @@ export default function CombatSkillsPage() {
       </div>
 
       {combatSkills.map((item) => {
-        const attributeValue = attributes && attributes[item.attribute];
+        const attributeValue =
+          attributes && item?.attribute ? attributes[item?.attribute] : null;
         return (
           <div key={item?.id} className="card my-3">
             <div className="container-fluid">
@@ -275,8 +109,14 @@ export default function CombatSkillsPage() {
                   </strong>
                   <br />
                   <span>
-                    {item.attackCost + item.attackKitValue + (attributeValue ? attributeValue : 0)}% /{" "}
-                    {item.defenseCost + item.defenseKitValue + (attributeValue ? attributeValue : 0)}%
+                    {item.attackCost +
+                      (item.attackKitValue ? item.attackKitValue : 0) +
+                      (attributeValue ? attributeValue : 0)}
+                    % /{" "}
+                    {item.defenseCost +
+                      (item.defenseKitValue ? item.defenseKitValue : 0) +
+                      (attributeValue ? attributeValue : 0)}
+                    %
                   </span>
                 </div>
               </div>

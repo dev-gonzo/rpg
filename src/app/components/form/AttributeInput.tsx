@@ -18,6 +18,15 @@ export function AttributeInput({ name, control }: AttributeInputProps) {
   const atributo = attributeKey ? ATTRIBUTES[attributeKey].atributo : name;
   const abreviacao = attributeKey ? ATTRIBUTES[attributeKey].abreviacao : name;
 
+  function handleBlurRemoveLeadingZeros2(value: string | number): number {
+    if (value === "" || value === null || value === undefined) {
+      return 0;
+    }
+    const strValue = String(value);
+    const replaced = strValue.replace(/^0+(?!$)/, "");
+    return replaced === "" ? 0 : Number(replaced);
+  }
+
   return (
     <Controller
       control={control}
@@ -26,12 +35,16 @@ export function AttributeInput({ name, control }: AttributeInputProps) {
       render={({ field }) => {
         const value = field.value ?? 0;
 
-        const decrease = () => {
-          if (value > 0) field.onChange(value - 1);
+         const decrease = () => {
+          if (value > 0) {
+            const newVal = value - 1;
+            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
+          }
         };
-
+        
         const increase = () => {
-          field.onChange(value + 1);
+            const newVal = value + 1;
+            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
         };
 
         const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +54,7 @@ export function AttributeInput({ name, control }: AttributeInputProps) {
           if (val === "" || isNaN(newVal)) {
             field.onChange(0);
           } else {
-            field.onChange(newVal);
+            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
           }
         };
 

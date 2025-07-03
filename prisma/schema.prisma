@@ -49,6 +49,7 @@ model Character {
   attributes   Attribute?    @relation("CharacterAttribute")
   improvements Improvement[]
   skills       Skill[]
+  combatSkill  CombatSkill[]
 
   // Relacionamento com usuário controlador (opcional)
   controlUserId String? // FK opcional
@@ -114,6 +115,23 @@ model Skill {
   attribute String?
   cost      Int
   kitValue  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CombatSkill {
+  id          String    @id @default(uuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  group           String? // opcional
+  skill           String
+  attribute       String? // "CON", "FR", "DEX", "AGI", "INT", "WILL", "PER", "CAR"
+  attackCost      Int
+  defenseCost     Int
+  attackKitValue  Int
+  defenseKitValue Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
