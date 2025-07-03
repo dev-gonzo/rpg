@@ -35,63 +35,71 @@ export default function Improvements() {
 
   return (
     <MainLayout>
-      <Title>Aprimoramentos</Title>
+      <Title back>Aprimoramentos</Title>
 
-      <div className="row gy-3">
-        {improvements.length === 0 && (
-          <div className="col-12 col-md-6">
-            <p>Nenhum aprimoramento cadastrado.</p>
-          </div>
-        )}
-      </div>
+      <div className="container">
+        <div className="row gy-3">
+          {improvements.length === 0 && (
+            <div className="col-12 col-md-6">
+              <p>Nenhum aprimoramento cadastrado.</p>
+            </div>
+          )}
+        </div>
 
-      {improvements.map((item) => (
-        <div key={item?.id} className="card my-3">
-          <div className="container-fluid">
-            <div className="row my-3">
-              <div className="col-12  pb-2 mb-2 d-flex  justify-content-between border-bottom">
-                <span>
-                  <strong>{item?.name}</strong>
-                </span>
-                <button
-                  className="btn btn-close"
-                  onClick={() => modalDelete(item)}
-                ></button>
-              </div>
-              <div className="col-4 text-center">
-                <strong>
-                  <small>Custo</small>
-                </strong>
-                <br />
-                <span>{item?.cost}</span>
-              </div>
-              <div className="col-4 text-center">
-                <strong>
-                  <small>Valor Kit</small>
-                </strong>
-                <br />
-                <span>{item?.kitValue}</span>
-              </div>
-              <div className="col-4 text-center">
-                <strong>
-                  <small>Total</small>
-                </strong>
-                <br />
-                <span>{item?.kitValue ? item?.kitValue : 0 + item?.cost}</span>
+        <div className="row gap-3 mt-4">
+          {improvements.map((item) => (
+            <div className="col-12 col-6">
+              <div key={item?.id} className="card bg-gray">
+                <div className="container-fluid">
+                  <div className="row my-3">
+                    <div className="col-12  pb-2 mb-2 d-flex  justify-content-between border-bottom border-black">
+                      <span>
+                        <strong>{item?.name}</strong>
+                      </span>
+                      <button
+                        className="btn btn-close"
+                        onClick={() => modalDelete(item)}
+                      ></button>
+                    </div>
+                    <div className="col-4 text-center">
+                      <strong>
+                        <small>Custo</small>
+                      </strong>
+                      <br />
+                      <span>{item?.cost}</span>
+                    </div>
+                    <div className="col-4 text-center">
+                      <strong>
+                        <small>Valor Kit</small>
+                      </strong>
+                      <br />
+                      <span>{item?.kitValue}</span>
+                    </div>
+                    <div className="col-4 text-center">
+                      <strong>
+                        <small>Total</small>
+                      </strong>
+                      <br />
+                      <span>
+                        {item?.kitValue ? item?.kitValue : 0 + item?.cost}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
 
-      <div className="row">
-        <div className="col-12 d-flex justify-content-end">
-          <button
-            className="btn btn-outline-light mb-3"
-            onClick={() => setShowModal(true)}
-          >
-            Adicionar Aprimoramento
-          </button>
+        <div className="row mt-3">
+          <div className="col-12 d-flex justify-content-end">
+            <button
+              className="btn btn-outline-light mb-3"
+              onClick={() => setShowModal(true)}
+            >
+              Adicionar Aprimoramento
+            </button>
+          </div>
         </div>
       </div>
 

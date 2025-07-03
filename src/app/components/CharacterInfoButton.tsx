@@ -29,19 +29,19 @@ export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
         <FontAwesomeIcon icon={faClipboardUser} size="xl" />
       </Link>
 
-      <button
-        type="button"
+      <Link
+        href={`/character/improvements/${characterId}`}
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        //    onClick={handleClick}
-        aria-label="Aprimoramentos"
-        title="Aprimoramentos"
         style={{
           width: "45px",
           height: "45px",
         }}
+        aria-label="Aprimoramentos"
+        title="Aprimoramentos"
       >
         <FontAwesomeIcon icon={faClipboardList} size="xl" />
-      </button>
+      </Link>
+
       <button
         type="button"
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"

@@ -98,7 +98,7 @@ export function useImprovements() {
         const payload = {
           characterId,
           ...data,
-          kitValue: Number(data.kitValue),
+          kitValue: Number(data.kitValue) ?? 0,
           cost: Number(data.cost),
         };
 
