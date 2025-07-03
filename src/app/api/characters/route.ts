@@ -29,34 +29,39 @@ function normalizePayload(data: any) {
 }
 
 export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
-  const characterId = url.searchParams.get("characterId");
-
-  if (!characterId) {
-    return NextResponse.json(
-      { error: "Parâmetro 'characterId' é obrigatório" },
-      { status: 400 }
-    );
+  const payload = verifyJwt(req);
+  if (!payload) {
+    return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
   }
+  
+  const { userId, isMaster } = payload as { userId: string; isMaster?: boolean };
 
   try {
-    const character = await prisma.character.findUnique({
-      where: { id: characterId },
+    const characters = await prisma.character.findMany({
+      where: isMaster
+        ? {} 
+        : { controlUserId: userId },
+      orderBy: { name: "asc" },
+      include: {
+        controlUser: {
+          select: { id: true, name: true, email: true },
+        },
+        attributes: true,
+        relevantPeople: true,
+        improvements: true,
+        skills: true,
+        combatSkill: true,
+      },
     });
 
-    if (!character) {
-      return NextResponse.json(
-        { error: "Personagem não encontrado" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({ character }, { status: 200 });
-  } catch (err) {
-    console.error("Erro ao buscar personagem:", err);
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
+    return NextResponse.json({ characters });
+  } catch (error) {
+    console.error("Erro ao listar personagens:", error);
+    return NextResponse.json({ error: "Erro ao buscar personagens." }, { status: 500 });
   }
 }
+
+
 
 export async function POST(req: NextRequest) {
   const payload = verifyJwt(req);
@@ -164,6 +169,36 @@ export async function PUT(req: NextRequest) {
     }
     return NextResponse.json(
       { error: "Internal server error." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const characterId = searchParams.get("characterId");
+
+  if (!characterId) {
+    return NextResponse.json(
+      { error: "ID do personagem não informado." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    // Deleta o personagem e, por causa do `onDelete: Cascade`, tudo relacionado será removido
+    await prisma.character.delete({
+      where: { id: characterId },
+    });
+
+    return NextResponse.json(
+      { message: "Personagem e dados relacionados deletados com sucesso." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Erro ao deletar personagem:", error);
+    return NextResponse.json(
+      { error: "Erro ao deletar personagem." },
       { status: 500 }
     );
   }

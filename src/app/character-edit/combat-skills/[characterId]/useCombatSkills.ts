@@ -147,7 +147,6 @@ export function useCombatSkills() {
         setCombatSkills((prev) =>
           prev.filter((item) => item?.id !== combatSkillDelete?.id)
         );
-        setSuccessMessage("Perícia de Combate deletada com sucesso!");
       } else {
         setServerErrorDelete("Erro ao deletar perícia de combate");
       }

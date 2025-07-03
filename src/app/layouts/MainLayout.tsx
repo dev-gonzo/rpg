@@ -10,7 +10,7 @@ export default function MainLayout({ children }: Props) {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Menu />
-      <main className="flex-grow-1 px-4 ">{children}</main>
+      <main className="flex-grow-1">{children}</main>
       <Footer />
     </div>
   );
