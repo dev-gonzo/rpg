@@ -13,7 +13,7 @@ export default function HomePage() {
 
   return (
     <MainLayout>
-      <Title link={{ label: "Criar Personagem", path: "character-edit" }}>
+      <Title link={{ label: "Criar Personagem", path: "character-edit" }} home={false}>
         Personagens
       </Title>
 

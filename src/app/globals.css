@@ -9,3 +9,7 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.bg-gray {
+  background-color: #8d8b8b; /* cinza claro */
+}

@@ -5,25 +5,30 @@ import {
   faFileLines,
   faHatWizard,
   faFeatherPointed,
-  faShieldAlt
+  faShieldAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
-export const CharacterInfo = () => {
+type CharacterInfoProps = {
+  characterId: string;
+};
+
+export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
   return (
     <div className="w-100 d-flex gap-2 justify-content-between">
-      <button
-        type="button"
+      <Link
+        href={`/character/attributes/${characterId}`}
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        //    onClick={handleClick}
-        aria-label="Atributos"
-        title="Atributos"
         style={{
           width: "45px",
           height: "45px",
         }}
+        aria-label="Atributos"
+        title="Atributos"
       >
         <FontAwesomeIcon icon={faClipboardUser} size="xl" />
-      </button>
+      </Link>
+
       <button
         type="button"
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"

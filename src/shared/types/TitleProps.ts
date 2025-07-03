@@ -5,4 +5,6 @@ export type TitleProps = {
     label: string;
   };
   className?: string;
+  back?: boolean;
+  home?: boolean;
 };

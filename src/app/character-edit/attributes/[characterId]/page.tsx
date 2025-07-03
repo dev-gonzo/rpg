@@ -33,7 +33,7 @@ export default function CharacterAttributes() {
 
   return (
     <MainLayout>
-      <Title>Atributos do Personagem</Title>
+      <Title back>Atributos do Personagem</Title>
       <div className="container my-4">
         <form onSubmit={handleSubmit(onSubmit)} className="row">
           <AttributeInput name="CON" control={control} />

@@ -64,7 +64,7 @@ export function CharacterCard({ character }: { character: CharacterGet }) {
           <CharacterBasicInfo />
         </div>
         <div className="mt-4">
-          <CharacterInfo />
+          <CharacterInfo characterId={character.id}/>
         </div>
       </div>
     </div>

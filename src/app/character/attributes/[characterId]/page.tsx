@@ -6,16 +6,16 @@ import { useAttributesView } from "./useAttributesView";
 import { AttributeResponse } from "@/shared/types/character/AttributesResponse";
 
 export default function Improvements() {
-  const { data, loading } = useAttributesView();
+  const { data, loading, characterId } = useAttributesView();
 
   return (
     <MainLayout>
-      <Title>Atributos</Title>
+      <Title link={{label: "Editar", path: `/character-edit/attributes/${characterId}`}}>Atributos</Title>
 
       <div className="container">
         <div className="row gap-3">
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center my-2">
                   <div className="col-6 ">
@@ -34,7 +34,7 @@ export default function Improvements() {
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center  my-2">
                   <div className="col-6 ">
@@ -53,7 +53,7 @@ export default function Improvements() {
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center  my-2">
                   <div className="col-6 ">
@@ -72,7 +72,7 @@ export default function Improvements() {
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center  my-2">
                   <div className="col-6 ">
@@ -91,7 +91,7 @@ export default function Improvements() {
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center  my-2">
                   <div className="col-6 ">
@@ -110,7 +110,7 @@ export default function Improvements() {
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center  my-2">
                   <div className="col-6 ">
@@ -129,7 +129,7 @@ export default function Improvements() {
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center  my-2">
                   <div className="col-6 ">
@@ -148,7 +148,7 @@ export default function Improvements() {
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="card">
+            <div className="card bg-gray">
               <div className="container-fluid">
                 <div className="row align-items-center  my-2">
                   <div className="col-6 ">

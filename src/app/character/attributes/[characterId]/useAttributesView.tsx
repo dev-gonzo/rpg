@@ -3,7 +3,7 @@
 import { useGet } from "@/app/hooks/fetch/useGet";
 import { AttributeResponse } from "@/shared/types/character/AttributesResponse";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const useAttributesView = () => {
   const params = useParams();
@@ -21,5 +21,6 @@ export const useAttributesView = () => {
   return {
     loading,
     data: data?.attribute,
+    characterId
   };
 };

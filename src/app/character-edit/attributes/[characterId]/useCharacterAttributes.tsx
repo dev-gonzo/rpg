@@ -80,7 +80,7 @@ export function useCharacterAttributes() {
 
         if (!data?.attribute) {
           setTimeout(() => {
-            router.push(`/character-edit/skills/${characterId}`);
+            router.push(`/character/attributes/${characterId}`);
           }, 700);
         }
       } catch {
