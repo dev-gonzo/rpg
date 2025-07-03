@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { userLoginSchema } from "@/shared/schemas/userLoginSchema";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET!; 
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,20 +19,26 @@ export async function POST(req: NextRequest) {
     }
 
     const { password, ...userSafe } = user;
-    const token = Buffer.from(`${user.id}|${Date.now()}`).toString("base64");
 
-    // Cria o cookie de sessão válido por 8 horas
+    // Cria o JWT com id e outras infos
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, isMaster: user.isMaster },
+      JWT_SECRET,
+      { expiresIn: "8h" }
+    );
+
     const res = NextResponse.json({ user: userSafe }, { status: 200 });
     res.cookies.set("session_token", token, {
       httpOnly: true,
       path: "/",
-      maxAge: 8 * 60 * 60, // 8 horas
-      sameSite: "lax",      // Funciona em localhost, portas iguais
-      secure: false,        // Só true em produção HTTPS
+      maxAge: 8 * 60 * 60,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
     });
 
     return res;
   } catch (err: any) {
+     console.error("Erro no login:", err);
     if (err.name === "ValidationError") {
       return NextResponse.json({ error: err.errors?.[0] }, { status: 400 });
     }

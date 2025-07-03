@@ -1,19 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
+import { verifyJwt } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { characterBasicDataSchema } from "@/shared/schemas/characterBasicDataSchema";
-import { isInternalRequest } from "@/lib/checkOrigin"; // valida origem segura
+import { basicDataSchema } from "@/shared/schemas/character/basicDataSchema";
+import { NextRequest, NextResponse } from "next/server";
 
 function normalizePayload(data: any) {
   const normalized = { ...data };
 
   // Strings vazias viram null
-  ["religion", "gender", "birthPlace", "secretSociety", "cabala", "rank", "mentor"].forEach(field => {
+  [
+    "religion",
+    "gender",
+    "birthPlace",
+    "secretSociety",
+    "cabala",
+    "rank",
+    "mentor",
+  ].forEach((field) => {
     if (normalized[field] === "") normalized[field] = null;
   });
 
   // Campos numéricos null ou undefined viram null
-  ["apparentAge", "weightKg", "heightCm"].forEach(field => {
-    if (normalized[field] === null || normalized[field] === undefined) normalized[field] = null;
+  ["apparentAge", "weightKg", "heightCm"].forEach((field) => {
+    if (normalized[field] === null || normalized[field] === undefined)
+      normalized[field] = null;
   });
 
   return normalized;
@@ -21,10 +30,13 @@ function normalizePayload(data: any) {
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
-  const characterId = url.searchParams.get("characterId"); 
+  const characterId = url.searchParams.get("characterId");
 
   if (!characterId) {
-    return NextResponse.json({ error: "Parâmetro 'characterId' é obrigatório" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Parâmetro 'characterId' é obrigatório" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -33,7 +45,10 @@ export async function GET(req: NextRequest) {
     });
 
     if (!character) {
-      return NextResponse.json({ error: "Personagem não encontrado" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Personagem não encontrado" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ character }, { status: 200 });
@@ -44,37 +59,39 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!isInternalRequest(req)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const payload = verifyJwt(req);
+
+  if (!payload) {
+    return NextResponse.json(
+      { error: "Usuário não autenticado" },
+      { status: 401 }
+    );
   }
-  
+
+  const { userId, isMaster } = payload as {
+    userId: string;
+    isMaster?: boolean;
+  };
+
   try {
     const body = await req.json();
     const normalizedBody = normalizePayload(body);
 
-    await characterBasicDataSchema.validate(normalizedBody);
+    await basicDataSchema.validate(normalizedBody);
 
     const birthDate = new Date(normalizedBody.birthDate);
     if (isNaN(birthDate.getTime())) {
-      return NextResponse.json({ error: "Data de nascimento inválida." }, { status: 400 });
-    }
-
-    // Verifica duplicado
-    const exists = await prisma.character.findFirst({
-      where: {
-        name: normalizedBody.name,
-        birthDate,
-      },
-    });
-
-    if (exists) {
-      return NextResponse.json({ error: "Personagem já existe." }, { status: 409 });
+      return NextResponse.json(
+        { error: "Data de nascimento inválida." },
+        { status: 400 }
+      );
     }
 
     const dataToCreate = {
       ...normalizedBody,
       birthDate,
       societyAllies: normalizedBody.societyAllies ?? [],
+      ...(isMaster ? {} : { controlUserId: userId }), // se isMaster true, não vincula usuário
     };
 
     const character = await prisma.character.create({
@@ -85,29 +102,46 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     console.error("Erro na criação do personagem:", err);
     if (err.name === "ValidationError") {
-      return NextResponse.json({ error: err.errors?.[0] ?? "Validation error" }, { status: 400 });
+      return NextResponse.json(
+        { error: err.errors?.[0] ?? "Validation error" },
+        { status: 400 }
+      );
     }
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }
 
 export async function PUT(req: NextRequest) {
-  if (!isInternalRequest(req)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const payload = verifyJwt(req);
+
+  if (!payload) {
+    return NextResponse.json(
+      { error: "Usuário não autenticado" },
+      { status: 401 }
+    );
   }
 
   try {
     const body = await req.json();
     if (!body.id) {
-      return NextResponse.json({ error: "Id do personagem é obrigatório para atualização" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Id do personagem é obrigatório para atualização" },
+        { status: 400 }
+      );
     }
 
     const normalizedBody = normalizePayload(body);
-    await characterBasicDataSchema.validate(normalizedBody);
+    await basicDataSchema.validate(normalizedBody);
 
     const birthDate = new Date(normalizedBody.birthDate);
     if (isNaN(birthDate.getTime())) {
-      return NextResponse.json({ error: "Data de nascimento inválida." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Data de nascimento inválida." },
+        { status: 400 }
+      );
     }
 
     const character = await prisma.character.update({
@@ -123,8 +157,14 @@ export async function PUT(req: NextRequest) {
   } catch (err: any) {
     console.error("Erro na atualização do personagem:", err);
     if (err.name === "ValidationError") {
-      return NextResponse.json({ error: err.errors?.[0] ?? "Validation error" }, { status: 400 });
+      return NextResponse.json(
+        { error: err.errors?.[0] ?? "Validation error" },
+        { status: 400 }
+      );
     }
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }

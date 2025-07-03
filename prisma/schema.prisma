@@ -11,91 +11,97 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String      @id @default(uuid())
+  name       String
+  email      String      @unique
+  password   String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  isMaster   Boolean     @default(false)
+  characters Character[] // relação inversa
 }
 
 model Character {
-  id             String          @id @default(uuid())
+  id String @id @default(uuid())
 
   // Dados básicos
-  name           String
-  socialClass    String?
-  profession     String?
-  birthDate      DateTime
-  birthPlace     String?
-  gender         String?
-  heightCm       Int?
-  weightKg       Int?
-  apparentAge    Int?
-  religion       String?
+  name        String
+  profession  String?
+  birthDate   DateTime
+  birthPlace  String?
+  gender      String?
+  heightCm    Int?
+  weightKg    Int?
+  age         Int?
+  apparentAge Int?
+  religion    String?
 
   // Dados místicos
-  secretSociety  String?
-  cabala         String?
-  rank           String?
-  mentor         String?
-  societyAllies  String[]        @default([])
+  secretSociety String?
+  cabala        String?
+  rank          String?
+  mentor        String?
+  societyAllies String[] @default([])
 
   // Relacionamentos complementares
   relevantPeople RelevantPerson[]
 
-  attributes  Attribute? @relation("CharacterAttribute")
+  attributes   Attribute?    @relation("CharacterAttribute")
   improvements Improvement[]
-  skills Skill[]
+  skills       Skill[]
 
+  // Relacionamento com usuário controlador (opcional)
+  controlUserId String? // FK opcional
+  controlUser   User?   @relation(fields: [controlUserId], references: [id])
 
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model RelevantPerson {
-  id              String    @id @default(uuid())
-  characterId     String
-  character       Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  id          String    @id @default(uuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 
-  category        String    // "enemies", "allies", "contacts", "relevantPeople"
-  name            String
-  apparentAge     Int?
-  city            String?
-  profession      String?
+  category         String // "enemies", "allies", "contacts", "relevantPeople"
+  name             String
+  apparentAge      Int?
+  city             String?
+  profession       String?
   briefDescription String?
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+
 model Attribute {
   id          String    @id @default(uuid())
   character   Character @relation("CharacterAttribute", fields: [characterId], references: [id])
   characterId String    @unique
 
-  CON         Int
-  FR          Int
-  DEX         Int
-  AGI         Int
-  INT         Int
-  WILL        Int
-  PER         Int
-  CAR         Int
+  CON  Int
+  FR   Int
+  DEX  Int
+  AGI  Int
+  INT  Int
+  WILL Int
+  PER  Int
+  CAR  Int
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Improvement {
-  id           String    @id @default(uuid())
-  character    Character  @relation(fields: [characterId], references: [id], onDelete: Cascade)
-  characterId  String   
-  name         String  
-  cost         Int     
-  kitValue     Int  
+  id          String    @id @default(uuid())
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  characterId String
+  name        String
+  cost        Int
+  kitValue    Int
 
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Skill {
@@ -103,12 +109,12 @@ model Skill {
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
   characterId String
 
-  group       String?
-  skill       String
-  attribute   String?
-  cost        Int
-  kitValue    Int
+  group     String?
+  skill     String
+  attribute String?
+  cost      Int
+  kitValue  Int
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -23,8 +23,10 @@ export function useLogin() {
   async function onSubmit(data: UserLogin) {
     setServerError("");
     try {
-      const res = await axios.post("/api/auth/login", data);
-      setUser(res.data.user); // setando o usuário no Zustand
+       const res = await axios.post("/api/auth/login", data, {
+        withCredentials: true,
+      });
+      setUser(res.data.user);
       router.push("/home");
     } catch (err: any) {
       setServerError(
