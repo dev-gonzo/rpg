@@ -94,6 +94,14 @@ export default function CharacterFormPage() {
             errors={errors}
           />
           <InputField
+            name="age"
+            label="Idade"
+            md={3}
+            type="number"
+            register={register}
+            errors={errors}
+          />
+          <InputField
             name="apparentAge"
             label="Idade Aparente (anos)"
             md={3}

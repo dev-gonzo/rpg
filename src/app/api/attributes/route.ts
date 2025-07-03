@@ -46,8 +46,6 @@ export async function POST(req: NextRequest) {
       CAR,
     } = body;
 
-    // Opcional: validar campos aqui
-
     const existing = await prisma.attribute.findUnique({
       where: { characterId },
     });

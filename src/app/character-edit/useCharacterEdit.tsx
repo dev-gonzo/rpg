@@ -18,21 +18,17 @@ export function useCharacterEdit() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(!!characterId);
-  const [isSaving, setIsSaving] = useState(false);
 
-  const { data, loading, error, onParams } = useGet<{ character: BasicDataType }>();
+  const { data, loading, error, onParams } = useGet<{
+    character: BasicDataType;
+  }>();
   const { save, loading: saveLoading, error: saveError } = useSave<any>(); // useSave importado
 
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    formState,
-  } = useForm<BasicDataType>({
-    resolver: yupResolver(basicDataSchema) as Resolver<BasicDataType>,
-    mode: "onBlur",
-  });
+  const { control, register, handleSubmit, reset, formState } =
+    useForm<BasicDataType>({
+      resolver: yupResolver(basicDataSchema) as Resolver<BasicDataType>,
+      mode: "onBlur",
+    });
 
   const { errors, isSubmitting } = formState;
 
@@ -70,23 +66,26 @@ export function useCharacterEdit() {
   const onSubmit: SubmitHandler<BasicDataType> = async (formData) => {
     setServerError(null);
     setSuccessMessage(null);
-    setIsSaving(true);
 
     try {
       const method = characterId ? "PUT" : "POST";
       const url = "/api/characters";
 
-      await save(url, formData, method);
+      const response = await save(url, formData, method);
 
       setSuccessMessage(
         characterId
           ? "Personagem atualizado com sucesso!"
           : "Personagem criado com sucesso!"
       );
+
+      if (!characterId && response?.character?.id) {
+        setTimeout(() => {
+          router.push(`/character-edit/attributes/${response.character.id}`);
+        }, 1000);
+      }
     } catch {
       setServerError("Erro inesperado ao salvar personagem");
-    } finally {
-      setIsSaving(false);
     }
   };
 

@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       ...normalizedBody,
       birthDate,
       societyAllies: normalizedBody.societyAllies ?? [],
-      ...(isMaster ? {} : { controlUserId: userId }), // se isMaster true, não vincula usuário
+      ...(isMaster ? {} : { controlUserId: userId }),
     };
 
     const character = await prisma.character.create({
