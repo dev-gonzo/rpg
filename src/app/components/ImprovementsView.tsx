@@ -21,8 +21,7 @@ export function ImprovementsView({
                 {valueKit ?? 0} / {value ?? 0} | Kit / Custo
               </small>
             </div>
-            <div className="col-3  text-center d-flex justify-content-end flex-column"></div>
-            <div className="col-3 text-center d-flex justify-content-end flex-column">
+            <div className="col-6 text-end d-flex justify-content-end flex-column pe-3">
               <span className="h1">{(valueKit ?? 0) + (value ?? 0)}</span>
               <small>Total</small>
             </div>

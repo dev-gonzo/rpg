@@ -50,6 +50,7 @@ model Character {
   improvements Improvement[]
   skills       Skill[]
   combatSkill  CombatSkill[]
+  characterBackground  CharacterBackground[]
 
   // Relacionamento com usuário controlador (opcional)
   controlUserId String? // FK opcional
@@ -135,4 +136,18 @@ model CombatSkill {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+
+model CharacterBackground {
+  id          String    @id @default(uuid())
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  characterId String
+
+  title       String
+  text        String    
+  isPublic    Boolean   @default(false)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

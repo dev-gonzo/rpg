@@ -61,76 +61,86 @@ export default function Skills() {
 
   return (
     <MainLayout>
-      <Title>Perícias</Title>
+      <Title back>Perícias</Title>
 
-      <div className="row gy-3">
-        {skills.length === 0 && (
-          <div className="col-12 col-md-6">
-            <p>Nenhuma perícia cadastrada.</p>
-          </div>
-        )}
-      </div>
+      <div className="container">
+        <div className="row mt-3 px-2">
+          {skills.length === 0 && (
+            <div className="col-12 col-md-6">
+              <p>Nenhuma perícia cadastrada.</p>
+            </div>
+          )}
+        </div>
 
-      {skills.map((item) => {
-        const attributeValue =
-          attributes && item?.attribute ? attributes[item?.attribute] : null;
+        <div className="row mt-4">
+          {skills.map((item) => {
+            const attributeValue =
+              attributes && item?.attribute
+                ? attributes[item?.attribute]
+                : null;
 
-        return (
-          <div key={item?.id} className="card my-3">
-            <div className="container-fluid">
-              <div className="row my-3">
-                <div className="col-12 pb-2 mb-2 d-flex justify-content-between border-bottom">
-                  <span>
-                    {item?.group ? <span>{item?.group} / </span> : ""}
-                    <strong>{item?.skill}</strong>{" "}
-                    {item?.attribute ? `(${item.attribute})` : ""}
-                  </span>
-                  <button
-                    className="btn btn-close"
-                    onClick={() => modalDelete(item)}
-                    aria-label={`Excluir perícia ${item?.skill}`}
-                  ></button>
-                </div>
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>Valor Kit</small>
-                  </strong>
-                  <br />
-                  <span>{item?.kitValue}</span>
-                </div>
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>Custo</small>
-                  </strong>
-                  <br />
-                  <span>{item?.cost}</span>
-                </div>
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>Total</small>
-                  </strong>
-                  <br />
-                  <span>
-                    {item?.kitValue
-                      ? item?.kitValue
-                      : 0 + item?.cost + (attributeValue ? attributeValue : 0)}
-                    %
-                  </span>
+            return (
+              <div key={item?.id} className="col-12 col-md-6">
+                <div className="card">
+                  <div className="container-fluid">
+                    <div className="row my-3">
+                      <div className="col-12 pb-2 mb-2 d-flex justify-content-between border-bottom">
+                        <span>
+                          {item?.group ? <span>{item?.group} / </span> : ""}
+                          <strong>{item?.skill}</strong>{" "}
+                          {item?.attribute ? `(${item.attribute})` : ""}
+                        </span>
+                        <button
+                          className="btn btn-close"
+                          onClick={() => modalDelete(item)}
+                          aria-label={`Excluir perícia ${item?.skill}`}
+                        ></button>
+                      </div>
+                      <div className="col-4 text-center">
+                        <strong>
+                          <small>Valor Kit</small>
+                        </strong>
+                        <br />
+                        <span>{item?.kitValue}</span>
+                      </div>
+                      <div className="col-4 text-center">
+                        <strong>
+                          <small>Custo</small>
+                        </strong>
+                        <br />
+                        <span>{item?.cost}</span>
+                      </div>
+                      <div className="col-4 text-center">
+                        <strong>
+                          <small>Total</small>
+                        </strong>
+                        <br />
+                        <span>
+                          {item?.kitValue
+                            ? item?.kitValue
+                            : 0 +
+                              item?.cost +
+                              (attributeValue ? attributeValue : 0)}
+                          %
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        );
-      })}
+            );
+          })}
+        </div>
 
-      <div className="row">
-        <div className="col-12 d-flex justify-content-end">
-          <button
-            className="btn btn-outline-light mb-3"
-            onClick={() => setShowModal(true)}
-          >
-            Adicionar Perícia
-          </button>
+        <div className="row mt-3">
+          <div className="col-12 d-flex justify-content-end">
+            <button
+              className="btn btn-outline-light mb-3"
+              onClick={() => setShowModal(true)}
+            >
+              Adicionar Perícia
+            </button>
+          </div>
         </div>
       </div>
 

@@ -48,91 +48,99 @@ export default function CombatSkillsPage() {
 
   return (
     <MainLayout>
-      <Title>Perícias de Combate</Title>
+      <Title back>Perícias de Combate</Title>
 
-      <div className="row gy-3">
-        {combatSkills.length === 0 && (
-          <div className="col-12 col-md-6">
-            <p>Nenhuma perícia de combate cadastrada.</p>
-          </div>
-        )}
-      </div>
+      <div className="container">
+        <div className="row mt-1 my-3">
+          {combatSkills.length === 0 && (
+            <div className="col-12 col-md-6">
+              <p>Nenhuma perícia de combate cadastrada.</p>
+            </div>
+          )}
+        </div>
 
-      {combatSkills.map((item) => {
-        const attributeValue =
-          attributes && item?.attribute ? attributes[item?.attribute] : null;
-        return (
-          <div key={item?.id} className="card my-3">
-            <div className="container-fluid">
-              <div className="row my-3">
-                <div className="col-12 pb-2 mb-2 d-flex justify-content-between border-bottom">
-                  <span>
-                    {item?.group ? <span>{item?.group} / </span> : ""}
-                    <strong>{item?.skill}</strong>{" "}
-                    {item?.attribute ? `(${item.attribute})` : ""}
-                  </span>
-                  <button
-                    className="btn btn-close"
-                    onClick={() => modalDelete(item)}
-                    aria-label={`Excluir perícia de combate ${item?.skill}`}
-                  />
-                </div>
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>
-                      Custo <br /> Ataque/Defesa
-                    </small>
-                  </strong>
-                  <br />
-                  <span>
-                    {item.attackCost} / {item.defenseCost}
-                  </span>
-                </div>
+        <div className="row gap-3">
+          {combatSkills.map((item) => {
+            const attributeValue =
+              attributes && item?.attribute
+                ? attributes[item?.attribute]
+                : null;
+            return (
+              <div key={item?.id} className="col-12 col-md-6">
+                <div className="card">
+                  <div className="container-fluid">
+                    <div className="row my-3">
+                      <div className="col-12 pb-2 mb-2 d-flex justify-content-between border-bottom">
+                        <span>
+                          {item?.group ? <span>{item?.group} / </span> : ""}
+                          <strong>{item?.skill}</strong>{" "}
+                          {item?.attribute ? `(${item.attribute})` : ""}
+                        </span>
+                        <button
+                          className="btn btn-close"
+                          onClick={() => modalDelete(item)}
+                          aria-label={`Excluir perícia de combate ${item?.skill}`}
+                        />
+                      </div>
+                      <div className="col-4 text-center">
+                        <strong>
+                          <small>
+                            Custo <br /> Ataque/Defesa
+                          </small>
+                        </strong>
+                        <br />
+                        <span>
+                          {item.attackCost} / {item.defenseCost}
+                        </span>
+                      </div>
 
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>
-                      Kit <br /> Ataque/Defesa
-                    </small>
-                  </strong>
-                  <br />
-                  <span>
-                    {item.attackKitValue} / {item.defenseKitValue}
-                  </span>
-                </div>
+                      <div className="col-4 text-center">
+                        <strong>
+                          <small>
+                            Kit <br /> Ataque/Defesa
+                          </small>
+                        </strong>
+                        <br />
+                        <span>
+                          {item.attackKitValue} / {item.defenseKitValue}
+                        </span>
+                      </div>
 
-                <div className="col-4 text-center">
-                  <strong>
-                    <small>
-                      Total <br /> Ataque/Defesa
-                    </small>
-                  </strong>
-                  <br />
-                  <span>
-                    {item.attackCost +
-                      (item.attackKitValue ? item.attackKitValue : 0) +
-                      (attributeValue ? attributeValue : 0)}
-                    % /{" "}
-                    {item.defenseCost +
-                      (item.defenseKitValue ? item.defenseKitValue : 0) +
-                      (attributeValue ? attributeValue : 0)}
-                    %
-                  </span>
+                      <div className="col-4 text-center">
+                        <strong>
+                          <small>
+                            Total <br /> Ataque/Defesa
+                          </small>
+                        </strong>
+                        <br />
+                        <span>
+                          {item.attackCost +
+                            (item.attackKitValue ? item.attackKitValue : 0) +
+                            (attributeValue ? attributeValue : 0)}
+                          % /{" "}
+                          {item.defenseCost +
+                            (item.defenseKitValue ? item.defenseKitValue : 0) +
+                            (attributeValue ? attributeValue : 0)}
+                          %
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        );
-      })}
+            );
+          })}
+        </div>
 
-      <div className="row">
-        <div className="col-12 d-flex justify-content-end">
-          <button
-            className="btn btn-outline-light mb-3"
-            onClick={() => setShowModal(true)}
-          >
-            Adicionar Perícia de Combate
-          </button>
+        <div className="row mt-4">
+          <div className="col-12 d-flex justify-content-end">
+            <button
+              className="btn btn-outline-light mb-3"
+              onClick={() => setShowModal(true)}
+            >
+              Adicionar Perícia de Combate
+            </button>
+          </div>
         </div>
       </div>
 

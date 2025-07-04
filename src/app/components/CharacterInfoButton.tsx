@@ -42,32 +42,32 @@ export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
         <FontAwesomeIcon icon={faClipboardList} size="xl" />
       </Link>
 
-      <button
-        type="button"
+      <Link
+        href={`/character/skills/${characterId}`}
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        //    onClick={handleClick}
+        style={{
+          width: "45px",
+          height: "45px",
+        }}
         aria-label="Perícias"
         title="Perícias"
-        style={{
-          width: "45px",
-          height: "45px",
-        }}
       >
         <FontAwesomeIcon icon={faFileLines} size="xl" />
-      </button>
-      <button
-        type="button"
+      </Link>
+
+      <Link
+        href={`/character/combat-skills/${characterId}`}
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        //    onClick={handleClick}
-        aria-label="Perícias de Combate"
-        title="Perícias de Combate"
         style={{
           width: "45px",
           height: "45px",
         }}
+        aria-label="Perícias de Combate"
+        title="Perícias de Combate"
       >
         <FontAwesomeIcon icon={faShieldAlt} size="xl" />
-      </button>
+      </Link>
+
       <button
         type="button"
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
@@ -81,19 +81,19 @@ export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
       >
         <FontAwesomeIcon icon={faHatWizard} size="xl" />
       </button>
-      <button
-        type="button"
+
+      <Link
+        href={`/character/backgrounds/${characterId}`}
         className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        //    onClick={handleClick}
-        aria-label="Magias"
-        title="Magias"
         style={{
           width: "45px",
           height: "45px",
         }}
+        aria-label="Background"
+        title="Background"
       >
         <FontAwesomeIcon icon={faFeatherPointed} size="xl" />
-      </button>
+      </Link>
     </div>
   );
 };

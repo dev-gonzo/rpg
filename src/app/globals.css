@@ -13,3 +13,31 @@ input[type=number] {
 .bg-gray {
   background-color: #8d8b8b; /* cinza claro */
 }
+
+/* .rdw-editor-wrapper {
+  background-color: #121212;
+  color: #eee;
+  border: 1px solid #333;
+}
+
+.rdw-editor-toolbar {
+  background-color: #222;
+  border-bottom: 1px solid #444;
+} */
+
+.rdw-editor-main {
+  background-color: #8d8b8b;
+  color: #eee;
+  min-height: 200px;
+  padding: 10px;
+}
+
+.form-check-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#flexSwitchCheckDefault:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

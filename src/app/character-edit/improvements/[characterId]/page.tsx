@@ -48,8 +48,8 @@ export default function Improvements() {
 
         <div className="row gap-3 mt-4">
           {improvements.map((item) => (
-            <div className="col-12 col-6">
-              <div key={item?.id} className="card bg-gray">
+            <div className="col-12 col-6" key={item?.id}>
+              <div  className="card bg-gray">
                 <div className="container-fluid">
                   <div className="row my-3">
                     <div className="col-12  pb-2 mb-2 d-flex  justify-content-between border-bottom border-black">
