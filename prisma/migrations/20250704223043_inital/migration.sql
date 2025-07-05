@@ -98,6 +98,74 @@ CREATE TABLE "Skill" (
     CONSTRAINT "Skill_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "CombatSkill" (
+    "id" TEXT NOT NULL,
+    "characterId" TEXT NOT NULL,
+    "group" TEXT,
+    "skill" TEXT NOT NULL,
+    "attribute" TEXT,
+    "attackCost" INTEGER NOT NULL,
+    "defenseCost" INTEGER NOT NULL,
+    "attackKitValue" INTEGER NOT NULL,
+    "defenseKitValue" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CombatSkill_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CharacterBackground" (
+    "id" TEXT NOT NULL,
+    "characterId" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
+    "isPublic" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CharacterBackground_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PathsAndForms" (
+    "characterId" TEXT NOT NULL,
+    "understandForm" INTEGER NOT NULL,
+    "createForm" INTEGER NOT NULL,
+    "controlForm" INTEGER NOT NULL,
+    "fire" INTEGER NOT NULL,
+    "water" INTEGER NOT NULL,
+    "earth" INTEGER NOT NULL,
+    "air" INTEGER NOT NULL,
+    "light" INTEGER NOT NULL,
+    "darkness" INTEGER NOT NULL,
+    "plants" INTEGER NOT NULL,
+    "animals" INTEGER NOT NULL,
+    "humans" INTEGER NOT NULL,
+    "spiritum" INTEGER NOT NULL,
+    "arkanun" INTEGER NOT NULL,
+    "metamagic" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PathsAndForms_pkey" PRIMARY KEY ("characterId")
+);
+
+-- CreateTable
+CREATE TABLE "Ritual" (
+    "id" TEXT NOT NULL,
+    "characterId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "pathsForms" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "bookPage" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Ritual_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -118,3 +186,15 @@ ALTER TABLE "Improvement" ADD CONSTRAINT "Improvement_characterId_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "Skill" ADD CONSTRAINT "Skill_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CombatSkill" ADD CONSTRAINT "CombatSkill_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CharacterBackground" ADD CONSTRAINT "CharacterBackground_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PathsAndForms" ADD CONSTRAINT "PathsAndForms_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Ritual" ADD CONSTRAINT "Ritual_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;

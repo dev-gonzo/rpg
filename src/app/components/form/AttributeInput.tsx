@@ -109,6 +109,7 @@ export function AttributeInput({ name, control }: AttributeInputProps) {
                 <input
                   id={abreviacao}
                   type="number"
+                  autoComplete="off"
                   className="form-control bg-dark text-light border-secondary text-center"
                   min={0}
                   value={value}

@@ -13,7 +13,7 @@ type SelectBoxProps<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   options: SelectBoxOption[];
-  md?: number;
+  col?: number;
   register: UseFormRegister<T>;
   errors?: FieldErrors<T>;
 };
@@ -22,14 +22,14 @@ export function SelectBox<T extends FieldValues>({
   name,
   label,
   options,
-  md = 12,
+  col= 12,
   register,
   errors,
 }: SelectBoxProps<T>) {
   const errorMessage = errors && errors[name]?.message;
 
   return (
-    <div className={`mb-3 col-md-${md}`}>
+    <div className={`mb-3 col-md-${col}`}>
       <label htmlFor={name} className="form-label">
         {label}
       </label>

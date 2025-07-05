@@ -73,7 +73,7 @@ export default function CharacterFormPage() {
               { value: "masculino", label: "Masculino" },
               { value: "feminino", label: "Feminino" },
             ]}
-            md={3}
+            col={3}
             register={register}
             errors={errors}
           />
@@ -117,7 +117,8 @@ export default function CharacterFormPage() {
             errors={errors}
           />
 
-          <AlertMessage error={serverError} success={successMessage} />
+            <AlertMessage error={serverError} success={successMessage} />
+      
 
           <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />
         </form>

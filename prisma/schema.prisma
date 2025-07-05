@@ -51,6 +51,8 @@ model Character {
   skills       Skill[]
   combatSkill  CombatSkill[]
   characterBackground  CharacterBackground[]
+  pathsAndForms PathsAndForms?
+  ritual  Ritual[]
 
   // Relacionamento com usuário controlador (opcional)
   controlUserId String? // FK opcional
@@ -150,4 +152,44 @@ model CharacterBackground {
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model PathsAndForms {
+  characterId String   @id
+  character   Character @relation(fields: [characterId], references: [id])
+
+  understandForm   Int
+  createForm       Int
+  controlForm      Int
+
+  fire      Int
+  water     Int
+  earth     Int
+  air       Int
+  light     Int
+  darkness  Int
+  plants    Int
+  animals   Int
+  humans    Int
+  spiritum  Int
+  arkanun   Int
+  metamagic Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Ritual {
+  id          String   @id @default(uuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  name        String
+  pathsForms  String
+  description String
+  bookPage    String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

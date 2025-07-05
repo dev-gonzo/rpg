@@ -6,6 +6,11 @@ import {
   faHatWizard,
   faFeatherPointed,
   faShieldAlt,
+  faBookSkull,
+  faAddressBook,
+  faPersonRifle,
+  faToolbox,
+  faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
@@ -14,86 +19,53 @@ type CharacterInfoProps = {
 };
 
 export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
+  const listButton = [
+    {
+      link: "/character/attributes/",
+      icon: faClipboardUser,
+      label: "Atributos",
+    },
+    {
+      link: "/character/improvements/",
+      icon: faClipboardList,
+      label: "Aprimoramentos",
+    },
+    { link: "/character/skills/", icon: faFileLines, label: "Perícias" },
+    {
+      link: "/character/combat-skills/",
+      icon: faShieldAlt,
+      label: "Perícias de Combate",
+    },
+    { link: "/character/magic/", icon: faHatWizard, label: "Magias" },
+    { link: "/character/rituais/", icon: faBookSkull, label: "Grimório" },
+    { link: "/character/backgrounds/", icon: faPersonRifle, label: "Armas" },
+    { link: "/character/backgrounds/", icon: faToolbox, label: "Equipamentos" },
+    { link: "/character/info/", icon: faUserSecret, label: "Info" },
+    { link: "/character/backgrounds/", icon: faAddressBook, label: "Contatos" },
+    {
+      link: "/character/backgrounds/",
+      icon: faFeatherPointed,
+      label: "Background",
+    },
+  ];
+
   return (
-    <div className="w-100 d-flex gap-2 justify-content-between">
-      <Link
-        href={`/character/attributes/${characterId}`}
-        className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        style={{
-          width: "45px",
-          height: "45px",
-        }}
-        aria-label="Atributos"
-        title="Atributos"
-      >
-        <FontAwesomeIcon icon={faClipboardUser} size="xl" />
-      </Link>
-
-      <Link
-        href={`/character/improvements/${characterId}`}
-        className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        style={{
-          width: "45px",
-          height: "45px",
-        }}
-        aria-label="Aprimoramentos"
-        title="Aprimoramentos"
-      >
-        <FontAwesomeIcon icon={faClipboardList} size="xl" />
-      </Link>
-
-      <Link
-        href={`/character/skills/${characterId}`}
-        className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        style={{
-          width: "45px",
-          height: "45px",
-        }}
-        aria-label="Perícias"
-        title="Perícias"
-      >
-        <FontAwesomeIcon icon={faFileLines} size="xl" />
-      </Link>
-
-      <Link
-        href={`/character/combat-skills/${characterId}`}
-        className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        style={{
-          width: "45px",
-          height: "45px",
-        }}
-        aria-label="Perícias de Combate"
-        title="Perícias de Combate"
-      >
-        <FontAwesomeIcon icon={faShieldAlt} size="xl" />
-      </Link>
-
-      <button
-        type="button"
-        className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        //    onClick={handleClick}
-        aria-label="Magias"
-        title="Magias"
-        style={{
-          width: "45px",
-          height: "45px",
-        }}
-      >
-        <FontAwesomeIcon icon={faHatWizard} size="xl" />
-      </button>
-
-      <Link
-        href={`/character/backgrounds/${characterId}`}
-        className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-        style={{
-          width: "45px",
-          height: "45px",
-        }}
-        aria-label="Background"
-        title="Background"
-      >
-        <FontAwesomeIcon icon={faFeatherPointed} size="xl" />
-      </Link>
+    <div className="w-100 d-flex gap-4 justify-content-around flex-wrap">
+      {listButton.map((item) => (
+        <Link
+          href={`${item?.link}/${characterId}`}
+          className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
+          style={{
+            width: "45px",
+            height: "45px",
+          }}
+          aria-label={item?.link}
+          title={item?.link}
+          key={`${item?.link}-${item?.label}`}
+        >
+          <FontAwesomeIcon icon={item?.icon} size="xl" />
+        </Link>
+      ))}
     </div>
   );
 };

@@ -1,22 +1,25 @@
 "use client";
 
 import React from "react";
-import { UseFormRegister, FieldErrors, Path, FieldValues } from "react-hook-form";
+import {
+  UseFormRegister,
+  FieldErrors,
+  Path,
+  FieldValues,
+} from "react-hook-form";
 
 type InputFieldProps<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   md?: number;
-  type?: string;
   register: UseFormRegister<T>;
   errors?: FieldErrors<T>;
 };
 
-export function InputField<T extends FieldValues>({
+export function Textarea<T extends FieldValues>({
   name,
   label,
   md = 12,
-  type = "text",
   register,
   errors,
 }: InputFieldProps<T>) {
@@ -27,17 +30,19 @@ export function InputField<T extends FieldValues>({
       <label htmlFor={name} className="form-label">
         {label}
       </label>
-      <input
-        id={name}
+      <textarea
         autoComplete="off"
-        type={type}
+        id={name}
+        rows={6}
         className={`form-control bg-dark text-light border-secondary ${
           errorMessage ? "is-invalid" : ""
         }`}
         {...register(name)}
       />
       {errorMessage && (
-        <div className="invalid-feedback">{errorMessage as React.ReactNode}</div>
+        <div className="invalid-feedback">
+          {errorMessage as React.ReactNode}
+        </div>
       )}
     </div>
   );

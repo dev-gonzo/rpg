@@ -109,6 +109,7 @@ export function GenericNumberInput<T extends FieldValues>({
                   className={`form-control bg-dark text-light border-secondary text-center ${
                     errorMessage ? "is-invalid" : ""
                   }`}
+                  autoComplete="off"
                   min={min}
                   max={max}
                   value={value}

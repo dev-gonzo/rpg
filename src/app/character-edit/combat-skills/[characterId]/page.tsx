@@ -180,7 +180,7 @@ export default function CombatSkillsPage() {
               { label: "Percepção (PER)", value: "PER" },
               { label: "Carisma (CAR)", value: "CAR" },
             ]}
-            md={12}
+            col={12}
             register={register}
             errors={errors}
           />

@@ -31,16 +31,20 @@ function normalizePayload(data: any) {
 export async function GET(req: NextRequest) {
   const payload = verifyJwt(req);
   if (!payload) {
-    return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Usuário não autenticado" },
+      { status: 401 }
+    );
   }
-  
-  const { userId, isMaster } = payload as { userId: string; isMaster?: boolean };
+
+  const { userId, isMaster } = payload as {
+    userId: string;
+    isMaster?: boolean;
+  };
 
   try {
     const characters = await prisma.character.findMany({
-      where: isMaster
-        ? {} 
-        : { controlUserId: userId },
+      where: isMaster ? {} : { controlUserId: userId },
       orderBy: { name: "asc" },
       include: {
         controlUser: {
@@ -57,11 +61,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ characters });
   } catch (error) {
     console.error("Erro ao listar personagens:", error);
-    return NextResponse.json({ error: "Erro ao buscar personagens." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao buscar personagens." },
+      { status: 500 }
+    );
   }
 }
-
-
 
 export async function POST(req: NextRequest) {
   const payload = verifyJwt(req);
@@ -121,58 +126,164 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   const payload = verifyJwt(req);
-
-  if (!payload) {
-    return NextResponse.json(
-      { error: "Usuário não autenticado" },
-      { status: 401 }
-    );
-  }
+  if (!payload) return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
 
   try {
     const body = await req.json();
-    if (!body.id) {
-      return NextResponse.json(
-        { error: "Id do personagem é obrigatório para atualização" },
-        { status: 400 }
-      );
-    }
+    if (!body.id) return NextResponse.json({ error: "Id do personagem é obrigatório para atualização" }, { status: 400 });
 
-    const normalizedBody = normalizePayload(body);
+    const existingCharacter = await prisma.character.findUnique({ where: { id: body.id } });
+    if (!existingCharacter) return NextResponse.json({ error: "Personagem não encontrado" }, { status: 404 });
+
+    const mergedData = { ...existingCharacter, ...body };
+    const normalizedBody = normalizePayload(mergedData);
+
     await basicDataSchema.validate(normalizedBody);
 
     const birthDate = new Date(normalizedBody.birthDate);
     if (isNaN(birthDate.getTime())) {
-      return NextResponse.json(
-        { error: "Data de nascimento inválida." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Data de nascimento inválida." }, { status: 400 });
     }
+
+    // Seleciona somente os campos que existem na tabela e esquema
+    const updateData = {
+      name: normalizedBody.name,
+      profession: normalizedBody.profession,
+      birthDate,
+      birthPlace: normalizedBody.birthPlace,
+      gender: normalizedBody.gender,
+      heightCm: normalizedBody.heightCm,
+      weightKg: normalizedBody.weightKg,
+      age: normalizedBody.age,
+      apparentAge: normalizedBody.apparentAge,
+      religion: normalizedBody.religion,
+      secretSociety: normalizedBody.secretSociety,
+      cabala: normalizedBody.cabala,
+      rank: normalizedBody.rank,
+      mentor: normalizedBody.mentor,
+    };
 
     const character = await prisma.character.update({
       where: { id: body.id },
-      data: {
-        ...normalizedBody,
-        birthDate,
-        societyAllies: normalizedBody.societyAllies ?? [],
-      },
+      data: updateData,
     });
 
     return NextResponse.json({ character }, { status: 200 });
   } catch (err: any) {
     console.error("Erro na atualização do personagem:", err);
     if (err.name === "ValidationError") {
-      return NextResponse.json(
-        { error: err.errors?.[0] ?? "Validation error" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: err.errors?.[0] ?? "Validation error" }, { status: 400 });
     }
-    return NextResponse.json(
-      { error: "Internal server error." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
   }
 }
+
+
+// export async function PUT(req: NextRequest) {
+//   const payload = verifyJwt(req);
+
+//   if (!payload) {
+//     return NextResponse.json(
+//       { error: "Usuário não autenticado" },
+//       { status: 401 }
+//     );
+//   }
+
+//   try {
+//     const body = await req.json();
+//     if (!body.id) {
+//       return NextResponse.json(
+//         { error: "Id do personagem é obrigatório para atualização" },
+//         { status: 400 }
+//       );
+//     }
+
+//     const normalizedBody = normalizePayload(body);
+//     await basicDataSchema.validate(normalizedBody);
+
+//     const birthDate = new Date(normalizedBody.birthDate);
+//     if (isNaN(birthDate.getTime())) {
+//       return NextResponse.json(
+//         { error: "Data de nascimento inválida." },
+//         { status: 400 }
+//       );
+//     }
+
+//     const character = await prisma.character.update({
+//       where: { id: body.id },
+//       data: {
+//         ...normalizedBody,
+//         birthDate,
+//         societyAllies: normalizedBody.societyAllies ?? [],
+//       },
+//     });
+
+//     return NextResponse.json({ character }, { status: 200 });
+//   } catch (err: any) {
+//     console.error("Erro na atualização do personagem:", err);
+//     if (err.name === "ValidationError") {
+//       return NextResponse.json(
+//         { error: err.errors?.[0] ?? "Validation error" },
+//         { status: 400 }
+//       );
+//     }
+//     return NextResponse.json(
+//       { error: "Internal server error." },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+// export async function PUT(req: NextRequest) {
+//   const payload = verifyJwt(req);
+//   if (!payload) return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
+
+//   try {
+//     const body = await req.json();
+//     if (!body.id) return NextResponse.json({ error: "Id do personagem é obrigatório para atualização" }, { status: 400 });
+
+//     // Busca os dados atuais do personagem
+//     const existingCharacter = await prisma.character.findUnique({ where: { id: body.id } });
+//     if (!existingCharacter) return NextResponse.json({ error: "Personagem não encontrado" }, { status: 404 });
+
+//     // Mescla os dados do body com os dados existentes
+//     const mergedData = {
+//       ...existingCharacter,
+//       ...body,
+//     };
+
+//     // Normaliza o objeto mesclado
+//     const normalizedBody = normalizePayload(mergedData);
+
+//     // Valida o objeto mesclado normalizado
+//     await basicDataSchema.validate(normalizedBody);
+
+//     // Garante que birthDate seja Date
+//     const birthDate = new Date(normalizedBody.birthDate);
+//     if (isNaN(birthDate.getTime())) {
+//       return NextResponse.json({ error: "Data de nascimento inválida." }, { status: 400 });
+//     }
+
+//     // Atualiza o personagem com os dados validados
+//     const character = await prisma.character.update({
+//       where: { id: body.id },
+//       data: {
+//         ...normalizedBody,
+//         birthDate,
+//         societyAllies: normalizedBody.societyAllies ?? [],
+//       },
+//     });
+
+//     return NextResponse.json({ character }, { status: 200 });
+//   } catch (err: any) {
+//     console.error("Erro na atualização do personagem:", err);
+//     if (err.name === "ValidationError") {
+//       return NextResponse.json({ error: err.errors?.[0] ?? "Validation error" }, { status: 400 });
+//     }
+//     return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+//   }
+// }
+
 
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);

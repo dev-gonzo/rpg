@@ -58,10 +58,9 @@ export default function SimpleEditor() {
             )}
           </div>
 
-          <div className="col-12 mt-1 ">
             <AlertMessage error={serverError} success={successMessage} />
             <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />
-          </div>
+
         </form>
       </div>
     </MainLayout>
