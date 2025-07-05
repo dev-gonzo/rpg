@@ -8,6 +8,7 @@ type GenericNumberInputProps<T extends FieldValues> = {
   label: string;
   control: Control<any>;
   min?: number;
+  defaultValue?: number;
   max?: number;
   errors?: FieldErrors<T>;
 };
@@ -16,6 +17,7 @@ export function GenericNumberInput<T extends FieldValues>({
   name,
   label,
   control,
+  defaultValue = 0,
   min = 0,
   max = 100,
   errors,
@@ -35,12 +37,12 @@ export function GenericNumberInput<T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      defaultValue={min}
+      defaultValue={defaultValue}
       render={({ field }) => {
-        const value = field.value ?? min;
+        const value = field.value ?? defaultValue;
 
         const decrease = () => {
-          if (value > 0) {
+          if (value > min) {
             const newVal = value - 1;
             field.onChange(handleBlurRemoveLeadingZeros2(newVal));
           }

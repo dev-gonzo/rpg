@@ -46,13 +46,15 @@ model Character {
   // Relacionamentos complementares
   relevantPeople RelevantPerson[]
 
-  attributes   Attribute?    @relation("CharacterAttribute")
-  improvements Improvement[]
-  skills       Skill[]
-  combatSkill  CombatSkill[]
-  characterBackground  CharacterBackground[]
-  pathsAndForms PathsAndForms?
-  ritual  Ritual[]
+  attributes          Attribute?            @relation("CharacterAttribute")
+  improvements        Improvement[]
+  skills              Skill[]
+  combatSkill         CombatSkill[]
+  characterBackground CharacterBackground[]
+  pathsAndForms       PathsAndForms?
+  ritual              Ritual[]
+  equipments          Equipment[]
+  weapon              Weapon[]
 
   // Relacionamento com usuário controlador (opcional)
   controlUserId String? // FK opcional
@@ -140,27 +142,26 @@ model CombatSkill {
   updatedAt DateTime @updatedAt
 }
 
-
 model CharacterBackground {
   id          String    @id @default(uuid())
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
   characterId String
 
-  title       String
-  text        String    
-  isPublic    Boolean   @default(false)
+  title    String
+  text     String
+  isPublic Boolean @default(false)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PathsAndForms {
-  characterId String   @id
+  characterId String    @id
   character   Character @relation(fields: [characterId], references: [id])
 
-  understandForm   Int
-  createForm       Int
-  controlForm      Int
+  understandForm Int
+  createForm     Int
+  controlForm    Int
 
   fire      Int
   water     Int
@@ -179,9 +180,8 @@ model PathsAndForms {
   updatedAt DateTime @updatedAt
 }
 
-
 model Ritual {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   characterId String
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 
@@ -190,6 +190,45 @@ model Ritual {
   description String
   bookPage    String
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Equipment {
+  id          String    @id @default(uuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  name           String
+  quantity       Int
+  classification String
+
+  description         String?
+  kineticProtection   Int?
+  ballisticProtection Int?
+  dexterityPenalty    Int?
+  agilityPenalty      Int?
+  initiative          Int?
+
+  bookPage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Weapon {
+  id          String    @id @default(uuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String?
+  damage      String
+  initiative  Int
+  range       String?
+  rof         String? // Rate of Fire
+  ammunition  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

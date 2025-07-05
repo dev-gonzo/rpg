@@ -13,6 +13,7 @@ import {
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { Fragment } from "react";
 
 type CharacterInfoProps = {
   characterId: string;
@@ -20,6 +21,7 @@ type CharacterInfoProps = {
 
 export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
   const listButton = [
+    { link: "/character/info/", icon: faUserSecret, label: "Dados Básicos" },
     {
       link: "/character/attributes/",
       icon: faClipboardUser,
@@ -39,9 +41,12 @@ export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
     { link: "/character/magic/", icon: faHatWizard, label: "Magias" },
     { link: "/character/rituais/", icon: faBookSkull, label: "Grimório" },
     { link: "/character/backgrounds/", icon: faPersonRifle, label: "Armas" },
-    { link: "/character/backgrounds/", icon: faToolbox, label: "Equipamentos" },
-    { link: "/character/info/", icon: faUserSecret, label: "Info" },
-    { link: "/character/backgrounds/", icon: faAddressBook, label: "Contatos" },
+    { link: "/character/equipment/", icon: faToolbox, label: "Equipamentos" },
+    {
+      link: "/character/relevant-person/",
+      icon: faAddressBook,
+      label: "Contatos",
+    },
     {
       link: "/character/backgrounds/",
       icon: faFeatherPointed,
@@ -49,22 +54,38 @@ export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
     },
   ];
 
+  const chunkedButtons = [];
+  for (let i = 0; i < listButton.length; i += 3) {
+    chunkedButtons.push(listButton.slice(i, i + 3));
+  }
+
   return (
-    <div className="w-100 d-flex gap-4 justify-content-around flex-wrap">
-      {listButton.map((item) => (
-        <Link
-          href={`${item?.link}/${characterId}`}
-          className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-          style={{
-            width: "45px",
-            height: "45px",
-          }}
-          aria-label={item?.link}
-          title={item?.link}
-          key={`${item?.link}-${item?.label}`}
-        >
-          <FontAwesomeIcon icon={item?.icon} size="xl" />
-        </Link>
+    <div className="container">
+      {chunkedButtons.map((group, groupIndex) => (
+        <div className="row justify-content-center" key={groupIndex}>
+          {group.map((item) => (
+            <div key={item.label} className="col-4 text-center mb-3">
+              <Link
+                href={`${item.link}/${characterId}`}
+                className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center mx-auto"
+                style={{ width: "45px", height: "45px" }}
+                aria-label={item.label}
+                title={item.label}
+              >
+                <FontAwesomeIcon icon={item.icon} size="xl" />
+              </Link>
+              <span
+                style={{
+                  fontSize: "9px",
+                  display: "block",
+                  marginTop: "0.25rem",
+                }}
+              >
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
       ))}
     </div>
   );
