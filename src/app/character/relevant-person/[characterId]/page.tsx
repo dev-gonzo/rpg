@@ -5,6 +5,8 @@ import Title from "@/app/components/Title";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useRelevantPerson } from "./useRelevantPerson";
 import { CardRelevantPerson } from "@/app/components/CardRelevantPerson";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
+import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
 export default function Rituais() {
   const { data, loading, characterId } = useRelevantPerson();
@@ -16,16 +18,19 @@ export default function Rituais() {
           path: `/character-edit/relevant-person/${characterId}`,
         }}
       >
-        Pessoas Relevantes
+        Contatos, alidos ou relevantes
       </Title>
 
-      <div className="container">
-        <div className="row gap-3">
-          {data?.map((item) => (
-            <CardRelevantPerson person={item} key={item?.id} />
-          ))}
-        </div>
-      </div>
+      <ContainerWrap gap justifyCenter>
+        <AlertListEmpty
+          list={data ?? []}
+          message="Nenhum contato ou aliado cadastrado."
+        />
+
+        {data?.map((item) => (
+          <CardRelevantPerson person={item} key={item?.id} />
+        ))}
+      </ContainerWrap>
     </MainLayout>
   );
 }

@@ -15,12 +15,15 @@ export default function Magic() {
       >
         Magia
       </Title>
+
+
+
       <div className="container">
         <div className="row ">
-          <FieldView label="Sociedade Secreta" content={data?.secretSociety} />
-          <FieldView label="Grau" content={data?.rank} />
-          <FieldView label="Cabala" content={data?.cabala} />
-          <FieldView label="Mentor" content={data?.mentor} />
+          <FieldView label="Sociedade Secreta" content={data?.secretSociety} col={9} />
+          <FieldView label="Grau" content={data?.rank} col={3}/>
+          <FieldView label="Cabala" content={data?.cabala} col={6}/>
+          <FieldView label="Mentor" content={data?.mentor} col={6}/>
         </div>
 
         <div className="row mt-5">
@@ -34,9 +37,9 @@ export default function Magic() {
             Formas
           </Title>
 
-          <FieldView label="Entender" content={dataPathsForms?.understandForm} colSm={4} />
-          <FieldView label="Criar" content={dataPathsForms?.createForm} colSm={4} />
-          <FieldView label="Controlar" content={dataPathsForms?.controlForm} colSm={4} />
+          <FieldView label="Entender" content={dataPathsForms?.understandForm} colSm={4} col={4} />
+          <FieldView label="Criar" content={dataPathsForms?.createForm} colSm={4}  col={4}/>
+          <FieldView label="Controlar" content={dataPathsForms?.controlForm} colSm={4}  col={4}/>
         </div>
 
         <div className="row mt-3">
@@ -45,12 +48,12 @@ export default function Magic() {
             <hr className="my-2" />
           </div>
 
-          <FieldView label="Fogo" content={dataPathsForms?.fire} colSm={4} zeroNull />
-          <FieldView label="Água" content={dataPathsForms?.water} colSm={4} zeroNull />
-          <FieldView label="Terra" content={dataPathsForms?.earth} colSm={4} zeroNull />
-          <FieldView label="Ar" content={dataPathsForms?.air} colSm={4} zeroNull />
-          <FieldView label="Luz" content={dataPathsForms?.light} colSm={4} zeroNull />
-          <FieldView label="Trevas" content={dataPathsForms?.darkness} colSm={4} zeroNull />
+          <FieldView label="Fogo" content={dataPathsForms?.fire} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Água" content={dataPathsForms?.water} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Terra" content={dataPathsForms?.earth} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Ar" content={dataPathsForms?.air} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Luz" content={dataPathsForms?.light} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Trevas" content={dataPathsForms?.darkness} colSm={4} zeroNull  col={4}/>
         </div>
 
         <div className="row mt-3">
@@ -59,12 +62,12 @@ export default function Magic() {
             <hr className="my-2" />
           </div>
 
-          <FieldView label="Plantas" content={dataPathsForms?.plants} colSm={4} zeroNull />
-          <FieldView label="Animais" content={dataPathsForms?.animals} colSm={4} zeroNull />
-          <FieldView label="Humanos" content={dataPathsForms?.humans} colSm={4} zeroNull />
-          <FieldView label="Spiritum" content={dataPathsForms?.spiritum} colSm={4} zeroNull />
-          <FieldView label="Arkanun" content={dataPathsForms?.arkanun} colSm={4} zeroNull />
-          <FieldView label="Metamagia" content={dataPathsForms?.metamagic} colSm={4} zeroNull />
+          <FieldView label="Plantas" content={dataPathsForms?.plants} colSm={4} zeroNull col={4} />
+          <FieldView label="Animais" content={dataPathsForms?.animals} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Humanos" content={dataPathsForms?.humans} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Spiritum" content={dataPathsForms?.spiritum} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Arkanun" content={dataPathsForms?.arkanun} colSm={4} zeroNull  col={4}/>
+          <FieldView label="Metamagia" content={dataPathsForms?.metamagic} colSm={4} zeroNull  col={4}/>
         </div>
       </div>
     </MainLayout>

@@ -4,6 +4,8 @@ import { CardRitual } from "@/app/components/CardRituais";
 import Title from "@/app/components/Title";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useRitual } from "./useRitual";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
+import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
 export default function Rituais() {
   const { data, loading, characterId } = useRitual();
@@ -18,13 +20,16 @@ export default function Rituais() {
         Rituais
       </Title>
 
-      <div className="container">
-        <div className="row gap-3">
-          {data?.rituals?.map((item) => (
-            <CardRitual ritual={item} key={item?.id} />
-          ))}
-        </div>
-      </div>
+      <ContainerWrap gap justifyCenter>
+        <AlertListEmpty
+          list={data?.rituals ?? []}
+          message="Nenhum ritual cadastrado."
+        />
+
+        {data?.rituals?.map((item) => (
+          <CardRitual ritual={item} key={item?.id} />
+        ))}
+      </ContainerWrap>
     </MainLayout>
   );
 }

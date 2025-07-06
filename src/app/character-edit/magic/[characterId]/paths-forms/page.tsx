@@ -52,6 +52,7 @@ export default function PathsForms() {
                 errors={errors}
                 min={0}
                 max={max}
+                col={4}
               />
             ))}
 

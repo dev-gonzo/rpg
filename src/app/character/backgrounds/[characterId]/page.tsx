@@ -4,6 +4,8 @@ import Title from "@/app/components/Title";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useBackgroundsView } from "./useBackgroundsView";
 import { BackgroundView } from "@/app/components/BackgroundView";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
+import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
 export default function Backgrounds() {
   const { data, characterId, handleSetPublic } = useBackgroundsView();
@@ -19,17 +21,20 @@ export default function Backgrounds() {
         Backgrounds
       </Title>
 
-      <div className="container">
-        <div className="row gap-3">
-          {data?.map((item) => (
-            <BackgroundView
-              background={item}
-              key={item.id}
-              setPublic={(checked) => handleSetPublic(item, checked)}
-            />
-          ))}
-        </div>
-      </div>
+      <ContainerWrap gap justifyCenter>
+        <AlertListEmpty
+          list={data ?? []}
+          message="Nenhuma história cadastrada."
+        />
+
+        {data?.map((item) => (
+          <BackgroundView
+            background={item}
+            key={item.id}
+            setPublic={(checked) => handleSetPublic(item, checked)}
+          />
+        ))}
+      </ContainerWrap>
     </MainLayout>
   );
 }

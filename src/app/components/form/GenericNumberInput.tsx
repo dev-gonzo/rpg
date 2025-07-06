@@ -11,6 +11,7 @@ type GenericNumberInputProps<T extends FieldValues> = {
   defaultValue?: number;
   max?: number;
   errors?: FieldErrors<T>;
+  col?: number
 };
 
 export function GenericNumberInput<T extends FieldValues>({
@@ -21,6 +22,7 @@ export function GenericNumberInput<T extends FieldValues>({
   min = 0,
   max = 100,
   errors,
+  col=12
 }: GenericNumberInputProps<T>) {
   const errorMessage = errors && errors[name]?.message;
 
@@ -89,7 +91,7 @@ export function GenericNumberInput<T extends FieldValues>({
         }
 
         return (
-          <div className="mb-3 col-md-6 gap-2">
+          <div className={`mb-3 col-md-${col}  gap-2`}>
             <label htmlFor={name} className="form-label mb-1 text-center w-100">
               {label}
             </label>
