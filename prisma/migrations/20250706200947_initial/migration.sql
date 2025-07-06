@@ -29,6 +29,21 @@ CREATE TABLE "Character" (
     "rank" TEXT,
     "mentor" TEXT,
     "societyAllies" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "hitPoints" INTEGER,
+    "currentHitPoints" INTEGER,
+    "initiative" INTEGER,
+    "currentInitiative" INTEGER,
+    "heroPoints" INTEGER,
+    "currentHeroPoints" INTEGER,
+    "magicPoints" INTEGER,
+    "currentMagicPoints" INTEGER,
+    "faithPoints" INTEGER,
+    "currentFaithPoints" INTEGER,
+    "protectionIndex" INTEGER,
+    "currentProtectionIndex" INTEGER,
+    "level" INTEGER,
+    "experiencePoints" INTEGER,
+    "isKnown" BOOLEAN NOT NULL DEFAULT false,
     "controlUserId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -166,6 +181,55 @@ CREATE TABLE "Ritual" (
     CONSTRAINT "Ritual_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Equipment" (
+    "id" TEXT NOT NULL,
+    "characterId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "classification" TEXT NOT NULL,
+    "description" TEXT,
+    "kineticProtection" INTEGER,
+    "ballisticProtection" INTEGER,
+    "dexterityPenalty" INTEGER,
+    "agilityPenalty" INTEGER,
+    "initiative" INTEGER,
+    "bookPage" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Equipment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Weapon" (
+    "id" TEXT NOT NULL,
+    "characterId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "damage" TEXT NOT NULL,
+    "initiative" INTEGER NOT NULL,
+    "range" TEXT,
+    "rof" TEXT,
+    "ammunition" TEXT,
+    "bookPage" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Weapon_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Note" (
+    "id" TEXT NOT NULL,
+    "characterId" TEXT NOT NULL,
+    "note" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Note_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -198,3 +262,12 @@ ALTER TABLE "PathsAndForms" ADD CONSTRAINT "PathsAndForms_characterId_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "Ritual" ADD CONSTRAINT "Ritual_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Equipment" ADD CONSTRAINT "Equipment_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Weapon" ADD CONSTRAINT "Weapon_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Note" ADD CONSTRAINT "Note_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE CASCADE ON UPDATE CASCADE;

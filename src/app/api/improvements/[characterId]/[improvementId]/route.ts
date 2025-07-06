@@ -9,11 +9,8 @@ const extendedImprovementSchema = improvementSchema.concat(
   })
 );
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string; improvementId: string } }
-) {
-  const { characterId, improvementId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { characterId, improvementId } = context.params;
 
   if (!characterId || !improvementId) {
     return NextResponse.json(
@@ -47,11 +44,8 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { characterId: string; improvementId: string } }
-) {
-  const { characterId, improvementId } = params;
+export async function DELETE(req: NextRequest, context: any) {
+  const { characterId, improvementId } = context.params;
 
   if (!characterId || !improvementId) {
     return NextResponse.json(
@@ -78,11 +72,8 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { characterId: string; improvementId: string } }
-) {
-  const { characterId, improvementId } = params;
+export async function PUT(req: NextRequest, context: any) {
+  const { characterId, improvementId } = context.params;
 
   if (!characterId || !improvementId) {
     return NextResponse.json(
@@ -109,7 +100,6 @@ export async function PUT(
       },
     });
 
-    // updateMany returns count, so refetch updated record:
     const improvement = await prisma.improvement.findFirst({
       where: {
         id: improvementId,

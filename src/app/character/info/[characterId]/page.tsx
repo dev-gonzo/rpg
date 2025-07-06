@@ -13,11 +13,10 @@ export default function Magic() {
   const { isControl, isMaster } = useMasterOrControl({
     characterId: characterId,
   });
-
   return (
     <MainLayout>
       <Title
-        link={{ label: "Editar", path: `/character-edit?id=${characterId}` }}
+        link={{ label: "Editar", path: `/character-edit/edit/${characterId}` }}
         control={isControl || isMaster}
       >
         Informações

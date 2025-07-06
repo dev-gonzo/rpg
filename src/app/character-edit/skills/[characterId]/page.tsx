@@ -16,47 +16,16 @@ import { Attribute } from "@prisma/client";
 import { SelectBox } from "@/app/components/form/SelectBox";
 import { useSkills } from "./useSkill";
 
-type Skill = {
-  id: string;
-  group: string;
-  skill: string;
-  attribute: "CON" | "FR" | "DEX" | "AGI" | "INT" | "WILL" | "PER" | "CAR";
-  cost: number;
-  kitValue: number;
-};
-
-type SkillFormData = {
-  group: string;
-  skill: string;
-  attribute: string;
-  cost: number;
-  kitValue: number;
-};
 
 export default function Skills() {
   const {
     skills,
     attributes,
-    serverError,
-    serverErrorDelete,
-    successMessage,
-    isLoading,
-    isSaving,
-    saving,
-    deleting,
-    showModal,
-    setShowModal,
-    showModalDelete,
-    setShowModalDelete,
-    skillDelete,
     control,
     register,
     handleSubmit,
     onSubmit,
     errors,
-    isSubmitting,
-    modalDelete,
-    onDelete,
   } = useSkills();
 
   return (
@@ -90,11 +59,6 @@ export default function Skills() {
                           <strong>{item?.skill}</strong>{" "}
                           {item?.attribute ? `(${item.attribute})` : ""}
                         </span>
-                        <button
-                          className="btn btn-close"
-                          onClick={() => modalDelete(item)}
-                          aria-label={`Excluir perícia ${item?.skill}`}
-                        ></button>
                       </div>
                       <div className="col-4 text-center">
                         <strong>
@@ -132,90 +96,10 @@ export default function Skills() {
           })}
         </div>
 
-        <div className="row mt-3">
-          <div className="col-12 d-flex justify-content-end">
-            <button
-              className="btn btn-outline-light mb-3"
-              onClick={() => setShowModal(true)}
-            >
-              Adicionar Perícia
-            </button>
-          </div>
-        </div>
+        
       </div>
 
-      <ModalCustom
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        title="Adicionar Perícia"
-        actionLabel={isSaving ? "Salvando..." : "Adicionar"}
-        onAction={handleSubmit(onSubmit)}
-        size="lg"
-      >
-        <form className="row">
-          <InputField
-            name="group"
-            label="Grupo"
-            md={12}
-            register={register}
-            errors={errors}
-          />
-          <InputField
-            name="skill"
-            label="Perícia"
-            md={12}
-            register={register}
-            errors={errors}
-          />
-          <SelectBox
-            name="attribute"
-            label="Atributo"
-            options={[
-              { label: "Constituição (CON)", value: "CON" },
-              { label: "Força (FR)", value: "FR" },
-              { label: "Destreza (DEX)", value: "DEX" },
-              { label: "Agilidade (AGI)", value: "AGI" },
-              { label: "Inteligência (INT)", value: "INT" },
-              { label: "Força de Vontade (WILL)", value: "WILL" },
-              { label: "Percepção (PER)", value: "PER" },
-              { label: "Carisma (CAR)", value: "CAR" },
-            ]}
-            col={12}
-            register={register}
-            errors={errors}
-          />
-          <GenericNumberInput
-            name="kitValue"
-            label="Valor Kit"
-            control={control}
-            errors={errors}
-          />
-          <GenericNumberInput
-            name="cost"
-            label="Custo"
-            control={control}
-            errors={errors}
-          />
-
-          <AlertMessage error={serverError} success={successMessage} />
-        </form>
-      </ModalCustom>
-
-      <ModalCustom
-        show={showModalDelete}
-        onHide={() => setShowModalDelete(false)}
-        title="Excluir Perícia"
-        actionLabel={isSaving ? "Salvando..." : "Excluir"}
-        onAction={onDelete}
-        size="lg"
-      >
-        <h4>
-          Deseja excluir a perícia:
-          <br /> {skillDelete?.skill}?
-        </h4>
-
-        <AlertMessage error={serverErrorDelete} success={successMessage} />
-      </ModalCustom>
+    
     </MainLayout>
   );
 }

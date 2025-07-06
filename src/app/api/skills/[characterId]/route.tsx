@@ -11,11 +11,8 @@ const skillSchema = yup.object({
   kitValue: yup.number().required().min(0),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
-  const { characterId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { characterId } = context.params;
 
   if (!characterId) {
     return NextResponse.json(

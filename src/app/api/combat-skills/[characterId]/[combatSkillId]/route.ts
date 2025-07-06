@@ -1,4 +1,3 @@
-// src/app/api/combat-skills/[characterId]/[combatSkillId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isInternalRequest } from "@/lib/checkOrigin";
@@ -11,11 +10,8 @@ const extendedCombatSkillSchema = combatSkillSchema.concat(
   })
 );
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string; combatSkillId: string } }
-) {
-  const { combatSkillId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { combatSkillId } = context.params;
 
   if (!combatSkillId) {
     return NextResponse.json(
@@ -46,15 +42,12 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { combatSkillId: string } }
-) {
+export async function DELETE(req: NextRequest, context: any) {
   if (!isInternalRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { combatSkillId } = params;
+  const { combatSkillId } = context.params;
 
   if (!combatSkillId) {
     return NextResponse.json(
@@ -81,15 +74,12 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { characterId: string; combatSkillId: string } }
-) {
+export async function PUT(req: NextRequest, context: any) {
   if (!isInternalRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { characterId, combatSkillId } = params;
+  const { characterId, combatSkillId } = context.params;
 
   if (!combatSkillId) {
     return NextResponse.json(
@@ -101,7 +91,7 @@ export async function PUT(
   try {
     const body = await req.json();
 
-    // Ensure characterId from path is used
+    // Garantir que characterId do path seja usado
     body.characterId = characterId;
 
     await extendedCombatSkillSchema.validate(body, { abortEarly: false });

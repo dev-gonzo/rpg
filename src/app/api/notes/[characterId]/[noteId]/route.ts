@@ -7,11 +7,8 @@ const noteSchema = yup.object({
   note: yup.string().required("Nota é obrigatória"),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { noteId: string } }
-) {
-  const { noteId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { noteId } = context.params;
 
   if (!noteId) {
     return NextResponse.json(
@@ -42,11 +39,8 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { noteId: string } }
-) {
-  const { noteId } = params;
+export async function DELETE(req: NextRequest, context: any) {
+  const { noteId } = context.params;
 
   if (!noteId) {
     return NextResponse.json(
@@ -73,11 +67,8 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { noteId: string } }
-) {
-  const { noteId } = params;
+export async function PUT(req: NextRequest, context: any) {
+  const { noteId } = context.params;
 
   if (!noteId) {
     return NextResponse.json(

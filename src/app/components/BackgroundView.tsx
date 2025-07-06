@@ -15,7 +15,7 @@ type Props = {
 export function BackgroundView({ background, setPublic, control }: Props) {
   const router = useRouter();
 
-  const [showAll, setShowAll] = useState<Boolean>(false);
+  const [showAll, setShowAll] = useState<boolean>(false);
 
   const truncated = htmlTruncate(background?.text, 200, { ellipsis: "..." });
 

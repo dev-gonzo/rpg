@@ -1,11 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { ritualId: string } }
-) {
-  const { ritualId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { ritualId } = context.params;
 
   if (!ritualId) {
     return NextResponse.json(
@@ -33,11 +30,8 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { ritualId: string } }
-) {
-  const { ritualId } = params;
+export async function PUT(req: NextRequest, context: any) {
+  const { ritualId } = context.params;
 
   if (!ritualId) {
     return NextResponse.json(
@@ -76,11 +70,8 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { characterId: string; ritualId: string } }
-) {
-  const { characterId, ritualId } = params;
+export async function DELETE(req: NextRequest, context: any) {
+  const { characterId, ritualId } = context.params;
 
   if (!characterId || !ritualId) {
     return NextResponse.json(
@@ -89,9 +80,6 @@ export async function DELETE(
     );
   }
 
-  // A lógica de exclusão pode usar characterId para validação,
-  // ou só o ritualId, conforme sua regra de negócio.
-  // Exemplo:
   try {
     const ritual = await prisma.ritual.findUnique({
       where: { id: ritualId },
@@ -120,4 +108,3 @@ export async function DELETE(
     );
   }
 }
-

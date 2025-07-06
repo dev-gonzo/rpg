@@ -3,7 +3,6 @@
 import { useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 import { Params } from "next/dist/server/request/params";
-import { useValidateAuth } from "../useValidateAuth";
 
 type Props = {
   initialLoading?: boolean;
@@ -14,7 +13,6 @@ export function useGet<T>({ initialLoading = false }: Props = {}) {
   const [loading, setLoading] = useState(initialLoading);
   const [error, setError] = useState<string | null>(null);
 
-  useValidateAuth();
 
   async function onPath(path: string) {
     setLoading(true);

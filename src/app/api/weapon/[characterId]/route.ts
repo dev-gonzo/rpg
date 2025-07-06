@@ -1,4 +1,3 @@
-// src/app/api/weapon/[characterId]/route.ts
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import * as yup from "yup";
@@ -15,11 +14,8 @@ const weaponSchema = yup.object({
   bookPage: yup.string().nullable(),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
-  const { characterId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { characterId } = context.params;
 
   if (!characterId) {
     return NextResponse.json(
@@ -44,16 +40,12 @@ export async function GET(
   }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
-  const { characterId } = params;
+export async function POST(req: NextRequest, context: any) {
+  const { characterId } = context.params;
 
   try {
     const body = await req.json();
 
-    // Add characterId from path param into body for validation and creation
     const dataToValidate = { ...body, characterId };
 
     await weaponSchema.validate(dataToValidate, { abortEarly: false });

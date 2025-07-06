@@ -13,11 +13,8 @@ const extendedImprovementSchema = improvementSchema.concat(
   })
 );
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string; improvementId: string } }
-) {
-  const { improvementId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { improvementId } = context.params;
 
   if (!improvementId) {
     return NextResponse.json(
@@ -48,15 +45,12 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { improvementId: string } }
-) {
+export async function DELETE(req: NextRequest, context: any) {
   if (!isInternalRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { improvementId } = params;
+  const { improvementId } = context.params;
 
   if (!improvementId) {
     return NextResponse.json(
@@ -80,15 +74,12 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { improvementId: string } }
-) {
+export async function PUT(req: NextRequest, context: any) {
   if (!isInternalRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { improvementId } = params;
+  const { improvementId } = context.params;
 
   if (!improvementId) {
     return NextResponse.json(

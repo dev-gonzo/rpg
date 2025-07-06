@@ -1,14 +1,12 @@
 // hooks/fetch/useSave.ts
 import { useState, useCallback } from "react";
 import axios, { AxiosRequestConfig } from "axios";
-import { useValidateAuth } from "../useValidateAuth";
 
 export function useSave<T>() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<T | null>(null);
 
-  useValidateAuth();
 
   const save = useCallback(
     async (endpoint: string, body: any, method: "POST" | "PUT" = "POST") => {

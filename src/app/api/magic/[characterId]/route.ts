@@ -1,4 +1,3 @@
-// app/magic/[characterId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isInternalRequest } from "@/lib/checkOrigin";
@@ -12,8 +11,9 @@ const magicSchema = yup.object({
   mentor: yup.string().nullable(),
 });
 
-export async function GET(req: NextRequest, { params }: { params: { characterId: string } }) {
-  const { characterId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { characterId } = context.params;
+
   if (!characterId) {
     return NextResponse.json({ error: "characterId is required" }, { status: 400 });
   }
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest, { params }: { params: { characterId:
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, context: any) {
   if (!isInternalRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -57,7 +57,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Character not found" }, { status: 404 });
     }
 
-    // Update magic fields on character
     const updatedCharacter = await prisma.character.update({
       where: { id: body.characterId },
       data: {
@@ -78,7 +77,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT(req: NextRequest, context: any) {
   if (!isInternalRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

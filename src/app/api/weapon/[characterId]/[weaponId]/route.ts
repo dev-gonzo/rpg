@@ -1,5 +1,3 @@
-// src/app/api/weapon/[characterId]/[weaponId]/route.ts
-
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import * as yup from "yup";
@@ -13,11 +11,8 @@ const weaponSchema = yup.object({
   bookPage: yup.string().nullable(),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string; weaponId: string } }
-) {
-  const { weaponId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { weaponId } = context.params;
 
   if (!weaponId) {
     return NextResponse.json({ error: "weaponId is required" }, { status: 400 });
@@ -39,11 +34,8 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { characterId: string; weaponId: string } }
-) {
-  const { weaponId } = params;
+export async function DELETE(req: NextRequest, context: any) {
+  const { weaponId } = context.params;
 
   if (!weaponId) {
     return NextResponse.json({ error: "weaponId is required" }, { status: 400 });
@@ -61,11 +53,8 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { characterId: string; weaponId: string } }
-) {
-  const { weaponId } = params;
+export async function PUT(req: NextRequest, context: any) {
+  const { weaponId } = context.params;
 
   if (!weaponId) {
     return NextResponse.json({ error: "weaponId is required" }, { status: 400 });

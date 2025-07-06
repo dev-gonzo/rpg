@@ -59,20 +59,11 @@ export default function Menu() {
             </li>
             <li className="nav-item">
               <Link
-                href="/campaign"
+                href="/journal"
                 className="nav-link text-light"
                 onClick={closeMenu}
               >
-                Campaign
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                href="/my-characters"
-                className="nav-link text-light"
-                onClick={closeMenu}
-              >
-                Characters
+                Diário de Bordo
               </Link>
             </li>
             <li className="nav-item mt-3">

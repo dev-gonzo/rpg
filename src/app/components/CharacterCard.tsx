@@ -3,13 +3,14 @@
 
 import noImageCharacter from "@/assets/no-image-character.png";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 import { CharacterHome } from "../home/useHome";
 import { useUploadImage } from "../hooks/fetch/useUploadImage";
 import { useMasterOrControl } from "../hooks/useMasterOrControl";
 import { CharacterBasicInfo } from "./CharacterBasicInfo";
 import { CharacterInfo } from "./CharacterInfoButton";
 import RoundFileUploadButton from "./RoundFileUploadButton";
+import Image from "next/image";
 
 export function CharacterCard({ character }: { character: CharacterHome }) {
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({

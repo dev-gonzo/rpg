@@ -3,35 +3,39 @@
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { basicDataSchema } from "@/shared/schemas/character/basicDataSchema";
 import { BasicDataType } from "@/shared/types/character/BasicDataType";
-import { useGet } from "../hooks/fetch/useGet";
-import { useSave } from "../hooks/fetch/useSave"; // import do hook useSave
+import { useGet } from "../../../hooks/fetch/useGet";
+import { useSave } from "../../../hooks/fetch/useSave"; // import do hook useSave
 import { Character } from "@prisma/client";
 import { SPEED } from "@/shared/constants/speed";
 
 export function useCharacterEdit() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const characterId = searchParams.get("id") || undefined;
+  const params = useParams();
+  const characterId = params.characterId as string;
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { data, loading, error, onParams } = useGet<{
+  const { data, loading, onParams } = useGet<{
     characters: BasicDataType[];
-  }>({initialLoading: true});
+  }>({ initialLoading: true });
+
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
-  const { control, register, handleSubmit, reset, formState } =
-    useForm<BasicDataType>({
-      resolver: yupResolver(basicDataSchema) as Resolver<BasicDataType>,
-      mode: "onBlur",
-    });
-
-  const { errors, isSubmitting } = formState;
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<BasicDataType>({
+    resolver: yupResolver(basicDataSchema) as Resolver<BasicDataType>,
+    mode: "onBlur",
+  });
 
   useEffect(() => {
     if (!characterId) return;
@@ -39,7 +43,6 @@ export function useCharacterEdit() {
     setServerError(null);
     onParams("/api/characters", { characterId });
   }, [characterId]);
-
 
   useEffect(() => {
     if (saveError) setServerError(saveError);
@@ -58,26 +61,16 @@ export function useCharacterEdit() {
     setSuccessMessage(null);
 
     try {
-      const method = characterId ? "PUT" : "POST";
+      const method = "PUT";
       const url = "/api/characters";
 
-      const response = await save(url, formData, method);
+      await save(url, formData, method);
 
-      setSuccessMessage(
-        characterId
-          ? "Personagem atualizado com sucesso!"
-          : "Personagem criado com sucesso!"
-      );
+      setSuccessMessage("Personagem atualizado com sucesso!");
 
-      if (method == "POST") {
-        setTimeout(() => {
-          router.push(`/home`);
-        }, SPEED.normal);
-      } else {
-        setTimeout(() => {
-          router.push(`/character/info/${response.character.id}`);
-        }, SPEED.normal);
-      }
+      setTimeout(() => {
+        router.push(`/character/info/${characterId}`);
+      }, SPEED.normal);
     } catch {
       setServerError("Erro inesperado ao salvar personagem");
     }

@@ -1,4 +1,3 @@
-// src/app/api/relevant-person/route.ts
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import * as yup from "yup";
@@ -14,11 +13,8 @@ const relevantPersonSchema = yup.object({
   briefDescription: yup.string().nullable().notRequired(),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
-  const { characterId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { characterId } = context.params;
   if (!characterId) {
     return NextResponse.json(
       { error: "characterId param required" },

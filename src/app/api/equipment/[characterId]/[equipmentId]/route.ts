@@ -15,11 +15,8 @@ const equipmentSchema = yup.object({
   description: yup.string().optional(),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { equipmentId: string } }
-) {
-  const { equipmentId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { equipmentId } = context.params;
 
   if (!equipmentId) {
     return NextResponse.json({ error: "equipmentId is required" }, { status: 400 });
@@ -41,11 +38,8 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { equipmentId: string } }
-) {
-  const { equipmentId } = params;
+export async function PUT(req: NextRequest, context: any) {
+  const { equipmentId } = context.params;
 
   if (!equipmentId) {
     return NextResponse.json({ error: "equipmentId is required" }, { status: 400 });
@@ -85,11 +79,8 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { equipmentId: string } }
-) {
-  const { equipmentId } = params;
+export async function DELETE(req: NextRequest, context: any) {
+  const { equipmentId } = context.params;
 
   if (!equipmentId) {
     return NextResponse.json({ error: "equipmentId is required" }, { status: 400 });

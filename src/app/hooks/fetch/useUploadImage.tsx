@@ -1,4 +1,4 @@
-import { useValidateAuth } from "../useValidateAuth";
+"use client";
 
 // hooks/useUploadImage.ts
 export function useUploadImage() {
@@ -9,8 +9,6 @@ export function useUploadImage() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("characterId", characterId);
-
-    useValidateAuth();
 
     try {
       const res = await fetch("/api/characters/upload", {

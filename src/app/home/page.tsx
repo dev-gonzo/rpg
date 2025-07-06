@@ -15,22 +15,24 @@ export default function HomePage() {
   return (
     <MainLayout>
       <Title
-        link={{ label: "Criar Personagem", path: "character-edit" }}
+        link={{ label: "Criar Personagem", path: `/character-edit/edit` }}
         home={false}
+        control={!!!charactersPerson?.length}
       >
         Personagens
       </Title>
 
       <LoadingWrapper isLoading={loading}>
         <ContainerWrap gy>
-          <AlertListEmpty
-            test={
-              (charactersPerson?.length ?? 0) > 0 ||
-              (charactersPlayers?.length ?? 0) > 0 ||
-              (charactersNpcs?.length ?? 0) > 0
-            }
-            message="Nenhum personagem cadastrado."
-          />
+          {!(
+            (charactersPerson?.length ?? 0) > 0 ||
+            (charactersPlayers?.length ?? 0) > 0 ||
+            (charactersNpcs?.length ?? 0) > 0
+          ) && (
+            <div className="col-12 col-md-12 px-4">
+              <p>Nenhum personagem cadastrado.</p>
+            </div>
+          )}
 
           {charactersPerson?.map((item) => {
             return (
@@ -50,7 +52,11 @@ export default function HomePage() {
             );
           })}
 
-          <Title>NPCs</Title>
+          {charactersNpcs?.length > 0 ? (
+            <div className="col-12 mt-4">
+              <Title>NPCs</Title>
+            </div>
+          ) : null}
           {charactersNpcs?.map((item) => {
             return (
               <div className="col-12 col-md-4" key={item?.id}>

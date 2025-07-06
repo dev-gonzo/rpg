@@ -2,13 +2,13 @@
 
 import Title from "@/app/components/Title";
 import MainLayout from "@/app/layouts/MainLayout";
-import { useCharacterEdit } from "./useCharacterEdit";
 import { AlertMessage } from "@/app/components/AlertMessage";
 import { DatePicker } from "@/app/components/form/DatePicker";
 import { InputField } from "@/app/components/form/InputField";
 import { SelectBox } from "@/app/components/form/SelectBox";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
-import { ContainerWrap } from "../components/ContainerWrap";
+import { ContainerWrap } from "../../../components/ContainerWrap";
+import { useCharacterEdit } from "./useCharacterEdit";
 
 export default function CharacterFormPage() {
   const {
@@ -16,7 +16,6 @@ export default function CharacterFormPage() {
     register,
     handleSubmit,
     onSubmit,
-    reset,
     errors,
     isSubmitting,
     isLoading,
@@ -25,14 +24,6 @@ export default function CharacterFormPage() {
     successMessage,
   } = useCharacterEdit();
 
-  if (isLoading) {
-    return (
-      <MainLayout>
-        <Title>Carregando personagem...</Title>
-        <div className="container my-4 text-light">Carregando dados...</div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>

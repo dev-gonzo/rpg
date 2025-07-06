@@ -1,58 +1,36 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
-  const { id } = await context.params;
+export async function GET(req: NextRequest, context: any) {
+  const { id } = context.params;
 
   if (!id) {
-    return NextResponse.json(
-      { error: "backgroundId is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "backgroundId is required" }, { status: 400 });
   }
 
   try {
-    const background = await prisma.characterBackground.findUnique({
-      where: { id },
-    });
+    const background = await prisma.characterBackground.findUnique({ where: { id } });
 
     if (!background) {
-      return NextResponse.json(
-        { error: "Background not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Background not found" }, { status: 404 });
     }
 
     return NextResponse.json({ background }, { status: 200 });
   } catch (err) {
     console.error("Error fetching character background:", err);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
-  const { id } = await context.params;
+export async function PUT(req: NextRequest, context: any) {
+  const { id } = context.params;
 
   if (!id) {
-    return NextResponse.json(
-      { error: "backgroundId is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "backgroundId is required" }, { status: 400 });
   }
 
   try {
     const body = await req.json();
-
-    // Você pode validar o body aqui se quiser
 
     const background = await prisma.characterBackground.update({
       where: { id },
@@ -66,51 +44,29 @@ export async function PUT(
     return NextResponse.json({ background }, { status: 200 });
   } catch (err) {
     console.error("Error updating character background:", err);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, context: any) {
   const { id } = context.params;
 
   if (!id) {
-    return NextResponse.json(
-      { error: "backgroundId is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "backgroundId is required" }, { status: 400 });
   }
 
   try {
-    const background = await prisma.characterBackground.findUnique({
-      where: { id },
-    });
+    const background = await prisma.characterBackground.findUnique({ where: { id } });
 
     if (!background) {
-      return NextResponse.json(
-        { error: "Background not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Background not found" }, { status: 404 });
     }
 
-    await prisma.characterBackground.delete({
-      where: { id },
-    });
+    await prisma.characterBackground.delete({ where: { id } });
 
-    return NextResponse.json(
-      { message: "Background deleted successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Background deleted successfully" }, { status: 200 });
   } catch (err) {
     console.error("Error deleting character background:", err);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

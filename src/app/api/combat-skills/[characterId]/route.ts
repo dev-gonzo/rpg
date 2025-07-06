@@ -1,4 +1,3 @@
-// src/app/api/combat-skills/[characterId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isInternalRequest } from "@/lib/checkOrigin";
@@ -14,11 +13,8 @@ const extendedCombatSkillSchema = combatSkillSchema.concat(
   })
 );
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
-  const { characterId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { characterId } = context.params;
 
   if (!characterId) {
     return NextResponse.json(
@@ -42,15 +38,12 @@ export async function GET(
   }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
+export async function POST(req: NextRequest, context: any) {
   if (!isInternalRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { characterId } = params;
+  const { characterId } = context.params;
 
   if (!characterId) {
     return NextResponse.json(

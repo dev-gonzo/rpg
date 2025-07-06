@@ -1,4 +1,3 @@
-// src/app/api/relevant-person/[id]/route.ts
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import * as yup from "yup";
@@ -14,11 +13,8 @@ const relevantPersonUpdateSchema = yup.object({
   briefDescription: yup.string().nullable().notRequired(),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { id } = context.params;
 
   try {
     const relevantPerson = await prisma.relevantPerson.findUnique({
@@ -40,11 +36,8 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function PUT(req: NextRequest, context: any) {
+  const { id } = context.params;
 
   try {
     const body = await req.json();
@@ -83,11 +76,8 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function DELETE(req: NextRequest, context: any) {
+  const { id } = context.params;
 
   try {
     await prisma.relevantPerson.delete({

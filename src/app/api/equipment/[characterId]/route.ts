@@ -1,4 +1,3 @@
-// src/app/api/equipment/route.ts
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import * as yup from "yup";
@@ -17,11 +16,8 @@ const equipmentSchema = yup.object({
   description: yup.string().optional(),
 });
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
-  const { characterId } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { characterId } = context.params;
 
   if (!characterId) {
     return NextResponse.json(
@@ -46,11 +42,8 @@ export async function GET(
   }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { characterId: string } }
-) {
-  const { characterId } = params;
+export async function POST(req: NextRequest, context: any) {
+  const { characterId } = context.params;
 
   try {
     const body = await req.json();
