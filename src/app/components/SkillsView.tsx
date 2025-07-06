@@ -27,7 +27,7 @@ export function SkillsView({ skill, attributes }: Props) {
                 {skill?.kitValue ?? 0} / {skill?.cost ?? 0} | Kit / Custo
               </small>
             </div>
-            <div className="col-6 text-end d-flex justify-content-end flex-column pe-3">
+            <div className="col-6 text-end d-flex justify-content-end flex-column">
               <span className="h1 fw-bold">
                 {(skill?.kitValue ?? 0) +
                   (skill?.cost ?? 0) +

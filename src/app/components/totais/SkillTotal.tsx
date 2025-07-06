@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 type Props = {
   characterId: string;
+  combatSkill?: boolean;
 };
 
 type TotalResponse = {
@@ -20,7 +21,7 @@ type TotalResponse = {
   totalKit: number;
 };
 
-export const SkillTotal = ({ characterId }: Props) => {
+export const SkillTotal = ({ characterId, combatSkill = false }: Props) => {
   const { data, loading, error, onPath } = useGet<TotalResponse>();
 
   useEffect(() => {
@@ -32,8 +33,17 @@ export const SkillTotal = ({ characterId }: Props) => {
   return (
     <div className="col-12 text-center">
       <span>Total Kit: {data?.totalKit} | </span>
-      <span>Total Gasto: {data?.totalCost}</span><br />
-      <small style={{fontSize: "10px"}}>Os totais consideram as perícias de combate.</small>
+      <span>Total Gasto: {data?.totalCost}</span>
+      <br />
+      {combatSkill ? (
+        <small style={{ fontSize: "10px" }}>
+          Os totais consideram todas perícias, não somente de combate.
+        </small>
+      ) : (
+        <small style={{ fontSize: "10px" }}>
+          Os totais consideram as perícias de combate.
+        </small>
+      )}
     </div>
   );
 };

@@ -22,7 +22,7 @@ export default function Skills() {
         Perícias
       </Title>
 
-      <ContainerWrap gap>
+      <ContainerWrap gap justifyCenter>
         <AlertListEmpty list={data} message="Nenhuma perícia cadastrada." />
 
         <SkillTotal characterId={characterId} />
