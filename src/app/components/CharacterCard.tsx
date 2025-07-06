@@ -34,7 +34,7 @@ export function CharacterCard({ character }: { character: CharacterHome }) {
     <div className="card h-100 bg-dark text-light shadow-sm">
       <img
         key={character.id}
-        src={`/uploads/${character.id}.jpg?${Date.now()}`}
+        src={`./uploads/${character.id}.jpg?${Date.now()}`}
         onError={(e) => {
           e.currentTarget.onerror = null; // evita loop infinito
           e.currentTarget.src = noImageCharacter.src; // usa imagem padrão
@@ -43,6 +43,7 @@ export function CharacterCard({ character }: { character: CharacterHome }) {
         alt={`Foto do personagem ${character.name}`}
         style={{ objectFit: "cover", height: "180px" }}
       />
+      <h1>{`/api/uploads/${character.id}.jpg?${Date.now()}`}</h1>
       {isPermission && <RoundFileUploadButton fnUpload={handleImageChange} />}
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{character.name}</h5>
