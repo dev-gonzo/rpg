@@ -1,12 +1,14 @@
 import { TitleProps } from "@/shared/types/TitleProps";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useCharacterPermission } from "../store/useCharacterPermission";
 
 export default function Title({
   children,
   link,
   back = false,
-  home = true
+  home = true,
+  control = true,
 }: TitleProps) {
   const router = useRouter();
 
@@ -20,15 +22,18 @@ export default function Title({
               Home
             </Link>
           ) : null}
-          {link ? (
+          {link && control ? (
             <Link href={link.path} className="btn btn-sm btn-outline-light">
               {link.label}
             </Link>
           ) : null}
           {back ? (
-            <button onClick={() => router.back()} className="btn btn-sm btn-outline-light">
+            <button
+              onClick={() => router.back()}
+              className="btn btn-sm btn-outline-light"
+            >
               Voltar
-            </button >
+            </button>
           ) : null}
         </div>
       </div>

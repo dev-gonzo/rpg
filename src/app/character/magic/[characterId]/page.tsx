@@ -5,14 +5,19 @@ import Title from "@/app/components/Title";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useMagic } from "./useMagic";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Magic() {
   const { isLoading, data, dataPathsForms, characterId } = useMagic();
+  const { isControl, isMaster } = useMasterOrControl({
+      characterId: characterId,
+    });
 
   return (
     <MainLayout>
       <Title
         link={{ label: "Editar", path: `/character-edit/magic/${characterId}` }}
+        control={isControl || isMaster}
       >
         Magia
       </Title>
@@ -34,6 +39,7 @@ export default function Magic() {
             label: "Editar",
             path: `http://localhost:3000/character-edit/magic/${characterId}/paths-forms`,
           }}
+          control={isControl || isMaster}
         >
           <div className="pt-5">
 

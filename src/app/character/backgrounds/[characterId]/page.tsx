@@ -6,9 +6,14 @@ import { useBackgroundsView } from "./useBackgroundsView";
 import { BackgroundView } from "@/app/components/BackgroundView";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Backgrounds() {
-  const { data, characterId, handleSetPublic, isLoading } = useBackgroundsView();
+  const { data, characterId, handleSetPublic, isLoading } =
+    useBackgroundsView();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
 
   return (
     <MainLayout>
@@ -17,6 +22,7 @@ export default function Backgrounds() {
           label: "Incluir",
           path: `/character-edit/backgrounds/character/${characterId}`,
         }}
+        control={isControl || isMaster}
       >
         Backgrounds
       </Title>
@@ -32,6 +38,7 @@ export default function Backgrounds() {
             background={item}
             key={item.id}
             setPublic={(checked) => handleSetPublic(item, checked)}
+            control={isControl || isMaster}
           />
         ))}
       </ContainerWrap>

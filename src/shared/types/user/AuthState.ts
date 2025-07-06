@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User } from "@prisma/client";
 
 export type AuthState = {
   user: User | null;

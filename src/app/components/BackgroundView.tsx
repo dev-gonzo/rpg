@@ -10,8 +10,9 @@ import { ButtonSwitch } from "./ButtonSwitch";
 type Props = {
   background: BackgroundResponse;
   setPublic: (checked: boolean) => void;
+  control: boolean;
 };
-export function BackgroundView({ background, setPublic }: Props) {
+export function BackgroundView({ background, setPublic, control }: Props) {
   const router = useRouter();
 
   const [showAll, setShowAll] = useState<Boolean>(false);
@@ -28,22 +29,26 @@ export function BackgroundView({ background, setPublic }: Props) {
                 <strong className="h2">{background?.title}</strong>
               </div>
               <div className="d-flex flex-column align-items-end">
-                <ButtonSwitch
-                  onChange={() => setPublic(!background?.isPublic)}
-                  value={background?.isPublic}
-                />
+                {control && (
+                  <ButtonSwitch
+                    onChange={() => setPublic(!background?.isPublic)}
+                    value={background?.isPublic}
+                  />
+                )}
                 <small style={{ fontSize: "10px" }}>Público</small>
               </div>
             </div>
-            <div className="col-12">
-              <Link
-                href={`/character-edit/backgrounds/${background?.id}`}
-                className="btn btn-link link-secondary ms-0 ps-0"
-              >
-                Editar
-              </Link>
-              <hr className="my-1" />
-            </div>
+            {control && (
+              <div className="col-12">
+                <Link
+                  href={`/character-edit/backgrounds/${background?.id}`}
+                  className="btn btn-link link-secondary ms-0 ps-0"
+                >
+                  Editar
+                </Link>
+                <hr className="my-1" />
+              </div>
+            )}
 
             <div className="col-12 mt-3">
               <div
@@ -57,7 +62,11 @@ export function BackgroundView({ background, setPublic }: Props) {
                 onClick={() => setShowAll((prev) => !prev)}
                 className="btn btn-link link-secondary"
               >
-                {showAll ? "- Ocultar" : "+ Mostrar"}
+                {background?.text?.length < 201
+                  ? ""
+                  : showAll
+                  ? "- Ocultar"
+                  : "+ Mostrar"}
               </button>
             </div>
           </div>

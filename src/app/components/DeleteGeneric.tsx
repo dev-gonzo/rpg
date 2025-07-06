@@ -37,7 +37,6 @@ export const DeleteGeneric = ({ path, redirect }: Props) => {
         type="button"
         className="btn btn-outline-danger"
         onClick={() => {
-          console.log("aaa");
           setShowModal(true);
         }}
       >

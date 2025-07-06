@@ -1,11 +1,12 @@
-import { Character } from "@prisma/client";
+import { CharacterHome } from "../home/useHome";
 import { CharacterCardBasicInfo } from "./CharacterCardBaseInfo";
 
 type Props = {
-  character: Character;
+  character: CharacterHome;
+  isPermission: boolean;
 };
 
-export const CharacterBasicInfo = ({ character }: Props) => {
+export const CharacterBasicInfo = ({ character, isPermission }: Props) => {
   return (
     <div className="d-100 d-flex gap-1 flex-wrap justify-content-around">
       <CharacterCardBasicInfo

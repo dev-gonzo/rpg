@@ -6,51 +6,56 @@ import MainLayout from "@/app/layouts/MainLayout";
 import { useMagic } from "./useMagic";
 import { Container } from "react-bootstrap";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Magic() {
   const { isLoading, data, characterId } = useMagic();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
 
   return (
     <MainLayout>
       <Title
         link={{ label: "Editar", path: `/character-edit?id=${characterId}` }}
+        control={isControl || isMaster}
       >
         Informações
       </Title>
-      <ContainerWrap   isLoading={isLoading}>
-          <FieldView label="Nome" content={data?.name} />
-          <FieldView label="Profissão" content={data?.profession} />
-          <FieldView
-            label="Data Nascimento"
-            content={
-              data?.birthDate
-                ? new Date(data.birthDate).toLocaleDateString("pt-BR")
-                : ""
-            }
-          />
-          <FieldView label="Local de Nascimento" content={data?.birthPlace} />
-          <FieldView label="Sexo" content={data?.gender?.toLocaleUpperCase()} />
-          <FieldView label="Idade" content={data?.age} colSm={3} col={3} />
-          <FieldView
-            label="Idade Aparente"
-            content={data?.apparentAge}
-            colSm={3}
-            col={3}
-          />
-          <FieldView
-            label="Altura (cm)"
-            content={data?.heightCm}
-            colSm={3}
-            col={3}
-          />
-          <FieldView
-            label="Peso (kg)"
-            content={data?.weightKg}
-            colSm={3}
-            col={3}
-          />
-          <FieldView label="Religião" content={data?.religion} />
-        </ContainerWrap>
+      <ContainerWrap isLoading={isLoading}>
+        <FieldView label="Nome" content={data?.name} />
+        <FieldView label="Profissão" content={data?.profession} />
+        <FieldView
+          label="Data Nascimento"
+          content={
+            data?.birthDate
+              ? new Date(data.birthDate).toLocaleDateString("pt-BR")
+              : ""
+          }
+        />
+        <FieldView label="Local de Nascimento" content={data?.birthPlace} />
+        <FieldView label="Sexo" content={data?.gender?.toLocaleUpperCase()} />
+        <FieldView label="Idade" content={data?.age} colSm={3} col={3} />
+        <FieldView
+          label="Idade Aparente"
+          content={data?.apparentAge}
+          colSm={3}
+          col={3}
+        />
+        <FieldView
+          label="Altura (cm)"
+          content={data?.heightCm}
+          colSm={3}
+          col={3}
+        />
+        <FieldView
+          label="Peso (kg)"
+          content={data?.weightKg}
+          colSm={3}
+          col={3}
+        />
+        <FieldView label="Religião" content={data?.religion} />
+      </ContainerWrap>
     </MainLayout>
   );
 }

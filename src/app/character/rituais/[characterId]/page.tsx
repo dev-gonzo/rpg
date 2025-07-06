@@ -6,9 +6,14 @@ import MainLayout from "@/app/layouts/MainLayout";
 import { useRitual } from "./useRitual";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Rituais() {
   const { data, isLoading, characterId } = useRitual();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
+
   return (
     <MainLayout>
       <Title
@@ -16,6 +21,7 @@ export default function Rituais() {
           label: "Incluir",
           path: `/character-edit/ritual/${characterId}`,
         }}
+        control={isControl || isMaster}
       >
         Rituais
       </Title>
@@ -27,7 +33,7 @@ export default function Rituais() {
         />
 
         {data?.rituals?.map((item) => (
-          <CardRitual ritual={item} key={item?.id} />
+          <CardRitual ritual={item} key={item?.id} control={isControl || isMaster}/>
         ))}
       </ContainerWrap>
     </MainLayout>

@@ -8,6 +8,7 @@ import { useGet } from "@/app/hooks/fetch/useGet";
 import { useSave } from "@/app/hooks/fetch/useSave";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SPEED } from "@/shared/constants/speed";
 
 const ritualSchema = yup.object({
   characterId: yup.string().required(),
@@ -79,6 +80,9 @@ export function useRitual() {
     try {
       await save(`/api/ritual/${characterId}/${ritualId}`, formData, "PUT");
       setSuccessMessage("Ritual salvo com sucesso!");
+      setTimeout(() => {
+        router.push(`/character/rituais/${characterId}`);
+      }, SPEED.normal);
     } catch {
       setServerError("Erro ao salvar ritual");
     }

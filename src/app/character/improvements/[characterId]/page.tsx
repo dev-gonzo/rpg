@@ -7,9 +7,13 @@ import { useImprovementsView } from "./useImprovementsView";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 import { ImprovementTotal } from "@/app/components/totais/ImprovementTotal";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Improvements() {
-  const { data, characterId , isLoading} = useImprovementsView();
+  const { data, characterId, isLoading } = useImprovementsView();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
 
   return (
     <MainLayout>
@@ -18,6 +22,7 @@ export default function Improvements() {
           label: "Incluir",
           path: `/character-edit/improvements/${characterId}`,
         }}
+        control={isControl || isMaster}
       >
         Aprimoramentos
       </Title>

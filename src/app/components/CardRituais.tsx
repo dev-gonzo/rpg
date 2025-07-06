@@ -5,21 +5,24 @@ import Link from "next/link";
 
 type Props = {
   ritual: Ritual;
+  control: boolean;
 };
 
-export const CardRitual = ({ ritual }: Props) => {
+export const CardRitual = ({ ritual, control }: Props) => {
   return (
     <div className="col-12 col-md-6">
       <div className="card bg-gray">
         <div className="card-body">
           <div className="d-flex justify-content-between">
             <h5 className="card-title">{ritual?.name}</h5>
-            <Link
-              href={`/character-edit/ritual/${ritual?.characterId}/${ritual?.id}`}
-              className="btn btn-link link-secondary ms-0 p-0"
-            >
-              Editar
-            </Link>
+            {control && (
+              <Link
+                href={`/character-edit/ritual/${ritual?.characterId}/${ritual?.id}`}
+                className="btn btn-link link-secondary ms-0 p-0"
+              >
+                Editar
+              </Link>
+            )}
           </div>
           <small className="card-subtitle">{ritual?.pathsForms}</small>
 

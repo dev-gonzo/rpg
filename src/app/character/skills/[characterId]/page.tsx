@@ -7,9 +7,15 @@ import Title from "@/app/components/Title";
 import { SkillTotal } from "@/app/components/totais/SkillTotal";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useSkillView } from "./useSkillView";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Skills() {
   const { data, attributesData, characterId, isLoading } = useSkillView();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
+
+  console.log(isControl, isMaster )
 
   return (
     <MainLayout>
@@ -18,6 +24,7 @@ export default function Skills() {
           label: "Incluir",
           path: `/character-edit/skills/${characterId}`,
         }}
+        control={isControl || isMaster}
       >
         Perícias
       </Title>

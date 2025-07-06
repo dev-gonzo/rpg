@@ -5,12 +5,12 @@ import { CharacterCard } from "../components/CharacterCard";
 import { ContainerWrap } from "../components/ContainerWrap";
 import LoadingWrapper from "../components/LoadingWrapper";
 import Title from "../components/Title";
-import { useAuthGuard } from "../hooks/useAuthGuard";
 import MainLayout from "../layouts/MainLayout";
 import { useHome } from "./useHome";
 
 export default function HomePage() {
-  const { characters, loading } = useHome();
+  const { charactersPerson, charactersPlayers, charactersNpcs, loading } =
+    useHome();
 
   return (
     <MainLayout>
@@ -22,13 +22,36 @@ export default function HomePage() {
       </Title>
 
       <LoadingWrapper isLoading={loading}>
-        <ContainerWrap>
+        <ContainerWrap gy>
           <AlertListEmpty
-            list={characters}
+            test={
+              (charactersPerson?.length ?? 0) > 0 ||
+              (charactersPlayers?.length ?? 0) > 0 ||
+              (charactersNpcs?.length ?? 0) > 0
+            }
             message="Nenhum personagem cadastrado."
           />
 
-          {characters?.map((item) => {
+          {charactersPerson?.map((item) => {
+            return (
+              <div className="col-12 col-md-4" key={item?.id}>
+                <CharacterCard character={item} />
+                <div></div>
+              </div>
+            );
+          })}
+
+          {charactersPlayers?.map((item) => {
+            return (
+              <div className="col-12 col-md-4" key={item?.id}>
+                <CharacterCard character={item} />
+                <div></div>
+              </div>
+            );
+          })}
+
+          <Title>NPCs</Title>
+          {charactersNpcs?.map((item) => {
             return (
               <div className="col-12 col-md-4" key={item?.id}>
                 <CharacterCard character={item} />

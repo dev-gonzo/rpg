@@ -6,9 +6,13 @@ import MainLayout from "@/app/layouts/MainLayout";
 import { useEquipment } from "./useEquipment";
 import { CardEquipment } from "@/app/components/CardEquipment";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Equipment() {
   const { data, characterId, isLoading } = useEquipment();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
 
   return (
     <MainLayout>
@@ -17,6 +21,7 @@ export default function Equipment() {
           label: "Incluir",
           path: `/character-edit/equipment/${characterId}`,
         }}
+        control={isControl || isMaster}
       >
         Equipamentos
       </Title>
@@ -27,7 +32,11 @@ export default function Equipment() {
         />
 
         {data?.map((item) => (
-          <CardEquipment equipment={item} key={item?.id} />
+          <CardEquipment
+            equipment={item}
+            key={item?.id}
+            control={isControl || isMaster}
+          />
         ))}
       </ContainerWrap>
     </MainLayout>

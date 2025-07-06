@@ -1,17 +1,21 @@
 // components/character/CharacterCard.tsx
 "use client";
 
-import { CharacterGet } from "@/shared/types/character/Character";
 import noImageCharacter from "@/assets/no-image-character.png";
-import { useUploadImage } from "../hooks/fetch/useUploadImage";
-import RoundFileUploadButton from "./RoundFileUploadButton";
-import { CharacterInfo } from "./CharacterInfoButton";
-import { useState } from "react";
-import { CharacterBasicInfo } from "./CharacterBasicInfo";
 import Link from "next/link";
-import { Character } from "@prisma/client";
+import { useState } from "react";
+import { CharacterHome } from "../home/useHome";
+import { useUploadImage } from "../hooks/fetch/useUploadImage";
+import { useMasterOrControl } from "../hooks/useMasterOrControl";
+import { CharacterBasicInfo } from "./CharacterBasicInfo";
+import { CharacterInfo } from "./CharacterInfoButton";
+import RoundFileUploadButton from "./RoundFileUploadButton";
 
-export function CharacterCard({ character }: { character: Character }) {
+export function CharacterCard({ character }: { character: CharacterHome }) {
+  const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
+    characterId: character.id,
+  });
+
   const { upload } = useUploadImage();
   const [imageSrc, setImageSrc] = useState(
     `/uploads/${character.id}.jpg?${Date.now()}`
@@ -38,7 +42,7 @@ export function CharacterCard({ character }: { character: Character }) {
         alt={`Foto do personagem ${character.name}`}
         style={{ objectFit: "cover", height: "180px" }}
       />
-      <RoundFileUploadButton fnUpload={handleImageChange} />
+      {isPermission && <RoundFileUploadButton fnUpload={handleImageChange} />}
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{character.name}</h5>
         <p className="card-text mb-3">
@@ -46,7 +50,7 @@ export function CharacterCard({ character }: { character: Character }) {
           <br /> {character.profession}
         </p>
         <div className="card-text mb-0 d-flex justify-content-between">
-          {character.age ? (
+          {character.age && (isMaster || !isNpc) ? (
             <div>
               <strong>Idade:</strong> {character.age} anos
             </div>
@@ -62,23 +66,37 @@ export function CharacterCard({ character }: { character: Character }) {
             <></>
           )}
         </div>
-        <div className="mt-4">
-          <hr className="mt-2 mb-1" />
-          <div className="d-flex justify-content-between pt-1">
-            <h6 className="card-title">Informações principais</h6>
-            <Link
-              href={`/character-edit/main-info/${character?.id}`}
-              className="btn btn-link link-secondary ms-0 p-0 mb-2"
-            >
-              <small>Editar</small>
-            </Link>
+        {(isMaster || !isNpc) && (
+          <div className="mt-4">
+            <hr className="mt-2 mb-1" />
+            <div className="d-flex justify-content-between pt-1">
+              <h6 className="card-title">Informações principais</h6>
+              {isPermission && (
+                <Link
+                  href={`/character-edit/main-info/${character?.id}`}
+                  className="btn btn-link link-secondary ms-0 p-0 mb-2"
+                >
+                  <small>Editar</small>
+                </Link>
+              )}
+            </div>
+            <CharacterBasicInfo
+              character={character}
+              isPermission={isPermission}
+            />
+            <hr className="my-2" />
           </div>
-          <CharacterBasicInfo character={character} />
-          <hr className="my-2" />
-        </div>
-        <div className="mt-4">
-          <CharacterInfo characterId={character.id} />
-        </div>
+        )}
+        {(isMaster || !isNpc) && (
+          <div className="mt-4">
+            <CharacterInfo
+              characterId={character.id}
+              isPermission={isPermission}
+              isControl={isControl}
+              isMaster={isMaster || false}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

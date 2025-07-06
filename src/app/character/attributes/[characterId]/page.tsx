@@ -6,9 +6,13 @@ import Title from "@/app/components/Title";
 import { AttributesTotal } from "@/app/components/totais/AttributesTotal";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useAttributesView } from "./useAttributesView";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Attributes() {
   const { data, characterId, total, loading } = useAttributesView();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
 
   return (
     <MainLayout>
@@ -17,6 +21,7 @@ export default function Attributes() {
           label: "Editar",
           path: `/character-edit/attributes/${characterId}`,
         }}
+        control={isControl || isMaster}
       >
         Atributos
       </Title>

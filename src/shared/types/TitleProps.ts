@@ -7,4 +7,5 @@ export type TitleProps = {
   className?: string;
   back?: boolean;
   home?: boolean;
+  control?: boolean
 };

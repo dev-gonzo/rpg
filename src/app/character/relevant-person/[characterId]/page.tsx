@@ -7,9 +7,14 @@ import { useRelevantPerson } from "./useRelevantPerson";
 import { CardRelevantPerson } from "@/app/components/CardRelevantPerson";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Rituais() {
   const { data, isLoading, characterId } = useRelevantPerson();
+  const { isControl, isMaster } = useMasterOrControl({
+    characterId: characterId,
+  });
+
   return (
     <MainLayout>
       <Title
@@ -17,6 +22,7 @@ export default function Rituais() {
           label: "Incluir",
           path: `/character-edit/relevant-person/${characterId}`,
         }}
+        control={isControl || isMaster}
       >
         Contatos, alidos ou relevantes
       </Title>
@@ -28,7 +34,11 @@ export default function Rituais() {
         />
 
         {data?.map((item) => (
-          <CardRelevantPerson person={item} key={item?.id} />
+          <CardRelevantPerson
+            person={item}
+            key={item?.id}
+            control={isControl || isMaster}
+          />
         ))}
       </ContainerWrap>
     </MainLayout>

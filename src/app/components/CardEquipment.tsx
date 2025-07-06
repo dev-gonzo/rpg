@@ -6,9 +6,10 @@ import { Fragment } from "react";
 
 type Props = {
   equipment: Equipment;
+  control: boolean;
 };
 
-export const CardEquipment = ({ equipment }: Props) => {
+export const CardEquipment = ({ equipment, control }: Props) => {
   const listDetail = [
     { label: "Qtd.", value: equipment?.quantity },
     { label: "Iniciativa", value: equipment?.initiative },
@@ -24,12 +25,14 @@ export const CardEquipment = ({ equipment }: Props) => {
         <div className="card-body">
           <div className="d-flex justify-content-between">
             <h5 className="card-title">{equipment?.name}</h5>
-            <Link
-              href={`/character-edit/equipment/${equipment?.characterId}/${equipment?.id}`}
-              className="btn btn-link link-secondary ms-0 p-0"
-            >
-              Editar
-            </Link>
+            {control && (
+              <Link
+                href={`/character-edit/equipment/${equipment?.characterId}/${equipment?.id}`}
+                className="btn btn-link link-secondary ms-0 p-0"
+              >
+                Editar
+              </Link>
+            )}
           </div>
           <div className="row">
             <small className="card-subtitle">{equipment?.classification}</small>
@@ -37,9 +40,13 @@ export const CardEquipment = ({ equipment }: Props) => {
             <small className="card-subtitle my-3">
               {listDetail?.map((item, index) => (
                 <Fragment key={index}>
-                  {index > 0 && (index + 1) % 4 !== 0 && " | "}
-                  {item?.label}: {item?.value}
-                  {(index + 1) % 3 === 0 && <br />}
+                  {item?.value && item?.value > 0 ? (
+                    <>
+                      {index > 0 && (index + 1) % 4 !== 0 && " | "}
+                      {item?.label}: {item?.value}
+                      {(index + 1) % 3 === 0 && <br />}
+                    </>
+                  ) : null}
                 </Fragment>
               ))}
             </small>

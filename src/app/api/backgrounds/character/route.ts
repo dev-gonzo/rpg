@@ -2,6 +2,7 @@ import { isInternalRequest } from "@/lib/checkOrigin";
 import { prisma } from "@/lib/prisma";
 import * as yup from "yup";
 import { NextRequest, NextResponse } from "next/server";
+import { verifyJwt } from "@/lib/auth";
 
 const characterBackgroundSchema = yup.object({
   characterId: yup
@@ -14,6 +15,19 @@ const characterBackgroundSchema = yup.object({
 });
 
 export async function GET(req: NextRequest) {
+  const payload = verifyJwt(req);
+  if (!payload) {
+    return NextResponse.json(
+      { error: "Usuário não autenticado" },
+      { status: 401 }
+    );
+  }
+
+  const { isMaster, userId } = payload as {
+    isMaster?: boolean;
+    userId: string;
+  };
+
   const url = new URL(req.url);
   const characterId = url.searchParams.get("characterId");
 
@@ -28,8 +42,37 @@ export async function GET(req: NextRequest) {
     const backgrounds = await prisma.characterBackground.findMany({
       where: { characterId },
       orderBy: { createdAt: "asc" },
+      include: { character: true },
     });
-    return NextResponse.json({ backgrounds }, { status: 200 });
+
+    let backgroundResponse = backgrounds;
+
+    if (!isMaster) {
+      backgroundResponse = backgrounds.filter((item) => {
+        const controlUserIdRaw = item.character?.controlUserId;
+        const userIdRaw = userId;
+
+        console.log(
+          "Comparando controlUserId:",
+          `"${controlUserIdRaw}"`,
+          typeof controlUserIdRaw
+        );
+        console.log("Com userId:", `"${userIdRaw}"`, typeof userIdRaw);
+
+        if (!controlUserIdRaw || !userIdRaw) return false;
+
+        const controlUserId = controlUserIdRaw.trim().toLowerCase();
+        const currentUserId = userIdRaw.trim().toLowerCase();
+
+        const equal = controlUserId === currentUserId;
+
+        console.log("IDs iguais?", equal);
+
+        return item.isPublic === true || equal;
+      });
+    }
+
+    return NextResponse.json({ backgrounds: backgroundResponse }, { status: 200 });
   } catch (err) {
     console.error("Error fetching character backgrounds:", err);
     return NextResponse.json(
