@@ -22,8 +22,6 @@ export function useImprovements() {
 
   const {
     data,
-    loading: getLoding,
-    error: getError,
     onPath,
   } = useGet<{
     improvement: Improvement;

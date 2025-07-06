@@ -1,16 +1,17 @@
 "use client";
 
 import { SkillType } from "@/shared/types/character/SkillType";
+import { Skill } from "@prisma/client";
+import Link from "next/link";
 
-type SkillViewProps = {
-  skill: SkillType;
-  attributes: Record<string, number> | null
+type Props = {
+  skill: Skill;
+  attributes: Record<string, number> | null;
 };
 
-export function SkillsView({ skill, attributes }: SkillViewProps) {
-
+export function SkillsView({ skill, attributes }: Props) {
   const attributeValue =
-          attributes && skill?.attribute ? attributes[skill?.attribute] : null;
+    attributes && skill?.attribute ? attributes[skill?.attribute] : null;
 
   return (
     <div className="col-12 col-md-6">
@@ -28,9 +29,21 @@ export function SkillsView({ skill, attributes }: SkillViewProps) {
             </div>
             <div className="col-6 text-end d-flex justify-content-end flex-column pe-3">
               <span className="h1 fw-bold">
-                {(skill?.kitValue ?? 0) + (skill?.cost ?? 0) + (attributeValue ?? 0)} %
+                {(skill?.kitValue ?? 0) +
+                  (skill?.cost ?? 0) +
+                  (attributeValue ?? 0)}{" "}
+                %
               </span>
               <small>Total</small>
+            </div>
+
+            <div className="col-12 d-flex justify-content-start">
+              <Link
+                href={`/character-edit/skills/${skill?.characterId}/${skill?.id}`}
+                className="btn btn-link link-secondary ms-0 p-0 btn-sm"
+              >
+                Editar
+              </Link>
             </div>
           </div>
         </div>

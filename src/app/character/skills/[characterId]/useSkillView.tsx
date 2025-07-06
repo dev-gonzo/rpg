@@ -1,7 +1,7 @@
 "use client";
 
 import { useGet } from "@/app/hooks/fetch/useGet";
-import { SkillType } from "@/shared/types/character/SkillType";
+import { Skill } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -10,7 +10,7 @@ export const useSkillView = () => {
   const characterId = params.characterId as string;
 
   const { data, loading, onParams } = useGet<{
-    skills: SkillType[];
+    skills: Skill[];
   }>();
 
   const { data: attributesData, onParams: loadAttributes } = useGet<{
@@ -24,7 +24,7 @@ export const useSkillView = () => {
     loadAttributes("/api/attributes", { characterId });
   }, [characterId]);
 
-  function sortSkills(skills: SkillType[]): SkillType[] {
+  function sortSkills(skills: Skill[]): Skill[] {
     return skills.slice().sort((a, b) => {
       if (a.group === null && b.group !== null) return 1;
       if (a.group !== null && b.group === null) return -1;
