@@ -10,7 +10,6 @@ import { useMasterOrControl } from "../hooks/useMasterOrControl";
 import { CharacterBasicInfo } from "./CharacterBasicInfo";
 import { CharacterInfo } from "./CharacterInfoButton";
 import RoundFileUploadButton from "./RoundFileUploadButton";
-import Image from "next/image";
 
 export function CharacterCard({ character }: { character: CharacterHome }) {
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
