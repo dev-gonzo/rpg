@@ -16,7 +16,6 @@ export function CharacterCard({ character }: { character: CharacterHome }) {
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
     characterId: character.id,
   });
-
   const { upload } = useUploadImage();
   const [imageSrc, setImageSrc] = useState(
     `/uploads/${character.id}.jpg?${Date.now()}`
