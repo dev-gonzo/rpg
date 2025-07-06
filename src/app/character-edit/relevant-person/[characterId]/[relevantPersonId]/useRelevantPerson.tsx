@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { SPEED } from "@/shared/constants/speed";
 
 const relevantPersonSchema = yup.object({
   characterId: yup.string().uuid().required(),
@@ -35,9 +36,9 @@ export function useRelevantPerson() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
-  const { data, loading, error, onPath } = useGet<{
+  const { data, loading, onPath } = useGet<{
     relevantPerson: RelevantPersonFormData;
-  }>();
+  }>({initialLoading: true});
 
   const {
     register,
@@ -85,13 +86,13 @@ export function useRelevantPerson() {
           formData,
           "PUT"
         );
-        setSuccessMessage("Pessoa relevante atualizada com sucesso!");
+        setSuccessMessage("Pessoa atualizada com sucesso!");
         setTimeout(() => {
           router.push(`/character/relevant-person/${characterId}`);
-        }, 700);
+        }, SPEED.normal);
       }
     } catch {
-      setServerError("Erro inesperado ao salvar pessoa relevante.");
+      setServerError("Erro inesperado ao salvar pessoa.");
     }
   };
 
@@ -104,6 +105,6 @@ export function useRelevantPerson() {
     serverError,
     successMessage,
     isSaving: saveLoading,
-    isLoading: loading || false,
+    isLoading: loading,
   };
 }

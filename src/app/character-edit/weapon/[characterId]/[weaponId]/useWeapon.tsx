@@ -27,7 +27,7 @@ export function useWeapon() {
   const characterId = params.characterId as string;
   const weaponId = params.weaponId as string;
 
-  const { data, loading, error, onPath } = useGet<{ weapon: WeaponFormData }>();
+  const { data, loading, onPath } = useGet<{ weapon: WeaponFormData }>({initialLoading: true});
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const {

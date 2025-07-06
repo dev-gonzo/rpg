@@ -9,6 +9,7 @@ import { useBackgrounds } from "./useBackgrounds";
 import { AlertMessage } from "@/app/components/AlertMessage";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
 import { ModalCustom } from "@/app/components/ModalCustom";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
 
 export default function SimpleEditor() {
   const {
@@ -22,29 +23,13 @@ export default function SimpleEditor() {
     handleChangeText,
     text,
     successMessage,
-    onDelete,
-    showModalDelete,
-    setShowModalDelete,
-    deleting,
-    deleteError,
   } = useBackgrounds();
-
-  if (isLoading) {
-    return (
-      <MainLayout>
-        <Title back>Background</Title>
-        <div className="container my-4 text-light">
-          Carregando background...
-        </div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>
       <Title back>Background</Title>
-      <div className="container mt-3">
-        <form onSubmit={handleSubmit} className="row gap-3">
+      <form onSubmit={handleSubmit}>
+        <ContainerWrap gap isLoading={isLoading}>
           <div className="col-12 d-flex align-items-end gap-2">
             <div className="flex-grow-1">
               <label className="form-label">Título</label>
@@ -57,15 +42,6 @@ export default function SimpleEditor() {
               {errors.title && (
                 <div className="invalid-feedback">{errors.title.message}</div>
               )}
-            </div>
-            <div>
-              <button
-                className="btn btn-outline-danger"
-                type="button"
-                onClick={() => setShowModalDelete()}
-              >
-                Excluir
-              </button>
             </div>
           </div>
 
@@ -92,21 +68,8 @@ export default function SimpleEditor() {
 
           <AlertMessage error={serverError} success={successMessage} />
           <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />
-        </form>
-      </div>
-
-      <ModalCustom
-        show={showModalDelete}
-        onHide={() => setShowModalDelete()}
-        title="Excluir Aprimoramento"
-        actionLabel={deleting ? "Salvando..." : "Excluir"}
-        onAction={onDelete}
-        size="lg"
-      >
-        <h4>Deseja excluir o background?</h4>
-
-        <AlertMessage error={deleteError} success={successMessage} />
-      </ModalCustom>
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

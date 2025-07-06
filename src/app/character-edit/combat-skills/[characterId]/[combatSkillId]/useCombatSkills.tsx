@@ -19,9 +19,9 @@ export function useCombatSkills() {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { data, onPath } = useGet<{
+  const { data, onPath, loading } = useGet<{
     combatSkill: CombatSkill;
-  }>();
+  }>({ initialLoading: true });
 
   const { save, error } = useSave();
 
@@ -62,7 +62,11 @@ export function useCombatSkills() {
           attackKitValue: Number(data.attackKitValue),
           defenseKitValue: Number(data.defenseKitValue),
         };
-        await save(`/api/combat-skills/${characterId}/${combatSkillId}`, payload, "PUT");
+        await save(
+          `/api/combat-skills/${characterId}/${combatSkillId}`,
+          payload,
+          "PUT"
+        );
 
         setSuccessMessage("Perícia de Combate editada com sucesso!");
 
@@ -84,5 +88,6 @@ export function useCombatSkills() {
     control,
     onSubmit,
     serverError: error,
+    isLoading: loading,
   };
 }

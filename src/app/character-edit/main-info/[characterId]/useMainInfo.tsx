@@ -22,11 +22,10 @@ export function useMainInfo() {
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(!!characterId);
 
   const { data, loading, error, onParams } = useGet<{
     characters: Character[];
-  }>();
+  }>({initialLoading: true});
 
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
@@ -50,7 +49,6 @@ export function useMainInfo() {
     if (!characterId) return;
 
     setServerError(null);
-    setIsLoading(true);
     onParams("/api/characters", { characterId });
   }, [characterId]);
 
@@ -74,11 +72,8 @@ export function useMainInfo() {
   useEffect(() => {
     if (error) {
       setServerError(error);
-      setIsLoading(false);
-    } else if (!loading) {
-      setIsLoading(false);
-    }
-  }, [loading, error]);
+    } 
+  }, [error]);
 
   useEffect(() => {
     if (saveError) setServerError(saveError);
@@ -114,7 +109,7 @@ export function useMainInfo() {
     reset,
     errors,
     isSubmitting,
-    isLoading,
+    isLoading: loading,
     isSaving: saveLoading,
     serverError,
     successMessage,

@@ -8,6 +8,7 @@ import { useGet } from "@/app/hooks/fetch/useGet";
 import { useSave } from "@/app/hooks/fetch/useSave";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SPEED } from "@/shared/constants/speed";
 
 const equipamentSchema = yup.object({
   name: yup.string().required("Nome é obrigatório"),
@@ -19,7 +20,7 @@ const equipamentSchema = yup.object({
   agilityPenalty: yup.number().nullable(),
   initiative: yup.number().nullable(),
   bookPage: yup.string().nullable(),
-  description : yup.string().nullable(),
+  description: yup.string().nullable(),
 });
 
 export type EquipamentFormData = yup.InferType<typeof equipamentSchema>;
@@ -30,7 +31,6 @@ export function useEquipment() {
   const characterId = params.characterId as string;
   const equipmentId = params.equipmentId as string | undefined;
 
-  const { data, loading, error, onPath } = useGet<{ equipment: EquipamentFormData }>();
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const [serverError, setServerError] = useState<string | null>(null);
@@ -40,7 +40,6 @@ export function useEquipment() {
     control,
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<EquipamentFormData>({
     resolver: yupResolver(equipamentSchema) as any,
@@ -58,20 +57,6 @@ export function useEquipment() {
     },
   });
 
-  useEffect(() => {
-    if (!equipmentId) return;
-    onPath(`/api/equipment/${characterId}/${equipmentId}`);
-  }, [equipmentId]);
-
-  useEffect(() => {
-    if (data?.equipment) {
-      reset(data.equipment);
-    }
-  }, [data, reset]);
-
-  useEffect(() => {
-    if (error || saveError) setServerError(error || saveError);
-  }, [error, saveError]);
 
   const onSubmit: SubmitHandler<EquipamentFormData> = async (formData) => {
     setServerError(null);
@@ -90,12 +75,16 @@ export function useEquipment() {
 
       const response = await save(url, formData, method);
 
-      setSuccessMessage(equipmentId ? "Equipamento atualizado com sucesso!" : "Equipamento criado com sucesso!");
+      setSuccessMessage(
+        equipmentId
+          ? "Equipamento atualizado com sucesso!"
+          : "Equipamento criado com sucesso!"
+      );
 
       if (!equipmentId && response?.equipment?.id) {
         setTimeout(() => {
           router.push(`/character/equipment/${characterId}`);
-        }, 1000);
+        }, SPEED.normal);
       }
     } catch {
       setServerError("Erro inesperado ao salvar equipamento");
@@ -113,6 +102,6 @@ export function useEquipment() {
     isSubmitting,
     isSaving: saveLoading,
     serverError,
-    successMessage,
+    successMessage
   };
 }

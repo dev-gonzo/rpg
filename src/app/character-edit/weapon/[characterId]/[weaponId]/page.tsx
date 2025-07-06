@@ -13,7 +13,6 @@ import { useWeapon } from "./useWeapon";
 
 export default function Weapon() {
   const {
-    characterId,
     control,
     errors,
     register,
@@ -23,13 +22,14 @@ export default function Weapon() {
     isSaving,
     serverError,
     successMessage,
+    isLoading
   } = useWeapon();
   
 
   return (
     <MainLayout>
       <Title>Armas</Title>
-      <ContainerWrap gap>
+      <ContainerWrap gap isLoading={isLoading}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
             label="Name"

@@ -8,6 +8,7 @@ import { Resolver, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
+import { SPEED } from "@/shared/constants/speed";
 
 const backgroundSchema = yup.object({
   title: yup.string().required("Título é obrigatório"),
@@ -65,7 +66,7 @@ export function useCreateBackground() {
       setSuccessMessage("Background incluido com sucesso!");
       setTimeout(() => {
         router.push(`/character/backgrounds/${characterId}`);
-      }, 700);
+      }, SPEED.normal);
     }
   });
 

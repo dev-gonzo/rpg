@@ -10,8 +10,6 @@ import { useNotes } from "./useNotes";
 
 export default function Notes() {
   const {
-    characterId,
-    control,
     register,
     errors,
     handleSubmit,
@@ -20,14 +18,15 @@ export default function Notes() {
     isSaving,
     serverError,
     successMessage,
+    isLoading,
   } = useNotes();
   return (
     <MainLayout>
       <Title>Notas</Title>
-      <ContainerWrap>
-        <div className="col-12">
+      <ContainerWrap isLoading={isLoading}>
+        <div className="col-12 col-md-6 text-center px-5">
           <div
-            className="alert alert-warning bg-transparent border-0"
+            className="alert alert-warning bg-transparent border-0 m-0 pb-0"
             role="alert"
             style={{ fontSize: "12px" }}
           >

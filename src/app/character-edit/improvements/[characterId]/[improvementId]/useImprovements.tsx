@@ -20,14 +20,15 @@ export function useImprovements() {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const {
-    data,
-    onPath,
-  } = useGet<{
+  const { data, onPath, loading } = useGet<{
     improvement: Improvement;
-  }>();
+  }>({ initialLoading: true });
 
-  const { save, loading, error } = useSave<{ improvement: Improvement }>();
+  const {
+    save,
+    loading: saving,
+    error,
+  } = useSave<{ improvement: Improvement }>();
 
   const {
     register,
@@ -62,7 +63,11 @@ export function useImprovements() {
           kitValue: Number(data.kitValue) ?? 0,
           cost: Number(data.cost),
         };
-        await save(`/api/improvements/${characterId}/${improvementId}`, payload, "PUT");
+        await save(
+          `/api/improvements/${characterId}/${improvementId}`,
+          payload,
+          "PUT"
+        );
 
         setSuccessMessage("Aprimoramento atualizado com sucesso!");
         setTimeout(() => {
@@ -80,9 +85,10 @@ export function useImprovements() {
     handleSubmit,
     onSubmit,
     errors,
-    isSubmitting: loading,
+    isSubmitting: saving,
     control,
     serverError: error,
     successMessage,
+    isLoading: loading,
   };
 }

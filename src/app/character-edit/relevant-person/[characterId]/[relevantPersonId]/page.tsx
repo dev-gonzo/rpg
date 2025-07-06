@@ -9,6 +9,7 @@ import { Textarea } from "@/app/components/form/Textarea";
 import { SelectBox } from "@/app/components/form/SelectBox";
 import { AlertMessage } from "@/app/components/AlertMessage";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
 
 export default function RelevantPersonPage() {
   const {
@@ -20,13 +21,14 @@ export default function RelevantPersonPage() {
     serverError,
     successMessage,
     isSaving,
+    isLoading,
   } = useRelevantPerson();
 
   return (
     <MainLayout>
       <Title back>Pessoas Relevantes</Title>
-      <div className="container">
-        <form onSubmit={handleSubmit(onSubmit)} noValidate className="row">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <ContainerWrap isLoading={isLoading}>
           <InputField
             label="Nome"
             name="name"
@@ -76,7 +78,6 @@ export default function RelevantPersonPage() {
             md={12}
           />
 
-            
           <AlertMessage error={serverError} success={successMessage} />
 
           <SubmitButton
@@ -84,8 +85,8 @@ export default function RelevantPersonPage() {
             isSubmitting={isSubmitting}
             label="Salvar"
           />
-        </form>
-      </div>
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

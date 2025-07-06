@@ -14,8 +14,6 @@ import { GenericNumberInput } from "@/app/components/form/GenericNumberInput";
 
 export default function Equipament() {
   const {
-    characterId,
-    equipmentId,
     control,
     errors,
     register,
@@ -25,13 +23,14 @@ export default function Equipament() {
     isSaving,
     serverError,
     successMessage,
+    isLoading,
   } = useEquipament();
 
   return (
     <MainLayout>
       <Title back>Equipamentos</Title>
-      <ContainerWrap>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <ContainerWrap isLoading={isLoading}>
           <InputField
             label="Nome"
             name="name"
@@ -116,8 +115,8 @@ export default function Equipament() {
             isSubmitting={isSubmitting}
             label="Salvar"
           />
-        </form>
-      </ContainerWrap>
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

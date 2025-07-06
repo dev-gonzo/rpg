@@ -8,6 +8,7 @@ import { DatePicker } from "@/app/components/form/DatePicker";
 import { InputField } from "@/app/components/form/InputField";
 import { SelectBox } from "@/app/components/form/SelectBox";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
+import { ContainerWrap } from "../components/ContainerWrap";
 
 export default function CharacterFormPage() {
   const {
@@ -36,8 +37,8 @@ export default function CharacterFormPage() {
   return (
     <MainLayout>
       <Title back>Editar Personagem</Title>
-      <div className="container my-4">
-        <form onSubmit={handleSubmit(onSubmit)} noValidate className="row">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <ContainerWrap isLoading={isLoading}>
           <InputField
             name="name"
             label="Nome"
@@ -116,12 +117,11 @@ export default function CharacterFormPage() {
             errors={errors}
           />
 
-            <AlertMessage error={serverError} success={successMessage} />
-      
+          <AlertMessage error={serverError} success={successMessage} />
 
           <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />
-        </form>
-      </div>
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

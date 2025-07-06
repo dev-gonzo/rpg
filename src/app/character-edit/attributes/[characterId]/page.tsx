@@ -21,22 +21,11 @@ export default function CharacterAttributes() {
     total,
   } = useCharacterAttributes();
 
-  if (isLoading) {
-    return (
-      <MainLayout>
-        <Title>Atributos do Personagem</Title>
-        <div className="container my-4 text-light">
-          <p>Carregando atributos...</p>
-        </div>
-      </MainLayout>
-    );
-  }
-
   return (
     <MainLayout>
       <Title back>Atributos do Personagem</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ContainerWrap justifyCenter>
+        <ContainerWrap justifyCenter isLoading={isLoading}>
           <AttributeInput name="CON" control={control} />
           <AttributeInput name="FR" control={control} />
           <AttributeInput name="DEX" control={control} />

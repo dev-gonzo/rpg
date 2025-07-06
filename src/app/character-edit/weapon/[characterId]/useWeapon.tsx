@@ -8,6 +8,7 @@ import { useGet } from "@/app/hooks/fetch/useGet";
 import { useSave } from "@/app/hooks/fetch/useSave";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SPEED } from "@/shared/constants/speed";
 
 const weaponSchema = yup.object({
   name: yup.string().required("Nome é obrigatório"),
@@ -26,9 +27,7 @@ export function useWeapon() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading, error, onPath } = useGet<{
-    weapons: WeaponFormData[];
-  }>();
+
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const {
@@ -52,21 +51,6 @@ export function useWeapon() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!characterId) return;
-    onPath(`/api/weapon/${characterId}`);
-  }, [characterId]);
-
-  useEffect(() => {
-    if (data?.weapons?.length) {
-      reset(data.weapons[0]);
-    }
-  }, [data, reset]);
-
-  useEffect(() => {
-    if (error) setServerError(error);
-  }, [error]);
-
-  useEffect(() => {
     if (saveError) setServerError(saveError);
   }, [saveError]);
 
@@ -81,7 +65,7 @@ export function useWeapon() {
       setSuccessMessage("Arma salva com sucesso!");
       setTimeout(() => {
         router.push(`/character/weapon/${characterId}`);
-      }, 700);
+      }, SPEED.normal);
     } catch {
       setServerError("Erro inesperado ao salvar arma.");
     }

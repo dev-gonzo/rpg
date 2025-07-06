@@ -19,6 +19,7 @@ export default function Improvements() {
     onSubmit,
     serverError,
     successMessage,
+    isLoading
   } = useImprovements();
 
   return (
@@ -26,7 +27,7 @@ export default function Improvements() {
       <Title back>Editar Aprimoramento</Title>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <ContainerWrap>
+        <ContainerWrap isLoading={isLoading}>
           <InputField
             name="name"
             label="Aprimoramento"

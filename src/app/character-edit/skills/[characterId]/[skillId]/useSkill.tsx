@@ -21,9 +21,10 @@ export function useSkills() {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { data, onPath } = useGet<{ skill: Skill }>();
+  const { data, onPath, loading } = useGet<{ skill: Skill }>({initialLoading: true}
+);
 
-  const { save, loading: saving, error: saveError } = useSave<any>();
+  const { save, loading: saving, error } = useSave<any>();
 
   const {
     control,
@@ -47,13 +48,13 @@ export function useSkills() {
     }
   }, [data, reset]);
 
-  const onSubmit: SubmitHandler<SkillType> = useCallback(
+  const onSubmit: SubmitHandler<Skill> = useCallback(
     async (data) => {
       setSuccessMessage(null);
       try {
         const payload = {
-          characterId,
           ...data,
+          characterId,
           kitValue: Number(data.kitValue),
           cost: Number(data.cost),
           group: data.group || null,
@@ -75,6 +76,7 @@ export function useSkills() {
   );
 
   return {
+    serverError: error,
     successMessage,
     saving,
     control,
@@ -83,5 +85,6 @@ export function useSkills() {
     onSubmit,
     errors,
     isSubmitting,
+    isLoading: loading
   };
 }

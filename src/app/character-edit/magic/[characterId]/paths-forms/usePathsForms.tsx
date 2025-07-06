@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, useParams } from "next/navigation";
 import { useGet } from "@/app/hooks/fetch/useGet";
 import { useSave } from "@/app/hooks/fetch/useSave";
+import { SPEED } from "@/shared/constants/speed";
 
 const pathsFormsSchema = yup.object({
   understandForm: yup.number().required().min(0),
@@ -38,9 +39,9 @@ export function usePathsForms() {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { data, loading, error, onPath } = useGet<{
+  const { data, loading, onPath } = useGet<{
     pathsAndForms: PathsFormsType;
-  }>();
+  }>({ initialLoading: true });
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const { control, reset, handleSubmit, formState } = useForm<PathsFormsType>({
@@ -83,9 +84,24 @@ export function usePathsForms() {
 
     try {
       if (data?.pathsAndForms) {
-        await save(`/api/magic/${characterId}/paths-forms`, { characterId, ...formData }, "PUT");
+        await save(
+          `/api/magic/${characterId}/paths-forms`,
+          { characterId, ...formData },
+          "PUT"
+        );
+
+        setTimeout(() => {
+          router.push(`/character/magic/${characterId}`);
+        }, SPEED.normal);
       } else {
-        await save(`/api/magic/${characterId}/paths-forms`, { characterId, ...formData }, "POST");
+        await save(
+          `/api/magic/${characterId}/paths-forms`,
+          { characterId, ...formData },
+          "POST"
+        );
+        setTimeout(() => {
+          router.push(`/character/magic/${characterId}`);
+        }, SPEED.normal);
       }
       setSuccessMessage("Dados salvos com sucesso!");
     } catch {
@@ -102,5 +118,6 @@ export function usePathsForms() {
     successMessage,
     handleSubmit,
     onSubmit,
+    isLoading: loading,
   };
 }

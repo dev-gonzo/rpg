@@ -12,21 +12,20 @@ export default function MainInfo() {
   const {
     control,
     errors,
-    characterId,
     handleSubmit,
     onSubmit,
     serverError,
     successMessage,
     isLoading,
     isSubmitting,
-    isSaving
+    isSaving,
   } = useMainInfo();
 
   return (
     <MainLayout>
       <Title>Informações principais</Title>
-      <ContainerWrap gap>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <ContainerWrap gap isLoading={isLoading}>
           <GenericNumberInput
             label="Pontos de Vida"
             name="hitPoints"
@@ -77,8 +76,8 @@ export default function MainInfo() {
             isSubmitting={isSubmitting}
             label="Salvar"
           />
-        </form>
-      </ContainerWrap>
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

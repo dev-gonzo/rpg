@@ -22,6 +22,7 @@ export default function Skills() {
     onSubmit,
     errors,
     isSubmitting,
+    isLoading
   } = useSkills();
 
   return (
@@ -29,7 +30,7 @@ export default function Skills() {
       <Title back>Perícias</Title>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <ContainerWrap gap>
+        <ContainerWrap gap justifyCenter isLoading={isLoading}>
           <InputField
             name="group"
             label="Grupo"

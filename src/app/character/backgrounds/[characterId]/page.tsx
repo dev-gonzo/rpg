@@ -14,7 +14,7 @@ export default function Backgrounds() {
     <MainLayout>
       <Title
         link={{
-          label: "Adicionar",
+          label: "Incluir",
           path: `/character-edit/backgrounds/character/${characterId}`,
         }}
       >

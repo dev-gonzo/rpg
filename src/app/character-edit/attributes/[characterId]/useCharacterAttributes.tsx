@@ -7,6 +7,7 @@ import { AttributesForm } from "@/shared/types/character/AttributesForm";
 import { useGet } from "@/app/hooks/fetch/useGet";
 import { useSave } from "@/app/hooks/fetch/useSave";
 import { useRouter } from "next/navigation";
+import { SPEED } from "@/shared/constants/speed";
 
 export function useCharacterAttributes() {
   const router = useRouter();
@@ -14,11 +15,10 @@ export function useCharacterAttributes() {
   const characterId = params.characterId as string;
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const { data, loading, onParams } = useGet<{
     attribute: AttributesForm;
-  }>();
+  }>({initialLoading: true});
   const { save, loading: saving, error: saveError } = useSave();
 
   const {
@@ -51,9 +51,6 @@ export function useCharacterAttributes() {
     }
   }, [data, reset]);
 
-  useEffect(() => {
-    setIsLoading(loading);
-  }, [loading]);
 
   useEffect(() => {
     if (saveError) setServerError(saveError);
@@ -81,7 +78,7 @@ export function useCharacterAttributes() {
         if (!data?.attribute) {
           setTimeout(() => {
             router.push(`/character/attributes/${characterId}`);
-          }, 700);
+          }, SPEED.normal);
         }
       } catch {
         setServerError("Erro inesperado ao salvar atributos");
@@ -95,7 +92,7 @@ export function useCharacterAttributes() {
     handleSubmit,
     onSubmit,
     reset,
-    isLoading,
+    isLoading: loading,
     isSubmitting,
     saving,
     serverError,

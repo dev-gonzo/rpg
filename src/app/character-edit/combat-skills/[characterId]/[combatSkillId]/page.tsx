@@ -15,12 +15,12 @@ export default function CombatSkillsPage() {
     register,
     handleSubmit,
     errors,
-    reset,
     control,
     onSubmit,
     serverError,
     successMessage,
     isSubmitting,
+    isLoading
   } = useCombatSkills();
 
   return (
@@ -28,7 +28,7 @@ export default function CombatSkillsPage() {
       <Title back>Perícias de Combate</Title>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <ContainerWrap>
+        <ContainerWrap isLoading={isLoading}>
           <InputField
             name="group"
             label="Grupo"

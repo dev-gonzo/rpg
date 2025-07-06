@@ -8,10 +8,10 @@ import { Textarea } from "@/app/components/form/Textarea";
 import { AlertMessage } from "@/app/components/AlertMessage";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
 import { useRitual } from "./useRitualId";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
 
 export default function Ritual() {
   const {
-    control,
     register,
     errors,
     handleSubmit,
@@ -20,49 +20,48 @@ export default function Ritual() {
     isSaving,
     serverError,
     successMessage,
+    isLoading,
   } = useRitual();
 
   return (
     <MainLayout>
       <Title back>Rituais</Title>
-      <div className="container">
-        <div className="row">
-          <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <InputField
-              label="Nome"
-              name="name"
-              register={register}
-              errors={errors}
-            />
-            <InputField
-              label="Formas e Caminhos"
-              name="pathsForms"
-              register={register}
-              errors={errors}
-            />
-            <Textarea
-              label="Descrição"
-              name="description"
-              register={register}
-              errors={errors}
-            />
-            <InputField
-              label="Livro e Página"
-              name="bookPage"
-              register={register}
-              errors={errors}
-            />
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <ContainerWrap isLoading={isLoading}>
+          <InputField
+            label="Nome"
+            name="name"
+            register={register}
+            errors={errors}
+          />
+          <InputField
+            label="Formas e Caminhos"
+            name="pathsForms"
+            register={register}
+            errors={errors}
+          />
+          <Textarea
+            label="Descrição"
+            name="description"
+            register={register}
+            errors={errors}
+          />
+          <InputField
+            label="Livro e Página"
+            name="bookPage"
+            register={register}
+            errors={errors}
+          />
 
-            <AlertMessage error={serverError} success={successMessage} />
+          <AlertMessage error={serverError} success={successMessage} />
 
-            <SubmitButton
-              isLoading={isSaving}
-              isSubmitting={isSubmitting}
-              label="Salvar"
-            />
-          </form>
-        </div>
-      </div>
+          <SubmitButton
+            isLoading={isSaving}
+            isSubmitting={isSubmitting}
+            label="Salvar"
+          />
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

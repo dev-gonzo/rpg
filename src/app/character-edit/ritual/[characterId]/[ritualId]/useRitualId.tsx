@@ -25,7 +25,7 @@ export function useRitual() {
   const characterId = params.characterId as string;
   const ritualId = params.ritualId as string;
 
-  const { data, loading, error, onPath } = useGet<{ ritual: RitualFormData }>();
+  const { data, loading, error, onPath } = useGet<{ ritual: RitualFormData }>({initialLoading: true});
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const {
@@ -91,6 +91,7 @@ export function useRitual() {
     onSubmit,
     isSubmitting,
     isSaving: saveLoading,
+    isLoading: loading,
     serverError,
     successMessage,
   };

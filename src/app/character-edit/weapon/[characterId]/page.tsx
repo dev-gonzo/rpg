@@ -13,7 +13,6 @@ import { Textarea } from "@/app/components/form/Textarea";
 
 export default function Weapon() {
   const {
-    characterId,
     control,
     errors,
     register,

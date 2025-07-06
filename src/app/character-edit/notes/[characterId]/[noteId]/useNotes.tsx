@@ -24,7 +24,7 @@ export function useNotes() {
 
   const { data, loading, error, onPath } = useGet<{
     note: Note;
-  }>();
+  }>({ initialLoading: true });
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const {
@@ -90,5 +90,6 @@ export function useNotes() {
     isSaving: saveLoading,
     serverError,
     successMessage,
+    isLoading: loading,
   };
 }

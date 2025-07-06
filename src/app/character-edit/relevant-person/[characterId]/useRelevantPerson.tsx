@@ -2,6 +2,7 @@
 "use client";
 
 import { useSave } from "@/app/hooks/fetch/useSave";
+import { SPEED } from "@/shared/constants/speed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -62,12 +63,12 @@ export function useRelevantPerson() {
 
     try {
       await save(`/api/relevant-person/${characterId}`, data, "POST");
-      setSuccessMessage("Pessoa relevante cadastrada com sucesso!");
+      setSuccessMessage("Pessoa cadastrada com sucesso!");
       setTimeout(() => {
         router.push(`/character/relevant-person/${characterId}`);
-      }, 700);
+      }, SPEED.normal);
     } catch {
-      setServerError("Erro inesperado ao salvar pessoa relevante.");
+      setServerError("Erro inesperado ao salvar pessoa.");
     }
   };
 

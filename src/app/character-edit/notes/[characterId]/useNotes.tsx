@@ -21,9 +21,6 @@ export function useNotes() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading, error, onPath } = useGet<{
-    note: Note;
-  }>();
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const {
@@ -41,21 +38,6 @@ export function useNotes() {
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!characterId) return;
-    onPath(`/api/notes/${characterId}`);
-  }, [characterId]);
-
-  useEffect(() => {
-    if (data?.note) {
-      reset(data.note);
-    }
-  }, [data, reset]);
-
-  useEffect(() => {
-    if (error) setServerError(error);
-  }, [error]);
 
   useEffect(() => {
     if (saveError) setServerError(saveError);

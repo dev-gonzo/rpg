@@ -32,7 +32,7 @@ export function useEquipament() {
 
   const { data, loading, error, onPath } = useGet<{
     equipment: EquipamentFormData;
-  }>(); 
+  }>({ initialLoading: true });
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const [serverError, setServerError] = useState<string | null>(null);
@@ -112,5 +112,6 @@ export function useEquipament() {
     isSaving: saveLoading,
     serverError,
     successMessage,
+    isLoading: loading,
   };
 }
