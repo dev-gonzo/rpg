@@ -2,6 +2,7 @@
 
 import { useGet } from "@/app/hooks/fetch/useGet";
 import { ImprovementType } from "@/shared/types/character/ImprovementType";
+import { Improvement } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -10,7 +11,7 @@ export const useImprovementsView = () => {
   const characterId = params.characterId as string;
 
   const { data, loading, onParams } = useGet<{
-    improvements: ImprovementType[];
+    improvements: Improvement[];
   }>();
 
   useEffect(() => {

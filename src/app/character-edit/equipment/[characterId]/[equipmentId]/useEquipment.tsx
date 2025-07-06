@@ -7,6 +7,7 @@ import { useGet } from "@/app/hooks/fetch/useGet";
 import { useSave } from "@/app/hooks/fetch/useSave";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SPEED } from "@/shared/constants/speed";
 
 const equipamentSchema = yup.object({
   name: yup.string().required("Nome é obrigatório"),
@@ -31,7 +32,7 @@ export function useEquipament() {
 
   const { data, loading, error, onPath } = useGet<{
     equipment: EquipamentFormData;
-  }>();
+  }>(); 
   const { save, loading: saveLoading, error: saveError } = useSave<any>();
 
   const [serverError, setServerError] = useState<string | null>(null);

@@ -2,13 +2,24 @@
 
 type Props = {
   children: React.ReactNode[] | React.ReactNode;
-  gap?: boolean
+  gap?: boolean;
+  justifyCenter?: boolean;
 };
 
-export const ContainerWrap = ({ children, gap = false}: Props) => {
+export const ContainerWrap = ({
+  children,
+  gap = false,
+  justifyCenter = false,
+}: Props) => {
   return (
-    <div className="container">
-      <div className={`row ${gap ? "gap-3" : ""}`}>{children}</div>
+    <div className={`container`}>
+      <div
+        className={`row ${gap ? "gap-3" : ""} ${
+          justifyCenter ? "justify-content-center" : ""
+        }`}
+      >
+        {children}
+      </div>
     </div>
   );
 };

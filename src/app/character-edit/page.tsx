@@ -35,7 +35,7 @@ export default function CharacterFormPage() {
 
   return (
     <MainLayout>
-      <Title>Editar Personagem</Title>
+      <Title back>Editar Personagem</Title>
       <div className="container my-4">
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="row">
           <InputField
@@ -48,7 +48,7 @@ export default function CharacterFormPage() {
           <InputField
             name="profession"
             label="Profissão"
-            md={6}
+            md={9}
             register={register}
             errors={errors}
           />
@@ -112,7 +112,6 @@ export default function CharacterFormPage() {
           <InputField
             name="religion"
             label="Religião"
-            md={6}
             register={register}
             errors={errors}
           />

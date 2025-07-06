@@ -11,6 +11,7 @@ import {
   faPersonRifle,
   faToolbox,
   faUserSecret,
+  faFilePen,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Fragment } from "react";
@@ -40,7 +41,7 @@ export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
     },
     { link: "/character/magic/", icon: faHatWizard, label: "Magias" },
     { link: "/character/rituais/", icon: faBookSkull, label: "Grimório" },
-    { link: "/character/backgrounds/", icon: faPersonRifle, label: "Armas" },
+    { link: "/character/weapon/", icon: faPersonRifle, label: "Armas" },
     { link: "/character/equipment/", icon: faToolbox, label: "Equipamentos" },
     {
       link: "/character/relevant-person/",
@@ -51,6 +52,11 @@ export const CharacterInfo = ({ characterId }: CharacterInfoProps) => {
       link: "/character/backgrounds/",
       icon: faFeatherPointed,
       label: "Background",
+    },
+    {
+      link: "/character/notes/",
+      icon: faFilePen,
+      label: "Notas",
     },
   ];
 

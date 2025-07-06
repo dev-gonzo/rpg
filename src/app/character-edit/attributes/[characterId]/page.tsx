@@ -6,6 +6,7 @@ import { AlertMessage } from "@/app/components/AlertMessage";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
 import { AttributeInput } from "@/app/components/form/AttributeInput";
 import { useCharacterAttributes } from "./useCharacterAttributes";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
 
 export default function CharacterAttributes() {
   const {
@@ -34,8 +35,8 @@ export default function CharacterAttributes() {
   return (
     <MainLayout>
       <Title back>Atributos do Personagem</Title>
-      <div className="container my-4">
-        <form onSubmit={handleSubmit(onSubmit)} className="row">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ContainerWrap justifyCenter>
           <AttributeInput name="CON" control={control} />
           <AttributeInput name="FR" control={control} />
           <AttributeInput name="DEX" control={control} />
@@ -53,9 +54,12 @@ export default function CharacterAttributes() {
 
           <AlertMessage error={serverError} success={successMessage} />
 
-          <SubmitButton isLoading={saving || isLoading} isSubmitting={isSubmitting} />
-        </form>
-      </div>
+          <SubmitButton
+            isLoading={saving || isLoading}
+            isSubmitting={isSubmitting}
+          />
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

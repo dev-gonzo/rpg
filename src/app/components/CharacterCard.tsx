@@ -8,8 +8,10 @@ import RoundFileUploadButton from "./RoundFileUploadButton";
 import { CharacterInfo } from "./CharacterInfoButton";
 import { useState } from "react";
 import { CharacterBasicInfo } from "./CharacterBasicInfo";
+import Link from "next/link";
+import { Character } from "@prisma/client";
 
-export function CharacterCard({ character }: { character: CharacterGet }) {
+export function CharacterCard({ character }: { character: Character }) {
   const { upload } = useUploadImage();
   const [imageSrc, setImageSrc] = useState(
     `/uploads/${character.id}.jpg?${Date.now()}`
@@ -61,10 +63,21 @@ export function CharacterCard({ character }: { character: CharacterGet }) {
           )}
         </div>
         <div className="mt-4">
-          <CharacterBasicInfo />
+          <hr className="mt-2 mb-1" />
+          <div className="d-flex justify-content-between pt-1">
+            <h6 className="card-title">Informações principais</h6>
+            <Link
+              href={`/character-edit/main-info/${character?.id}`}
+              className="btn btn-link link-secondary ms-0 p-0 mb-2"
+            >
+              <small>Editar</small>
+            </Link>
+          </div>
+          <CharacterBasicInfo character={character} />
+          <hr className="my-2" />
         </div>
         <div className="mt-4">
-          <CharacterInfo characterId={character.id}/>
+          <CharacterInfo characterId={character.id} />
         </div>
       </div>
     </div>

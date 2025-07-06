@@ -126,14 +126,28 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   const payload = verifyJwt(req);
-  if (!payload) return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
+  if (!payload)
+    return NextResponse.json(
+      { error: "Usuário não autenticado" },
+      { status: 401 }
+    );
 
   try {
     const body = await req.json();
-    if (!body.id) return NextResponse.json({ error: "Id do personagem é obrigatório para atualização" }, { status: 400 });
+    if (!body.id)
+      return NextResponse.json(
+        { error: "Id do personagem é obrigatório para atualização" },
+        { status: 400 }
+      );
 
-    const existingCharacter = await prisma.character.findUnique({ where: { id: body.id } });
-    if (!existingCharacter) return NextResponse.json({ error: "Personagem não encontrado" }, { status: 404 });
+    const existingCharacter = await prisma.character.findUnique({
+      where: { id: body.id },
+    });
+    if (!existingCharacter)
+      return NextResponse.json(
+        { error: "Personagem não encontrado" },
+        { status: 404 }
+      );
 
     const mergedData = { ...existingCharacter, ...body };
     const normalizedBody = normalizePayload(mergedData);
@@ -142,7 +156,10 @@ export async function PUT(req: NextRequest) {
 
     const birthDate = new Date(normalizedBody.birthDate);
     if (isNaN(birthDate.getTime())) {
-      return NextResponse.json({ error: "Data de nascimento inválida." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Data de nascimento inválida." },
+        { status: 400 }
+      );
     }
 
     // Seleciona somente os campos que existem na tabela e esquema
@@ -161,6 +178,18 @@ export async function PUT(req: NextRequest) {
       cabala: normalizedBody.cabala,
       rank: normalizedBody.rank,
       mentor: normalizedBody.mentor,
+      hitPoints: normalizedBody.hitPoints,
+      currentHitPoints: normalizedBody.currentHitPoints,
+      initiative: normalizedBody.initiative,
+      currentInitiative: normalizedBody.currentInitiative,
+      heroPoints: normalizedBody.heroPoints,
+      currentHeroPoints: normalizedBody.currentHeroPoints,
+      magicPoints: normalizedBody.magicPoints,
+      currentMagicPoints: normalizedBody.currentMagicPoints,
+      faithPoints: normalizedBody.faithPoints,
+      currentFaithPoints: normalizedBody.currentFaithPoints,
+      protectionIndex: normalizedBody.protectionIndex,
+      currentProtectionIndex: normalizedBody.currentProtectionIndex,
     };
 
     const character = await prisma.character.update({
@@ -172,12 +201,17 @@ export async function PUT(req: NextRequest) {
   } catch (err: any) {
     console.error("Erro na atualização do personagem:", err);
     if (err.name === "ValidationError") {
-      return NextResponse.json({ error: err.errors?.[0] ?? "Validation error" }, { status: 400 });
+      return NextResponse.json(
+        { error: err.errors?.[0] ?? "Validation error" },
+        { status: 400 }
+      );
     }
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }
-
 
 // export async function PUT(req: NextRequest) {
 //   const payload = verifyJwt(req);
@@ -283,7 +317,6 @@ export async function PUT(req: NextRequest) {
 //     return NextResponse.json({ error: "Internal server error." }, { status: 500 });
 //   }
 // }
-
 
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);

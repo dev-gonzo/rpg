@@ -1,4 +1,4 @@
-const SPEED = {
+export const SPEED = {
   falsh: 300,
   normal: 700,
   slow: 1400,

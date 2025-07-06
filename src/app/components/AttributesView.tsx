@@ -18,10 +18,10 @@ export function AttributesView({
               <strong>{label}</strong>
               <br />({abbreviation})
             </div>
-            <div className="col-3">
+            <div className="col-2">
               <h1>{value}</h1>
             </div>
-            <div className="col-3 text-end d-flex justify-content-end flex-column pe-3">
+            <div className="col-4 text-end d-flex justify-content-end flex-column pe-3">
               <h1>{value ? value * 4 : 0} %</h1>
             </div>
           </div>

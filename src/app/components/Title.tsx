@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 
 export default function Title({
   children,
-  className = "",
   link,
   back = false,
   home = true
@@ -12,9 +11,9 @@ export default function Title({
   const router = useRouter();
 
   return (
-    <div className="px-3">
-      <div className="d-flex justify-content-between">
-        <h1 className={`fs-6 fw-bold mb-1 ${className}`}>{children}</h1>
+    <div className="container-fluid">
+      <div className="container d-flex justify-content-between align-items-end p-0">
+        <h1 className={`fs-6 fw-bold mb-1 ms-0 ps-0 `}>{children}</h1>
         <div className="d-flex justify-content-end gap-2">
           {home ? (
             <Link href={"/"} className="btn btn-sm btn-outline-light">
