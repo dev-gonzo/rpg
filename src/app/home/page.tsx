@@ -1,5 +1,6 @@
 "use client";
 
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import { AlertListEmpty } from "../components/AlertListEmpty";
 import { CharacterCard } from "../components/CharacterCard";
 import { ContainerWrap } from "../components/ContainerWrap";
@@ -54,7 +55,7 @@ export default function HomePage() {
 
           {charactersNpcs?.length > 0 ? (
             <div className="col-12 mt-4">
-              <Title>NPCs</Title>
+              <Title home={false}>NPCs</Title>
             </div>
           ) : null}
           {charactersNpcs?.map((item) => {
