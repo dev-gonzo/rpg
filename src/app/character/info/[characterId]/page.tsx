@@ -4,9 +4,11 @@ import { FieldView } from "@/app/components/FieldView";
 import Title from "@/app/components/Title";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useMagic } from "./useMagic";
+import { Container } from "react-bootstrap";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
 
 export default function Magic() {
-  const { isLoading, data, dataPathsForms, characterId } = useMagic();
+  const { isLoading, data, characterId } = useMagic();
 
   return (
     <MainLayout>
@@ -15,8 +17,7 @@ export default function Magic() {
       >
         Informações
       </Title>
-      <div className="container">
-        <div className="row ">
+      <ContainerWrap   isLoading={isLoading}>
           <FieldView label="Nome" content={data?.name} />
           <FieldView label="Profissão" content={data?.profession} />
           <FieldView
@@ -49,8 +50,7 @@ export default function Magic() {
             col={3}
           />
           <FieldView label="Religião" content={data?.religion} />
-        </div>
-      </div>
+        </ContainerWrap>
     </MainLayout>
   );
 }

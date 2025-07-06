@@ -12,7 +12,7 @@ export function useRelevantPerson() {
 
   const { data, loading, error, onPath } = useGet<{
     relevantPeople: RelevantPerson[];
-  }>();
+  }>({ initialLoading: true });
 
   useEffect(() => {
     if (!characterId) return;
@@ -30,7 +30,7 @@ export function useRelevantPerson() {
 
   return {
     data: sortedList,
-    loading,
+    isLoading: loading,
     characterId,
   };
 }

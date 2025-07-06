@@ -11,7 +11,8 @@ export function useWeapon() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading: loading, onPath } = useGet<{ weapons: Weapon[] }>();
+  const { data, loading, onPath } = useGet<{ weapons: Weapon[] }>({initialLoading: true}
+);
 
   useEffect(() => {
     if (!characterId) return;

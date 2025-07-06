@@ -11,7 +11,7 @@ export function useEquipment() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading: loading, onPath } = useGet<{ equipments: Equipment[] }>();
+  const { data, loading: loading, onPath } = useGet<{ equipments: Equipment[] }>({initialLoading: true});
 
   useEffect(() => {
     if (!characterId) return;

@@ -2,6 +2,7 @@
 
 import { useGet } from "@/app/hooks/fetch/useGet";
 import { useEffect } from "react";
+import LoadingWrapper from "../LoadingWrapper";
 
 type Props = {
   characterId: string;
@@ -13,7 +14,7 @@ type TotalResponse = {
 };
 
 export const ImprovementTotal = ({ characterId }: Props) => {
-  const { data, loading, error, onPath } = useGet<TotalResponse>();
+  const { data, loading, error, onPath } = useGet<TotalResponse>({initialLoading: true});
 
   useEffect(() => {
     if (!characterId) return;
@@ -22,9 +23,11 @@ export const ImprovementTotal = ({ characterId }: Props) => {
   }, [characterId]);
 
   return (
-    <div className="col-12 text-center">
-      <span>Total Kit: {data?.totalKit} | </span>
-      <span>Total Gasto: {data?.totalCost}</span>
-    </div>
+    <LoadingWrapper isLoading={loading} noSpinner>
+      <div className="col-12 text-center">
+        <span>Total Kit: {data?.totalKit} | </span>
+        <span>Total Gasto: {data?.totalCost}</span>
+      </div>
+    </LoadingWrapper>
   );
 };

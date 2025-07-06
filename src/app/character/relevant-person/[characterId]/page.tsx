@@ -9,7 +9,7 @@ import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
 export default function Rituais() {
-  const { data, loading, characterId } = useRelevantPerson();
+  const { data, isLoading, characterId } = useRelevantPerson();
   return (
     <MainLayout>
       <Title
@@ -21,7 +21,7 @@ export default function Rituais() {
         Contatos, alidos ou relevantes
       </Title>
 
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty
           list={data ?? []}
           message="Nenhum contato ou aliado cadastrado."

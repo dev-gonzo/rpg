@@ -1,11 +1,20 @@
+"use client";
+
 import { useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 import { Params } from "next/dist/server/request/params";
+import { useValidateAuth } from "../useValidateAuth";
 
-export function useGet<T>() {
+type Props = {
+  initialLoading?: boolean;
+};
+
+export function useGet<T>({ initialLoading = false }: Props = {}) {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(initialLoading);
   const [error, setError] = useState<string | null>(null);
+
+  useValidateAuth();
 
   async function onPath(path: string) {
     setLoading(true);

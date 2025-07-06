@@ -1,9 +1,16 @@
+import { useValidateAuth } from "../useValidateAuth";
+
 // hooks/useUploadImage.ts
 export function useUploadImage() {
-  const upload = async (file: File, characterId: string): Promise<string | null> => {
+  const upload = async (
+    file: File,
+    characterId: string
+  ): Promise<string | null> => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("characterId", characterId); // ✅ envia o ID
+    formData.append("characterId", characterId);
+
+    useValidateAuth();
 
     try {
       const res = await fetch("/api/characters/upload", {

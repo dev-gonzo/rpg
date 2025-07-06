@@ -13,7 +13,7 @@ export const useBackgroundsView = () => {
 
   const { data, loading, onParams } = useGet<{
     backgrounds: BackgroundResponse[];
-  }>();
+  }>({initialLoading: true});
 
   const { save } = useSave();
 
@@ -47,7 +47,7 @@ export const useBackgroundsView = () => {
   }, [characterId]);
 
   return {
-    loading,
+    isLoading: loading,
     data: data?.backgrounds ?? [],
     characterId,
     handleSetPublic,

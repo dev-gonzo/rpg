@@ -9,7 +9,7 @@ import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 import { ImprovementTotal } from "@/app/components/totais/ImprovementTotal";
 
 export default function Improvements() {
-  const { data, characterId } = useImprovementsView();
+  const { data, characterId , isLoading} = useImprovementsView();
 
   return (
     <MainLayout>
@@ -22,7 +22,7 @@ export default function Improvements() {
         Aprimoramentos
       </Title>
 
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty
           list={data?.improvements ?? []}
           message="Nenhum aprimoramento cadastrado."

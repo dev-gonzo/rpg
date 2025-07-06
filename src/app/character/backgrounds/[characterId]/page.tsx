@@ -8,7 +8,7 @@ import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
 export default function Backgrounds() {
-  const { data, characterId, handleSetPublic } = useBackgroundsView();
+  const { data, characterId, handleSetPublic, isLoading } = useBackgroundsView();
 
   return (
     <MainLayout>
@@ -21,7 +21,7 @@ export default function Backgrounds() {
         Backgrounds
       </Title>
 
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty
           list={data ?? []}
           message="Nenhuma história cadastrada."

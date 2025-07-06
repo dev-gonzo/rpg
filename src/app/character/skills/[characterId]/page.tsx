@@ -9,7 +9,7 @@ import MainLayout from "@/app/layouts/MainLayout";
 import { useSkillView } from "./useSkillView";
 
 export default function Skills() {
-  const { data, attributesData, characterId } = useSkillView();
+  const { data, attributesData, characterId, isLoading } = useSkillView();
 
   return (
     <MainLayout>
@@ -22,7 +22,7 @@ export default function Skills() {
         Perícias
       </Title>
 
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty list={data} message="Nenhuma perícia cadastrada." />
 
         <SkillTotal characterId={characterId} />

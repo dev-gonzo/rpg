@@ -11,11 +11,11 @@ export const useCombatSkillView = () => {
 
   const { data, loading, onParams } = useGet<{
     combatSkills: CombatSkill[];
-  }>();
+  }>({initialLoading: true});
 
-  const { data: attributesData, onParams: loadAttributes } = useGet<{
+  const { data: attributesData, onParams: loadAttributes, loading: loadingAttributes } = useGet<{
     attribute: Record<string, number>;
-  }>();
+  }>({initialLoading: true});
 
   useEffect(() => {
     if (!characterId) return;
@@ -43,7 +43,7 @@ export const useCombatSkillView = () => {
     : [];
 
   return {
-    loading,
+    isLoading: loading || loadingAttributes,
     data: sortedSkills,
     characterId,
     attributesData,

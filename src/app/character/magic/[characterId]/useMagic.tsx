@@ -17,14 +17,15 @@ export function useMagic() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading, error, onParams } = useGet<{characters: Character[]}>();
+  const { data, loading, onParams } = useGet<{ characters: Character[] }>({
+    initialLoading: true,
+  });
 
   const {
     data: dataPathsForms,
     loading: loadingPathsForms,
-    error: errorPathsForms,
     onPath,
-  } = useGet<{pathsAndForms: PathsAndForms}>();
+  } = useGet<{ pathsAndForms: PathsAndForms }>({ initialLoading: true });
 
   useEffect(() => {
     if (!characterId) return;

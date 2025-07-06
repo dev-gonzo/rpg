@@ -10,7 +10,9 @@ export function useNotes() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading, error, onPath } = useGet<{ notes: Note[] }>();
+  const { data, loading, error, onPath } = useGet<{ notes: Note[] }>({
+    initialLoading: true,
+  });
 
   useEffect(() => {
     if (!characterId) return;
@@ -19,7 +21,7 @@ export function useNotes() {
 
   return {
     data,
-    loading,
+    isLoading: loading,
     characterId,
   };
 }

@@ -10,8 +10,6 @@ import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 export default function Weapon() {
   const { data, characterId, isLoading } = useWeapon();
 
-  console.log(data);
-
   return (
     <MainLayout>
       <Title
@@ -22,7 +20,7 @@ export default function Weapon() {
       >
         Armas
       </Title>
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty list={data ?? []} message="Nenhum arma cadastrada." />
 
         {data?.map((item) => (

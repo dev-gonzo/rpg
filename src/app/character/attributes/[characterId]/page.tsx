@@ -1,14 +1,14 @@
 "use client";
 
-import Title from "@/app/components/Title";
-import MainLayout from "@/app/layouts/MainLayout";
-import { useAttributesView } from "./useAttributesView";
 import { AttributesView } from "@/app/components/AttributesView";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
+import Title from "@/app/components/Title";
 import { AttributesTotal } from "@/app/components/totais/AttributesTotal";
+import MainLayout from "@/app/layouts/MainLayout";
+import { useAttributesView } from "./useAttributesView";
 
 export default function Attributes() {
-  const { data, characterId, total } = useAttributesView();
+  const { data, characterId, total, loading } = useAttributesView();
 
   return (
     <MainLayout>
@@ -20,7 +20,8 @@ export default function Attributes() {
       >
         Atributos
       </Title>
-      <ContainerWrap gap justifyCenter>
+
+      <ContainerWrap gap justifyCenter isLoading={loading}>
         <AttributesTotal total={total} />
         <AttributesView
           label="Constituição"

@@ -8,7 +8,7 @@ import { CardEquipment } from "@/app/components/CardEquipment";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
 export default function Equipment() {
-  const { data, characterId } = useEquipment();
+  const { data, characterId, isLoading } = useEquipment();
 
   return (
     <MainLayout>
@@ -20,7 +20,7 @@ export default function Equipment() {
       >
         Equipamentos
       </Title>
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty
           list={data ?? []}
           message="Nenhum equipamento cadastrado."

@@ -11,6 +11,7 @@ import { useSave } from "@/app/hooks/fetch/useSave";
 import { magicSchema } from "@/shared/schemas/character/magicSchema";
 import { MagicType } from "@/shared/types/character/MagicType";
 import { Character } from "@prisma/client";
+import { SPEED } from "@/shared/constants/speed";
 
 export function useMainInfo() {
   const router = useRouter();
@@ -95,18 +96,14 @@ export function useMainInfo() {
         return;
       }
 
-      const response = await save(url, { ...formData, id: characterId }, "PUT");
+      await save(url, { ...formData, id: characterId }, "PUT");
 
       setSuccessMessage("Personagem atualizado com sucesso!");
 
-      if (!characterId && response?.character?.id) {
-        setTimeout(() => {
-          router.push(`/character-edit/attributes/${response.character.id}`);
-        }, 1000);
-      }
-    } catch {
-      setServerError("Erro inesperado ao salvar personagem");
-    }
+      setTimeout(() => {
+        router.push(`/home`);
+      }, SPEED.normal);
+    } catch {}
   };
 
   return {

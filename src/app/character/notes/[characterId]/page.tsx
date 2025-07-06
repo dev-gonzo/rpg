@@ -8,8 +8,8 @@ import { useNotes } from "./useNotes";
 import { CardNote } from "@/app/components/CardNote";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
-export default function Rituais() {
-  const { data, loading, characterId } = useNotes();
+export default function Notes() {
+  const { data, isLoading, characterId } = useNotes();
   return (
     <MainLayout>
       <Title
@@ -21,7 +21,7 @@ export default function Rituais() {
         Anotações
       </Title>
 
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty
           list={data?.notes ?? []}
           message="Nenhuma anotação cadastrada."

@@ -8,7 +8,7 @@ import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { AlertListEmpty } from "@/app/components/AlertListEmpty";
 
 export default function Rituais() {
-  const { data, loading, characterId } = useRitual();
+  const { data, isLoading, characterId } = useRitual();
   return (
     <MainLayout>
       <Title
@@ -20,7 +20,7 @@ export default function Rituais() {
         Rituais
       </Title>
 
-      <ContainerWrap gap justifyCenter>
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty
           list={data?.rituals ?? []}
           message="Nenhum ritual cadastrado."

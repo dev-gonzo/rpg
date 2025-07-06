@@ -10,7 +10,9 @@ export function useRitual() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading, error, onPath } = useGet<{ rituals: Ritual[] }>();
+  const { data, loading, onPath } = useGet<{ rituals: Ritual[] }>({
+    initialLoading: true,
+  });
 
   useEffect(() => {
     if (!characterId) return;
@@ -19,7 +21,7 @@ export function useRitual() {
 
   return {
     data,
-    loading,
+    isLoading: loading,
     characterId,
   };
 }
