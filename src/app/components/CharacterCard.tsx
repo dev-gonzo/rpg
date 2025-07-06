@@ -43,7 +43,6 @@ export function CharacterCard({ character }: { character: CharacterHome }) {
         alt={`Foto do personagem ${character.name}`}
         style={{ objectFit: "cover", height: "180px" }}
       />
-      <h1>{`/api/uploads/${character.id}.jpg?${Date.now()}`}</h1>
       {isPermission && <RoundFileUploadButton fnUpload={handleImageChange} />}
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{character.name}</h5>
