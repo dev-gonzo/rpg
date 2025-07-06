@@ -105,5 +105,7 @@ export function useRelevantPerson() {
     successMessage,
     isSaving: saveLoading,
     isLoading: loading,
+    characterId,
+    relevantPersonId
   };
 }

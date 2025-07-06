@@ -21,8 +21,9 @@ export function useSkills() {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { data, onPath, loading } = useGet<{ skill: Skill }>({initialLoading: true}
-);
+  const { data, onPath, loading } = useGet<{ skill: Skill }>({
+    initialLoading: true,
+  });
 
   const { save, loading: saving, error } = useSave<any>();
 
@@ -85,6 +86,8 @@ export function useSkills() {
     onSubmit,
     errors,
     isSubmitting,
-    isLoading: loading
+    isLoading: loading,
+    characterId,
+    skillId,
   };
 }

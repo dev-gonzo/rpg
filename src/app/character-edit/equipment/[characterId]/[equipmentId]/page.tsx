@@ -24,6 +24,8 @@ export default function Equipament() {
     serverError,
     successMessage,
     isLoading,
+    characterId,
+    equipmentId,
   } = useEquipament();
 
   return (
@@ -114,6 +116,8 @@ export default function Equipament() {
             isLoading={isSaving}
             isSubmitting={isSubmitting}
             label="Salvar"
+            pathDelete={`/api/equipment/${characterId}/${equipmentId}`}
+            pathRedirect={`/character/equipment/${characterId}`}
           />
         </ContainerWrap>
       </form>

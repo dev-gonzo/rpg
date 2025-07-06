@@ -1,6 +1,5 @@
 "use client";
 
-
 import { AlertMessage } from "@/app/components/AlertMessage";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
 import Title from "@/app/components/Title";
@@ -10,7 +9,6 @@ import { SelectBox } from "@/app/components/form/SelectBox";
 import { SubmitButton } from "@/app/components/form/SubmitButton";
 import MainLayout from "@/app/layouts/MainLayout";
 import { useSkills } from "./useSkill";
-
 
 export default function Skills() {
   const {
@@ -22,7 +20,9 @@ export default function Skills() {
     onSubmit,
     errors,
     isSubmitting,
-    isLoading
+    isLoading,
+    characterId,
+    skillId,
   } = useSkills();
 
   return (
@@ -77,7 +77,12 @@ export default function Skills() {
 
           <AlertMessage error={serverError} success={successMessage} />
 
-          <SubmitButton isLoading={isSubmitting} isSubmitting={isSubmitting} />
+          <SubmitButton
+            isLoading={isSubmitting}
+            isSubmitting={isSubmitting}
+            pathDelete={`/api/skills/${characterId}/${skillId}`}
+            pathRedirect={`/character/skills/${characterId}`}
+          />
         </ContainerWrap>
       </form>
     </MainLayout>

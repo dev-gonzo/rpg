@@ -20,7 +20,9 @@ export default function CombatSkillsPage() {
     serverError,
     successMessage,
     isSubmitting,
-    isLoading
+    isLoading,
+    characterId,
+    skillId,
   } = useCombatSkills();
 
   return (
@@ -84,7 +86,12 @@ export default function CombatSkillsPage() {
 
           <AlertMessage error={serverError} success={successMessage} />
 
-          <SubmitButton isLoading={isSubmitting} isSubmitting={isSubmitting} />
+          <SubmitButton
+            isLoading={isSubmitting}
+            isSubmitting={isSubmitting}
+            pathDelete={`/api/combat-skills/${characterId}/${skillId}`}
+            pathRedirect={`/character/combat-skills/${characterId}`}
+          />
         </ContainerWrap>
       </form>
     </MainLayout>

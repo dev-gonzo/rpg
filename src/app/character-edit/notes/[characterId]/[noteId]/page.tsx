@@ -19,6 +19,8 @@ export default function Notes() {
     serverError,
     successMessage,
     isLoading,
+    characterId,
+    noteId
   } = useNotes();
   return (
     <MainLayout>
@@ -46,7 +48,12 @@ export default function Notes() {
           />
           <AlertMessage error={serverError} success={successMessage} />
 
-          <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />
+          <SubmitButton
+            isLoading={isSaving}
+            isSubmitting={isSubmitting}
+            pathDelete={`/api/notes/${characterId}/${noteId}`}
+            pathRedirect={`/character/notes/${characterId}`}
+          />
         </form>
       </ContainerWrap>
     </MainLayout>

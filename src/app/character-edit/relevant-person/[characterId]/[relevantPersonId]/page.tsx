@@ -22,6 +22,8 @@ export default function RelevantPersonPage() {
     successMessage,
     isSaving,
     isLoading,
+    characterId,
+    relevantPersonId
   } = useRelevantPerson();
 
   return (
@@ -84,6 +86,8 @@ export default function RelevantPersonPage() {
             isLoading={isSaving}
             isSubmitting={isSubmitting}
             label="Salvar"
+            pathDelete={`/api/relevant-person/${characterId}/${relevantPersonId}`}
+            pathRedirect={`/character/relevant-person/${characterId}`}
           />
         </ContainerWrap>
       </form>

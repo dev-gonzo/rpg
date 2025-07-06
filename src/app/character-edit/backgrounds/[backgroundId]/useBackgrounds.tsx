@@ -99,6 +99,8 @@ export function useBackgrounds() {
     isLoading: loading,
     isSaving: saving,
     handleChangeText,
-    text
+    text,
+    characterId: data?.background?.characterId,
+    backgroundId,
   };
 }

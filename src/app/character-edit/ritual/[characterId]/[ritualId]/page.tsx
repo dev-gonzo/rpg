@@ -21,6 +21,8 @@ export default function Ritual() {
     serverError,
     successMessage,
     isLoading,
+    characterId,
+    ritualId
   } = useRitual();
 
   return (
@@ -59,6 +61,8 @@ export default function Ritual() {
             isLoading={isSaving}
             isSubmitting={isSubmitting}
             label="Salvar"
+            pathDelete={`/api/ritual/${characterId}/${ritualId}`}
+            pathRedirect={`/character/rituais/${characterId}`}
           />
         </ContainerWrap>
       </form>

@@ -22,7 +22,9 @@ export default function Weapon() {
     isSaving,
     serverError,
     successMessage,
-    isLoading
+    isLoading,
+    characterId,
+    weaponId
   } = useWeapon();
   
 
@@ -87,6 +89,8 @@ export default function Weapon() {
             isLoading={isSaving}
             isSubmitting={isSubmitting}
             label="Salvar"
+            pathDelete={`/api/weapon/${characterId}/${weaponId}`}
+            pathRedirect={`/character/weapon/${characterId}`}
           />
         </form>
       </ContainerWrap>

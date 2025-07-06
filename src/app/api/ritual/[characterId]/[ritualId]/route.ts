@@ -20,10 +20,7 @@ export async function GET(
     });
 
     if (!ritual) {
-      return NextResponse.json(
-        { error: "Ritual not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Ritual not found" }, { status: 404 });
     }
 
     return NextResponse.json({ ritual }, { status: 200 });
@@ -78,3 +75,49 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { characterId: string; ritualId: string } }
+) {
+  const { characterId, ritualId } = params;
+
+  if (!characterId || !ritualId) {
+    return NextResponse.json(
+      { error: "characterId and ritualId are required" },
+      { status: 400 }
+    );
+  }
+
+  // A lógica de exclusão pode usar characterId para validação,
+  // ou só o ritualId, conforme sua regra de negócio.
+  // Exemplo:
+  try {
+    const ritual = await prisma.ritual.findUnique({
+      where: { id: ritualId },
+    });
+
+    if (!ritual) {
+      return NextResponse.json(
+        { error: "Ritual not found" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.ritual.delete({
+      where: { id: ritualId },
+    });
+
+    return NextResponse.json(
+      { message: "Ritual deleted successfully" },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error("Error deleting ritual:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+

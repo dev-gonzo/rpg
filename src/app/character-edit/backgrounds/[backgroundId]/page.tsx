@@ -23,6 +23,8 @@ export default function SimpleEditor() {
     handleChangeText,
     text,
     successMessage,
+    characterId,
+    backgroundId,
   } = useBackgrounds();
 
   return (
@@ -67,7 +69,12 @@ export default function SimpleEditor() {
           <div className="col-12 mt-1 "></div>
 
           <AlertMessage error={serverError} success={successMessage} />
-          <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />
+          <SubmitButton
+            isLoading={isSaving}
+            isSubmitting={isSubmitting}
+            pathDelete={`/api/backgrounds/${backgroundId}`}
+            pathRedirect={`/character/backgrounds/${characterId}`}
+          />
         </ContainerWrap>
       </form>
     </MainLayout>

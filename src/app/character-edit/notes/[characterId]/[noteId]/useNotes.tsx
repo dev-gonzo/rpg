@@ -91,5 +91,6 @@ export function useNotes() {
     serverError,
     successMessage,
     isLoading: loading,
+    noteId
   };
 }

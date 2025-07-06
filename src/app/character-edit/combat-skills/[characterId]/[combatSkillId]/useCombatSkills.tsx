@@ -89,5 +89,7 @@ export function useCombatSkills() {
     onSubmit,
     serverError: error,
     isLoading: loading,
+    characterId,
+    skillId: combatSkillId,
   };
 }
