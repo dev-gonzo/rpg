@@ -10,8 +10,10 @@ type ModalCustomProps = {
   onAction: () => void;
   title: string;
   children: ReactNode;
-  size?: "sm" |  "lg" | "xl";
+  size?: "sm" | "lg" | "xl";
   centered?: boolean;
+  isLoading?: boolean;
+  btnDanger?: boolean;
 };
 
 export function ModalCustom({
@@ -23,14 +25,11 @@ export function ModalCustom({
   children,
   size = "sm",
   centered = true,
+  isLoading = false,
+  btnDanger = false,
 }: ModalCustomProps) {
   return (
-    <Modal
-      show={show}
-      onHide={onHide}
-      size={size}
-      centered={centered}
-    >
+    <Modal show={show} onHide={onHide} size={size} centered={centered}>
       <Modal.Header closeButton className="bg-dark text-light">
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
@@ -38,10 +37,14 @@ export function ModalCustom({
       <Modal.Body className="bg-dark text-light">{children}</Modal.Body>
 
       <Modal.Footer className="bg-dark text-light">
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" onClick={onHide} disabled={isLoading}>
           Cancelar
         </Button>
-        <Button variant="outline-light" onClick={onAction}>
+        <Button
+          variant={`outline-${btnDanger ? "danger" : "light"}`}
+          onClick={onAction}
+          disabled={isLoading}
+        >
           {actionLabel}
         </Button>
       </Modal.Footer>

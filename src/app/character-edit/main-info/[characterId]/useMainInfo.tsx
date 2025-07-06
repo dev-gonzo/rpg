@@ -18,8 +18,6 @@ export function useMainInfo() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  console.log(characterId);
-
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 

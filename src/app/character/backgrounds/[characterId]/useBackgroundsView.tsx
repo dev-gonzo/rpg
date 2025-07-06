@@ -25,7 +25,6 @@ export const useBackgroundsView = () => {
     item: BackgroundResponse,
     checked: boolean
   ) => {
-    console.log("111")
     await onSave({ ...item, isPublic: checked });
   };
 

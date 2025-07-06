@@ -19,7 +19,9 @@ export default function Improvements() {
     onSubmit,
     serverError,
     successMessage,
-    isLoading
+    isLoading,
+    characterId,
+    improvementId,
   } = useImprovements();
 
   return (
@@ -46,7 +48,12 @@ export default function Improvements() {
 
           <AlertMessage error={serverError} success={successMessage} />
 
-          <SubmitButton isLoading={isSubmitting} isSubmitting={isSubmitting} />
+          <SubmitButton
+            isLoading={isSubmitting}
+            isSubmitting={isSubmitting}
+            pathDelete={`/api/improvements/${characterId}/${improvementId}`}
+            pathRedirect={`/character/improvements/${characterId}`}
+          />
         </ContainerWrap>
       </form>
     </MainLayout>

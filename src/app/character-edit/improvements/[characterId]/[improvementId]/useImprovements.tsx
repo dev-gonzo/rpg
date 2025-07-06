@@ -90,5 +90,7 @@ export function useImprovements() {
     serverError: error,
     successMessage,
     isLoading: loading,
+    characterId,
+    improvementId,
   };
 }

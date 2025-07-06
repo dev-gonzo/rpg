@@ -85,8 +85,6 @@ export function useMagic() {
         return;
       }
 
-      console.log("111")
-
       await save(url, { ...formData, id: characterId }, "PUT");
 
       setSuccessMessage("Personagem atualizado com sucesso!");

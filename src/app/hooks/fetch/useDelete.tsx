@@ -9,12 +9,12 @@ export function useDelete() {
 
   useValidateAuth();
 
-  const remove = useCallback(async (endpoint: string, id: string) => {
+  const remove = useCallback(async (endpoint: string) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
     try {
-      await axios.delete(`${endpoint}?id=${id}`, {
+      await axios.delete(`${endpoint}`, {
         withCredentials: true,
       });
       setSuccess(true);

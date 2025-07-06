@@ -63,7 +63,6 @@ export function useRelevantPerson() {
   }, [saveError]);
 
   useEffect(() => {
-    console.log(characterId, relevantPersonId);
     if (relevantPersonId) {
       onPath(`/api/relevant-person/${characterId}/${relevantPersonId}`);
     }
