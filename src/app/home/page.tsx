@@ -25,6 +25,7 @@ export default function HomePage() {
         home={false}
         control={!!!charactersPerson?.length}
       >
+        {"..::"}
         Personagens
       </Title>
 
