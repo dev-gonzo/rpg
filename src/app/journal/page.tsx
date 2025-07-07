@@ -1,24 +1,30 @@
 "use client";
 
-import { ContainerWrap } from "../components/ContainerWrap";
-import Title from "../components/Title";
-import MainLayout from "../layouts/MainLayout";
+import { AlertListEmpty } from "@/app/components/AlertListEmpty";
+import { BackgroundView } from "@/app/components/BackgroundView";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
+import Title from "@/app/components/Title";
+import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
+import MainLayout from "@/app/layouts/MainLayout";
+import { useJournals } from "./useJournals";
+import { JournalView } from "../components/JournalView";
 
-export default function () {
+export default function Jounals() {
+  const { data, isLoading } = useJournals();
+
   return (
     <MainLayout>
-      <Title back>Diário de Bordo</Title>
-      <ContainerWrap gap justifyCenter>
-        <div className="col-12 col-md-8 text-center px-5">
-          <div
-            className="alert alert-dark bg-transparent border-0 m-0 pb-0"
-            role="alert"
-            style={{ fontSize: "12px" }}
-          >
-            Nessa sessão, você terá acesso a informações importantes da mesa,
-            que serão disponibilizadas ao longo da aventura.
-          </div>
-        </div>
+      <Title>Diário de Bordo</Title>
+
+      <ContainerWrap gap justifyCenter isLoading={isLoading}>
+        <AlertListEmpty
+          list={data ?? []}
+          message="Nenhuma história cadastrada."
+        />
+
+        {data?.map((item) => (
+          <JournalView journal={item} key={item.id} />
+        ))}
       </ContainerWrap>
     </MainLayout>
   );

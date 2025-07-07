@@ -86,7 +86,7 @@ export function CharacterCard({
               {isPermission && (
                 <Link
                   href={`/character-edit/main-info/${character?.id}`}
-                  className="btn btn-link link-edit ms-0 p-0 mb-2"
+                  className="btn btn-link link-secondary ms-0 p-0 mb-2"
                 >
                   <small>Editar</small>
                 </Link>

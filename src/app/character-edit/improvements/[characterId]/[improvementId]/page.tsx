@@ -44,7 +44,7 @@ export default function Improvements() {
             control={control}
           />
 
-          <GenericNumberInput name="cost" label="Custo" control={control} />
+          <GenericNumberInput name="cost" label="Custo" control={control} min={-100}/>
 
           <AlertMessage error={serverError} success={successMessage} />
 

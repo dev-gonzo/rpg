@@ -31,7 +31,6 @@ export default function HomePage() {
         link={{ label: "Criar Personagem", path: `/character-edit/edit` }}
         home={false}
         control={!!!charactersPerson?.length}
-   
       >
         Personagens
       </Title>
@@ -44,26 +43,27 @@ export default function HomePage() {
             </div>
           )}
 
-          <div className="col-12 d-flex gap-3 justify-content-end align-items-start mx-1">
-              <span style={{fontSize: "10px"}} className="pt-2">Filtrar: </span>
-              <button
-                className={`btn btn-sm ${
-                  filter != "npcs" ? "btn-light" : "btn-outline-light"
-                }`}
-                onClick={() => handleFilter("players")}
-              >
-                Players
-              </button>
-              <button
-                className={`btn btn-sm ${
-                  filter != "players" ? "btn-light" : "btn-outline-light"
-                }`}
-                onClick={() => handleFilter("npcs")}
-              >
-                NPC's
-              </button>
-            </div>
-
+          <div className="col-12 d-flex gap-3 justify-content-end align-items-start ">
+            <span style={{ fontSize: "10px" }} className="pt-2">
+              Filtrar:{" "}
+            </span>
+            <button
+              className={`btn btn-sm ${
+                filter != "npcs" ? "btn-light" : "btn-outline-light"
+              }`}
+              onClick={() => handleFilter("players")}
+            >
+              Players
+            </button>
+            <button
+              className={`btn btn-sm ${
+                filter != "players" ? "btn-light" : "btn-outline-light"
+              }`}
+              onClick={() => handleFilter("npcs")}
+            >
+              NPC's
+            </button>
+          </div>
 
           {filter != "npcs"
             ? charactersPerson?.map((item) => {

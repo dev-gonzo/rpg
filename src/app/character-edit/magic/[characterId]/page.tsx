@@ -56,7 +56,7 @@ export default function Magic() {
             errors={errors}
           />
           <AlertMessage error={serverError} success={successMessage} />
-          <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />\
+          <SubmitButton isLoading={isSaving} isSubmitting={isSubmitting} />
         </ContainerWrap>
       </form>
     </MainLayout>

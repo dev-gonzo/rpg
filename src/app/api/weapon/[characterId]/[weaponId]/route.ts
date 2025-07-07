@@ -15,7 +15,10 @@ export async function GET(req: NextRequest, context: any) {
   const { weaponId } = context.params;
 
   if (!weaponId) {
-    return NextResponse.json({ error: "weaponId is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "weaponId is required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -30,7 +33,10 @@ export async function GET(req: NextRequest, context: any) {
     return NextResponse.json({ weapon }, { status: 200 });
   } catch (error) {
     console.error("Error fetching weapon:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -38,7 +44,10 @@ export async function DELETE(req: NextRequest, context: any) {
   const { weaponId } = context.params;
 
   if (!weaponId) {
-    return NextResponse.json({ error: "weaponId is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "weaponId is required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -46,10 +55,16 @@ export async function DELETE(req: NextRequest, context: any) {
       where: { id: weaponId },
     });
 
-    return NextResponse.json({ message: "Weapon deleted successfully" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Weapon deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting weapon:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -57,7 +72,10 @@ export async function PUT(req: NextRequest, context: any) {
   const { weaponId } = context.params;
 
   if (!weaponId) {
-    return NextResponse.json({ error: "weaponId is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "weaponId is required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -74,15 +92,23 @@ export async function PUT(req: NextRequest, context: any) {
         rof: body.rof ?? null,
         ammunition: body.ammunition ?? null,
         bookPage: body.bookPage ?? null,
+        description: body.description ?? null,
+        range: body.range ?? null,
       },
     });
 
     return NextResponse.json({ weapon }, { status: 200 });
   } catch (err: any) {
     if (err.name === "ValidationError") {
-      return NextResponse.json({ error: err.errors.join(", ") }, { status: 400 });
+      return NextResponse.json(
+        { error: err.errors.join(", ") },
+        { status: 400 }
+      );
     }
     console.error("Error updating weapon:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
