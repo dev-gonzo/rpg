@@ -31,10 +31,21 @@ export default function HomePage() {
         link={{ label: "Criar Personagem", path: `/character-edit/edit` }}
         home={false}
         control={!!!charactersPerson?.length}
-        comp={
-          isEmpty ? (
-            <div className="div d-flex gap-3 justify-content-end align-items-end mx-1">
-              <span>Filtrar: </span>
+   
+      >
+        Personagens
+      </Title>
+
+      <LoadingWrapper isLoading={loading}>
+        <ContainerWrap gy>
+          {!isEmpty && (
+            <div className="col-12 col-md-12 px-4">
+              <p>Nenhum personagem cadastrado.</p>
+            </div>
+          )}
+
+          <div className="col-12 d-flex gap-3 justify-content-end align-items-start mx-1">
+              <span style={{fontSize: "10px"}} className="pt-2">Filtrar: </span>
               <button
                 className={`btn btn-sm ${
                   filter != "npcs" ? "btn-light" : "btn-outline-light"
@@ -52,21 +63,7 @@ export default function HomePage() {
                 NPC's
               </button>
             </div>
-          ) : (
-            <></>
-          )
-        }
-      >
-        Personagens
-      </Title>
 
-      <LoadingWrapper isLoading={loading}>
-        <ContainerWrap gy>
-          {!isEmpty && (
-            <div className="col-12 col-md-12 px-4">
-              <p>Nenhum personagem cadastrado.</p>
-            </div>
-          )}
 
           {filter != "npcs"
             ? charactersPerson?.map((item) => {
