@@ -40,7 +40,7 @@ export function CharacterCard({
         src={`${!!character?.image ? character?.image : noImageCharacter.src}`}
         className="card-img-top"
         alt={`Foto do personagem ${character.name}`}
-        style={{ objectFit: "cover", height: "180px" }}
+        style={{ objectFit: "cover", height: "220px" }}
       />
       {isPermission && <RoundFileUploadButton fnUpload={handleImageChange} />}
       <div className="card-body d-flex flex-column">
