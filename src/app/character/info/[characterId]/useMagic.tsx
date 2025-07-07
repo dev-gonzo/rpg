@@ -13,29 +13,23 @@ import { MagicType } from "@/shared/types/character/MagicType";
 import { PathsFormsType } from "@/app/character-edit/magic/[characterId]/paths-forms/usePathsForms";
 import { Character, PathsAndForms } from "@prisma/client";
 
-export function useMagic() {
+export function useInfo() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const { data, loading, onParams } = useGet<{characters: Character[]}>({initialLoading: true});
-
-  const {
-    data: dataPathsForms,
-    loading: loadingPathsForms,
-    onPath,
-  } = useGet<{pathsAndForms: PathsAndForms}>({initialLoading: true});
+  const { data, loading, onPath } = useGet<{ character: Character }>({
+    initialLoading: true,
+  });
 
   useEffect(() => {
     if (!characterId) return;
 
-    onParams("/api/characters", { characterId });
-    onPath(`/api/magic/${characterId}/paths-forms`);
+    onPath(`/api/characters/${characterId}`);
   }, [characterId]);
 
   return {
-    isLoading: loadingPathsForms || loading,
-    data: data?.characters[0] ?? null,
-    dataPathsForms: dataPathsForms?.pathsAndForms ?? null,
+    isLoading: loading,
+    data: data?.character,
     characterId,
   };
 }

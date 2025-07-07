@@ -7,7 +7,7 @@ type Props = {
   gap?: boolean;
   justifyCenter?: boolean;
   isLoading?: boolean;
-  gy?: boolean
+  gy?: boolean;
 };
 
 export const ContainerWrap = ({
@@ -15,7 +15,7 @@ export const ContainerWrap = ({
   gap = false,
   justifyCenter = false,
   isLoading = false,
-  gy = false
+  gy = false,
 }: Props) => {
   return (
     <LoadingWrapper isLoading={isLoading}>
@@ -23,7 +23,8 @@ export const ContainerWrap = ({
         <div
           className={`row ${gap ? "gap-3" : ""} ${gy ? "gy-3" : ""} ${
             justifyCenter ? "justify-content-center" : ""
-          }`}
+          }
+          `}
         >
           {children}
         </div>

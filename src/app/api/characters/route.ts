@@ -28,28 +28,24 @@ function normalizePayload(data: any) {
   return normalized;
 }
 
-export async function GET(req: NextRequest) {
-  const payload = verifyJwt(req);
-  if (!payload) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { characterId: string } }
+) {
+  const { characterId } = context.params;
+
+  if (!characterId) {
     return NextResponse.json(
-      { error: "Usuário não autenticado" },
-      { status: 401 }
+      { error: "ID do personagem é obrigatório." },
+      { status: 400 }
     );
   }
 
-  const { userId, isMaster } = payload as {
-    userId: string;
-    isMaster?: boolean;
-  };
-
   try {
-    const characters = await prisma.character.findMany({
-      where: isMaster ? {} : { controlUserId: userId },
-      orderBy: { name: "asc" },
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
       include: {
-        controlUser: {
-          select: { id: true, name: true, email: true },
-        },
+        controlUser: { select: { id: true, name: true, email: true } },
         attributes: true,
         relevantPeople: true,
         improvements: true,
@@ -58,15 +54,62 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ characters });
+    if (!character) {
+      return NextResponse.json(
+        { error: "Personagem não encontrado." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ character }, { status: 200 });
   } catch (error) {
-    console.error("Erro ao listar personagens:", error);
+    console.error("Erro ao buscar personagem:", error);
     return NextResponse.json(
-      { error: "Erro ao buscar personagens." },
+      { error: "Erro interno do servidor." },
       { status: 500 }
     );
   }
 }
+
+// export async function GET(req: NextRequest) {
+//   const payload = verifyJwt(req);
+//   if (!payload) {
+//     return NextResponse.json(
+//       { error: "Usuário não autenticado" },
+//       { status: 401 }
+//     );
+//   }
+
+//   const { userId, isMaster } = payload as {
+//     userId: string;
+//     isMaster?: boolean;
+//   };
+
+//   try {
+//     const characters = await prisma.character.findMany({
+//       where: isMaster ? {} : { controlUserId: userId },
+//       orderBy: { name: "asc" },
+//       include: {
+//         controlUser: {
+//           select: { id: true, name: true, email: true },
+//         },
+//         attributes: true,
+//         relevantPeople: true,
+//         improvements: true,
+//         skills: true,
+//         combatSkill: true,
+//       },
+//     });
+
+//     return NextResponse.json({ characters });
+//   } catch (error) {
+//     console.error("Erro ao listar personagens:", error);
+//     return NextResponse.json(
+//       { error: "Erro ao buscar personagens." },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 export async function POST(req: NextRequest) {
   const payload = verifyJwt(req);

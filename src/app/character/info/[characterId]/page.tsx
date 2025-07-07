@@ -3,13 +3,13 @@
 import { FieldView } from "@/app/components/FieldView";
 import Title from "@/app/components/Title";
 import MainLayout from "@/app/layouts/MainLayout";
-import { useMagic } from "./useMagic";
+import { useInfo } from "./useMagic";
 import { Container } from "react-bootstrap";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
 import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
-export default function Magic() {
-  const { isLoading, data, characterId } = useMagic();
+export default function Info() {
+  const { isLoading, data, characterId } = useInfo();
   const { isControl, isMaster } = useMasterOrControl({
     characterId: characterId,
   });
@@ -36,7 +36,7 @@ export default function Magic() {
         <FieldView label="Sexo" content={data?.gender?.toLocaleUpperCase()} />
         <FieldView label="Idade" content={data?.age} colSm={3} col={3} />
         <FieldView
-          label="Idade Aparente"
+          label="Idade Ap."
           content={data?.apparentAge}
           colSm={3}
           col={3}
