@@ -40,6 +40,7 @@ export async function GET(req: NextRequest) {
           image: true,
 
           controlUserId: true,
+          controlUser: true,
         },
       });
 
@@ -72,6 +73,7 @@ export async function GET(req: NextRequest) {
           image: true,
 
           controlUserId: true,
+          controlUser: true,
         },
       });
 

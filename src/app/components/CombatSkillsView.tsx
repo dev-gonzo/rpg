@@ -46,7 +46,7 @@ export function CombatSkillsView({ skill, attributes }: Props) {
             <div className="col-12 d-flex justify-content-start">
               <Link
                 href={`/character-edit/combat-skills/${skill?.characterId}/${skill?.id}`}
-                className="btn btn-link link-secondary ms-0 p-0 btn-sm"
+                className="btn btn-link link-edit ms-0 p-0 btn-sm"
               >
                 Editar
               </Link>

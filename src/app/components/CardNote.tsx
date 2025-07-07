@@ -15,7 +15,7 @@ export const CardNote = ({ note }: Props) => {
           <div className="d-flex justify-content-end">
             <Link
               href={`/character-edit/notes/${note?.characterId}/${note?.id}`}
-              className="btn btn-link link-secondary ms-0 p-0"
+              className="btn btn-link link-edit ms-0 p-0"
             >
               Editar
             </Link>

@@ -18,7 +18,7 @@ export const CardRelevantPerson = ({ person, control }: Props) => {
             {control && (
               <Link
                 href={`/character-edit/relevant-person/${person?.characterId}/${person?.id}`}
-                className="btn btn-link link-secondary ms-0 p-0"
+                className="btn btn-link link-edit ms-0 p-0"
               >
                 Editar
               </Link>

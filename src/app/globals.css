@@ -41,3 +41,7 @@ input[type=number] {
   outline: none !important;
   box-shadow: none !important;
 }
+
+.link-edit {
+    color: #343a40 !important;
+}

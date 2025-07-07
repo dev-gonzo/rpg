@@ -34,23 +34,23 @@ export default function Info() {
         />
         <FieldView label="Local de Nascimento" content={data?.birthPlace} />
         <FieldView label="Sexo" content={data?.gender?.toLocaleUpperCase()} />
-        <FieldView label="Idade" content={data?.age} colSm={3} col={3} />
+        <FieldView label="Idade" content={data?.age} colSm={4} col={3} />
         <FieldView
           label="Idade Ap."
           content={data?.apparentAge}
-          colSm={3}
+          colSm={4}
           col={3}
         />
         <FieldView
           label="Altura (cm)"
           content={data?.heightCm}
-          colSm={3}
+          colSm={4}
           col={3}
         />
         <FieldView
           label="Peso (kg)"
           content={data?.weightKg}
-          colSm={3}
+          colSm={4}
           col={3}
         />
         <FieldView label="Religião" content={data?.religion} />

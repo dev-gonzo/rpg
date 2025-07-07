@@ -43,6 +43,18 @@ export function CharacterCard({
         style={{ objectFit: "cover", height: "220px" }}
       />
       {isPermission && <RoundFileUploadButton fnUpload={handleImageChange} />}
+      <span
+        className={`badge  text-uppercase ${character?.controlUser?.name ? "text-bg-light" :  "text-bg-dark"}`}
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          zIndex: 10,
+          fontSize: "9px"
+        }}
+      >
+        {character?.controlUser?.name ? character?.controlUser?.name :  "NPC"}
+      </span>
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{character.name}</h5>
         <p className="card-text mb-3">
@@ -74,7 +86,7 @@ export function CharacterCard({
               {isPermission && (
                 <Link
                   href={`/character-edit/main-info/${character?.id}`}
-                  className="btn btn-link link-secondary ms-0 p-0 mb-2"
+                  className="btn btn-link link-edit ms-0 p-0 mb-2"
                 >
                   <small>Editar</small>
                 </Link>

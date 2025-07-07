@@ -19,7 +19,7 @@ export const ContainerWrap = ({
 }: Props) => {
   return (
     <LoadingWrapper isLoading={isLoading}>
-      <div className={`container`}>
+      <div className={`container-fluid`}>
         <div
           className={`row ${gap ? "gap-3" : ""} ${gy ? "gy-3" : ""} ${
             justifyCenter ? "justify-content-center" : ""

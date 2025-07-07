@@ -16,7 +16,14 @@ export default function HomePage() {
     charactersNpcs,
     loading,
     handleHome,
+    filter,
+    handleFilter,
   } = useHome();
+
+  const isEmpty =
+    (charactersPerson?.length ?? 0) > 0 ||
+    (charactersPlayers?.length ?? 0) > 0 ||
+    (charactersNpcs?.length ?? 0) > 0;
 
   return (
     <MainLayout>
@@ -24,53 +31,75 @@ export default function HomePage() {
         link={{ label: "Criar Personagem", path: `/character-edit/edit` }}
         home={false}
         control={!!!charactersPerson?.length}
+        comp={
+          isEmpty ? (
+            <div className="div d-flex gap-3 justify-content-end align-items-end mx-1">
+              <span>Filtrar: </span>
+              <button
+                className={`btn btn-sm ${
+                  filter != "npcs" ? "btn-light" : "btn-outline-light"
+                }`}
+                onClick={() => handleFilter("players")}
+              >
+                Players
+              </button>
+              <button
+                className={`btn btn-sm ${
+                  filter != "players" ? "btn-light" : "btn-outline-light"
+                }`}
+                onClick={() => handleFilter("npcs")}
+              >
+                NPC's
+              </button>
+            </div>
+          ) : (
+            <></>
+          )
+        }
       >
         Personagens
       </Title>
 
       <LoadingWrapper isLoading={loading}>
         <ContainerWrap gy>
-          {!(
-            (charactersPerson?.length ?? 0) > 0 ||
-            (charactersPlayers?.length ?? 0) > 0 ||
-            (charactersNpcs?.length ?? 0) > 0
-          ) && (
+          {!isEmpty && (
             <div className="col-12 col-md-12 px-4">
               <p>Nenhum personagem cadastrado.</p>
             </div>
           )}
 
-          {charactersPerson?.map((item) => {
-            return (
-              <div className="col-12 col-md-4" key={item?.id}>
-                <CharacterCard character={item} reload={handleHome} />
-                <div></div>
-              </div>
-            );
-          })}
+          {filter != "npcs"
+            ? charactersPerson?.map((item) => {
+                return (
+                  <div className="col-12 col-md-3" key={item?.id}>
+                    <CharacterCard character={item} reload={handleHome} />
+                    <div></div>
+                  </div>
+                );
+              })
+            : null}
 
-          {charactersPlayers?.map((item) => {
-            return (
-              <div className="col-12 col-md-4" key={item?.id}>
-                <CharacterCard character={item} reload={handleHome} />
-                <div></div>
-              </div>
-            );
-          })}
+          {filter != "npcs"
+            ? charactersPlayers?.map((item) => {
+                return (
+                  <div className="col-12 col-md-3" key={item?.id}>
+                    <CharacterCard character={item} reload={handleHome} />
+                    <div></div>
+                  </div>
+                );
+              })
+            : null}
 
-          {charactersNpcs?.length > 0 ? (
-            <div className="col-12 mt-4">
-              <Title home={false}>NPCs</Title>
-            </div>
-          ) : null}
-          {charactersNpcs?.map((item) => {
-            return (
-              <div className="col-12 col-md-4" key={item?.id}>
-                <CharacterCard character={item} reload={handleHome} />
-                <div></div>
-              </div>
-            );
-          })}
+          {filter != "players"
+            ? charactersNpcs?.map((item) => {
+                return (
+                  <div className="col-12 col-md-3" key={item?.id}>
+                    <CharacterCard character={item} reload={handleHome} />
+                    <div></div>
+                  </div>
+                );
+              })
+            : null}
         </ContainerWrap>
       </LoadingWrapper>
     </MainLayout>

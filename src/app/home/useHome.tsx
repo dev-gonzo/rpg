@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useGet } from "../hooks/fetch/useGet";
 import { useAuthStore } from "../store/useAuthStore";
+import { User } from "@prisma/client";
 
 export type CharacterHome = {
   id: string;
@@ -23,10 +24,13 @@ export type CharacterHome = {
   protectionIndex: number;
   currentProtectionIndex: number | null;
   controlUserId: string;
+  controlUser?: User;
   image: string;
 };
 
 export function useHome() {
+  const [filter, setFilter] = useState("all");
+
   const { user } = useAuthStore();
   const [charactersPerson, setCharactersPerson] = useState<CharacterHome[]>([]);
   const [charactersPlayers, setCharactersPlayers] = useState<CharacterHome[]>(
@@ -68,6 +72,16 @@ export function useHome() {
     return [...characters].sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  const handleFilter = (value: "players" | "npcs") => {
+    setFilter((prev) => {
+      if (prev == value) {
+        return "all";
+      } else {
+        return value;
+      }
+    });
+  };
+
   useEffect(() => {
     setCharactersPerson(sortCharactersByName(filterPerson()));
     setCharactersPlayers(sortCharactersByName(filterPlayers()));
@@ -80,6 +94,8 @@ export function useHome() {
     charactersNpcs,
     loading,
     error,
-    handleHome
+    handleHome,
+    filter,
+    handleFilter,
   };
 }

@@ -9,6 +9,7 @@ export default function Title({
   back = false,
   home = true,
   control = true,
+  comp,
 }: TitleProps) {
   const router = useRouter();
 
@@ -17,6 +18,7 @@ export default function Title({
       <div className="container d-flex justify-content-between align-items-end p-0">
         <h1 className={`fs-6 fw-bold mb-1 ms-0 ps-0 `}>{children}</h1>
         <div className="d-flex justify-content-end gap-2">
+          {comp ? comp : null}
           {home ? (
             <Link href={"/"} className="btn btn-sm btn-outline-light">
               Home
