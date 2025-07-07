@@ -15,91 +15,82 @@ import { GenericNumberInput } from "@/app/components/form/GenericNumberInput";
 import { Attribute } from "@prisma/client";
 import { SelectBox } from "@/app/components/form/SelectBox";
 import { useSkills } from "./useSkill";
-
+import { ContainerWrap } from "@/app/components/ContainerWrap";
 
 export default function Skills() {
   const {
-    skills,
-    attributes,
     control,
     register,
     handleSubmit,
     onSubmit,
     errors,
+    isSubmitting,
+    serverError,
+    successMessage,
+    characterId,
   } = useSkills();
 
   return (
     <MainLayout>
       <Title back>Perícias</Title>
 
-      <div className="container">
-        <div className="row mt-3 px-2">
-          {skills.length === 0 && (
-            <div className="col-12 col-md-6">
-              <p>Nenhuma perícia cadastrada.</p>
-            </div>
-          )}
-        </div>
+      <ContainerWrap>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <ContainerWrap gap justifyCenter>
+            <InputField
+              name="group"
+              label="Grupo"
+              md={12}
+              register={register}
+              errors={errors}
+            />
+            <InputField
+              name="skill"
+              label="Perícia"
+              md={12}
+              register={register}
+              errors={errors}
+            />
+            <SelectBox
+              name="attribute"
+              label="Atributo"
+              options={[
+                { label: "Constituição (CON)", value: "CON" },
+                { label: "Força (FR)", value: "FR" },
+                { label: "Destreza (DEX)", value: "DEX" },
+                { label: "Agilidade (AGI)", value: "AGI" },
+                { label: "Inteligência (INT)", value: "INT" },
+                { label: "Força de Vontade (WILL)", value: "WILL" },
+                { label: "Percepção (PER)", value: "PER" },
+                { label: "Carisma (CAR)", value: "CAR" },
+              ]}
+              col={12}
+              register={register}
+              errors={errors}
+            />
+            <GenericNumberInput
+              name="kitValue"
+              label="Valor Kit"
+              control={control}
+              errors={errors}
+            />
+            <GenericNumberInput
+              name="cost"
+              label="Custo"
+              control={control}
+              errors={errors}
+            />
 
-        <div className="row mt-4">
-          {skills.map((item) => {
-            const attributeValue =
-              attributes && item?.attribute
-                ? attributes[item?.attribute]
-                : null;
+            <AlertMessage error={serverError} success={successMessage} />
 
-            return (
-              <div key={item?.id} className="col-12 col-md-6">
-                <div className="card">
-                  <div className="container-fluid">
-                    <div className="row my-3">
-                      <div className="col-12 pb-2 mb-2 d-flex justify-content-between border-bottom">
-                        <span>
-                          {item?.group ? <span>{item?.group} / </span> : ""}
-                          <strong>{item?.skill}</strong>{" "}
-                          {item?.attribute ? `(${item.attribute})` : ""}
-                        </span>
-                      </div>
-                      <div className="col-4 text-center">
-                        <strong>
-                          <small>Valor Kit</small>
-                        </strong>
-                        <br />
-                        <span>{item?.kitValue}</span>
-                      </div>
-                      <div className="col-4 text-center">
-                        <strong>
-                          <small>Custo</small>
-                        </strong>
-                        <br />
-                        <span>{item?.cost}</span>
-                      </div>
-                      <div className="col-4 text-center">
-                        <strong>
-                          <small>Total</small>
-                        </strong>
-                        <br />
-                        <span>
-                          {item?.kitValue
-                            ? item?.kitValue
-                            : 0 +
-                              item?.cost +
-                              (attributeValue ? attributeValue : 0)}
-                          %
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        
-      </div>
-
-    
+            <SubmitButton
+              isLoading={isSubmitting}
+              isSubmitting={isSubmitting}
+              pathRedirect={`/character/skills/${characterId}`}
+            />
+          </ContainerWrap>
+        </form>
+      </ContainerWrap>
     </MainLayout>
   );
 }

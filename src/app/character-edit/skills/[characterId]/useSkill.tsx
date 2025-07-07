@@ -25,7 +25,6 @@ export function useSkills() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const { save, loading: saving, error: saveError } = useSave<any>();
-  const { remove, loading: deleting, error: deleteError } = useDelete();
 
   const {
     control,
@@ -66,15 +65,15 @@ export function useSkills() {
   return {
     skills,
     attributes,
-
+    successMessage,
     saving,
-    deleting,
-
+    serverError: saveError,
     control,
     register,
     handleSubmit,
     onSubmit,
     errors,
     isSubmitting,
+    characterId
   };
 }
