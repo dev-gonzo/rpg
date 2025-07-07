@@ -10,33 +10,34 @@ import { useMasterOrControl } from "../hooks/useMasterOrControl";
 import { CharacterBasicInfo } from "./CharacterBasicInfo";
 import { CharacterInfo } from "./CharacterInfoButton";
 import RoundFileUploadButton from "./RoundFileUploadButton";
+import { useRouter } from "next/navigation";
 
-export function CharacterCard({ character }: { character: CharacterHome }) {
+export function CharacterCard({
+  character,
+  reload,
+}: {
+  character: CharacterHome;
+  reload: () => void;
+}) {
+  const router = useRouter();
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
     characterId: character.id,
   });
   const { upload } = useUploadImage();
-  const [imageSrc, setImageSrc] = useState(
-    `/uploads/${character.id}.jpg?${Date.now()}`
-  );
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     await upload(file, character.id);
-    setImageSrc(`/uploads/${character.id}.jpg?${Date.now()}`);
+    reload();
   };
 
   return (
     <div className="card h-100 bg-dark text-light shadow-sm">
       <img
         key={character.id}
-        src={`./uploads/${character.id}.jpg?${Date.now()}`}
-        onError={(e) => {
-          e.currentTarget.onerror = null; // evita loop infinito
-          e.currentTarget.src = noImageCharacter.src; // usa imagem padrão
-        }}
+        src={`${!!character?.image ? character?.image : noImageCharacter.src}`}
         className="card-img-top"
         alt={`Foto do personagem ${character.name}`}
         style={{ objectFit: "cover", height: "180px" }}

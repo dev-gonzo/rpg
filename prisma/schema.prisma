@@ -75,6 +75,8 @@ model Character {
 
   isKnown Boolean @default(false)
 
+  image String?
+
   // Relacionamento com usuário controlador (opcional)
   controlUserId String? // FK opcional
   controlUser   User?   @relation(fields: [controlUserId], references: [id])

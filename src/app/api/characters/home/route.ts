@@ -37,7 +37,8 @@ export async function GET(req: NextRequest) {
           currentFaithPoints: true,
           protectionIndex: true,
           currentProtectionIndex: true,
-          
+          image: true,
+
           controlUserId: true,
         },
       });
@@ -55,7 +56,7 @@ export async function GET(req: NextRequest) {
           age: true,
           apparentAge: true,
           profession: true,
-          
+
           hitPoints: true,
           currentHitPoints: true,
           initiative: true,
@@ -68,6 +69,7 @@ export async function GET(req: NextRequest) {
           currentFaithPoints: true,
           protectionIndex: true,
           currentProtectionIndex: true,
+          image: true,
 
           controlUserId: true,
         },
@@ -85,6 +87,7 @@ export async function GET(req: NextRequest) {
           age: true,
           apparentAge: true,
           profession: true,
+          image: true,
         },
       });
 

@@ -10,8 +10,13 @@ import MainLayout from "../layouts/MainLayout";
 import { useHome } from "./useHome";
 
 export default function HomePage() {
-  const { charactersPerson, charactersPlayers, charactersNpcs, loading } =
-    useHome();
+  const {
+    charactersPerson,
+    charactersPlayers,
+    charactersNpcs,
+    loading,
+    handleHome,
+  } = useHome();
 
   return (
     <MainLayout>
@@ -38,7 +43,7 @@ export default function HomePage() {
           {charactersPerson?.map((item) => {
             return (
               <div className="col-12 col-md-4" key={item?.id}>
-                <CharacterCard character={item} />
+                <CharacterCard character={item} reload={handleHome} />
                 <div></div>
               </div>
             );
@@ -47,7 +52,7 @@ export default function HomePage() {
           {charactersPlayers?.map((item) => {
             return (
               <div className="col-12 col-md-4" key={item?.id}>
-                <CharacterCard character={item} />
+                <CharacterCard character={item} reload={handleHome} />
                 <div></div>
               </div>
             );
@@ -61,7 +66,7 @@ export default function HomePage() {
           {charactersNpcs?.map((item) => {
             return (
               <div className="col-12 col-md-4" key={item?.id}>
-                <CharacterCard character={item} />
+                <CharacterCard character={item} reload={handleHome} />
                 <div></div>
               </div>
             );

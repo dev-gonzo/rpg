@@ -23,6 +23,7 @@ export type CharacterHome = {
   protectionIndex: number;
   currentProtectionIndex: number | null;
   controlUserId: string;
+  image: string;
 };
 
 export function useHome() {
@@ -38,8 +39,12 @@ export function useHome() {
   }>({ initialLoading: true });
 
   useEffect(() => {
-    onPath("/api/characters/home");
+    handleHome();
   }, []);
+
+  const handleHome = () => {
+    onPath("/api/characters/home");
+  };
 
   const filterPerson = (): CharacterHome[] => {
     return (
@@ -48,7 +53,11 @@ export function useHome() {
   };
 
   const filterPlayers = (): CharacterHome[] => {
-    return data?.characters?.filter((item) => item.controlUserId != null && item.controlUserId != user?.id) || [];
+    return (
+      data?.characters?.filter(
+        (item) => item.controlUserId != null && item.controlUserId != user?.id
+      ) || []
+    );
   };
 
   const filterNpcs = (): CharacterHome[] => {
@@ -71,5 +80,6 @@ export function useHome() {
     charactersNpcs,
     loading,
     error,
+    handleHome
   };
 }

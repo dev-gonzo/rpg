@@ -1,11 +1,20 @@
 // src/app/api/characters/upload/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
-import { mkdirSync, existsSync } from "fs";
+import { prisma } from "@/lib/prisma";
+import sharp from "sharp";
+import { verifyJwt } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
+  const payload = verifyJwt(req);
+
+  if (!payload) {
+    return NextResponse.json(
+      { error: "Usuário não autenticado." },
+      { status: 401 }
+    );
+  }
+
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
@@ -19,26 +28,28 @@ export async function POST(req: NextRequest) {
     }
 
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const inputBuffer = Buffer.from(bytes);
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    if (!existsSync(uploadDir)) {
-      mkdirSync(uploadDir, { recursive: true });
-    }
+    // Redimensionar, converter para JPEG e remover metadados
+    const processedBuffer = await sharp(inputBuffer)
+      .resize({ width: 1080, withoutEnlargement: true })
+      .jpeg({ quality: 80 })
+      .toBuffer();
 
-    // const ext = path.extname(file.name) || ".jpg"; 
-    const ext = ".jpg"; 
-    const filename = `${characterId}${ext}`;
-    const filepath = path.join(uploadDir, filename);
+    const base64Image = processedBuffer.toString("base64");
+    const base64WithMime = `data:image/jpeg;base64,${base64Image}`;
 
-    await writeFile(filepath, buffer);
+    // Atualiza imagem no banco
+    await prisma.character.update({
+      where: { id: characterId },
+      data: { image: base64WithMime },
+    });
 
-    const imageUrl = `/uploads/${filename}`;
-    return NextResponse.json({ imageUrl }, { status: 201 });
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
-    console.error("Erro ao fazer upload da imagem:", err);
+    console.error("Erro ao processar upload da imagem:", err);
     return NextResponse.json(
-      { error: "Erro ao fazer upload da imagem." },
+      { error: "Erro interno ao processar imagem." },
       { status: 500 }
     );
   }
