@@ -20,7 +20,7 @@ export function GenericNumberInput<T extends FieldValues>({
   control,
   defaultValue = 0,
   min = 0,
-  max = 100,
+  max = 500,
   errors,
   col=12
 }: GenericNumberInputProps<T>) {
