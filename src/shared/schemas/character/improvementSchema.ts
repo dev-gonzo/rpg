@@ -13,5 +13,5 @@ export const improvementSchema = yup.object({
     .number()
     .typeError("Custo deve ser um número")
     .required("Custo é obrigatório")
-    .min(0, "Custo não pode ser negativo"),
+    
 });

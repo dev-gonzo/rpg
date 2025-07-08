@@ -3,6 +3,8 @@
 
 import Link from "next/link";
 import { useMenu } from "./useMenu";
+import logo from "@/assets/logo-white.png";
+import React from "react";
 
 export default function Menu() {
   const { show, openMenu, closeMenu, handleLogout } = useMenu();
@@ -12,7 +14,7 @@ export default function Menu() {
       <nav className="navbar navbar-dark bg-dark mb-4">
         <div className="container-fluid d-flex justify-content-start gap-4">
           <button
-            className="navbar-toggler me-2"
+            className="navbar-toggler"
             type="button"
             onClick={openMenu}
             aria-label="Open menu"
@@ -20,7 +22,7 @@ export default function Menu() {
             <span className="navbar-toggler-icon" />
           </button>
           <Link href="/" className="navbar-brand mb-0 h1">
-            RPG System
+            <img src={logo.src} alt="RPG System" width={120}/>
           </Link>
         </div>
       </nav>

@@ -11,7 +11,7 @@ type GenericNumberInputProps<T extends FieldValues> = {
   defaultValue?: number;
   max?: number;
   errors?: FieldErrors<T>;
-  col?: number
+  col?: number;
 };
 
 export function GenericNumberInput<T extends FieldValues>({
@@ -22,19 +22,25 @@ export function GenericNumberInput<T extends FieldValues>({
   min = 0,
   max = 500,
   errors,
-  col=12
+  col = 12,
 }: GenericNumberInputProps<T>) {
   const errorMessage = errors && errors[name]?.message;
 
   function handleBlurRemoveLeadingZeros2(value: string | number): number {
-  if (value === "" || value === null || value === undefined) {
-    return 0;
+    if (value === "" || value === null || value === undefined) {
+      return 0;
+    }
+    const strValue = String(value);
+    const replaced = strValue.replace(/^0+(?!$)/, "");
+    let numberReplace = Number(replaced);
+    if (isNaN(numberReplace)) {
+      numberReplace = 0;
+    } else {
+      numberReplace = numberReplace * 1;
+    }
+    return numberReplace;
   }
-  const strValue = String(value);
-  const replaced = strValue.replace(/^0+(?!$)/, "");
-  return replaced === "" ? 0 : Number(replaced);
-}
- 
+
   return (
     <Controller
       control={control}
@@ -49,16 +55,23 @@ export function GenericNumberInput<T extends FieldValues>({
             field.onChange(handleBlurRemoveLeadingZeros2(newVal));
           }
         };
-        
+
         const increase = () => {
-            const newVal = value + 1;
-            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
+          const newVal = value + 1;
+          field.onChange(handleBlurRemoveLeadingZeros2(newVal));
         };
 
         const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const newVal = Number(e.target.value);
+          let value = e.target.value
+          if(value == "00"){
+            field.onChange("0");
+            return;
+          }
+   
+          const newVal = handleBlurRemoveLeadingZeros2(value)
+
           if (newVal >= min && newVal <= max) {
-            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
+            field.onChange(Number(value));
           }
         };
 
@@ -70,23 +83,6 @@ export function GenericNumberInput<T extends FieldValues>({
             if (value === 0 || value === "0") {
               onChange("");
             }
-          };
-        }
-
-        function handleBlurRemoveLeadingZeros(
-          value: string,
-          onChange: (val: string) => void,
-          min: number
-        ) {
-          return () => {
-            if (value === "" || value === null || value === undefined) {
-              onChange(String(min));
-              return;
-            }
-            // Remove zeros à esquerda, mas mantém pelo menos "0"
-            const strValue = String(value);
-            const replaced = strValue.replace(/^0+(?!$)/, "");
-            onChange(replaced === "" ? "0" : replaced);
           };
         }
 
@@ -119,11 +115,12 @@ export function GenericNumberInput<T extends FieldValues>({
                   value={value}
                   onChange={onInputChange}
                   onFocus={handleFocusEmptyZero(value, field.onChange)}
-                  onBlur={handleBlurRemoveLeadingZeros(
-                    value,
-                    field.onChange,
-                    min
-                  )}
+                  // onBlur={handleBlurRemoveLeadingZeros(
+                  //   value,
+                  //   field.onChange,
+                  //   min
+                  // )}
+                  onBlur={onInputChange}
                 />
               </div>
 

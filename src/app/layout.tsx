@@ -9,6 +9,9 @@ import "@/lib/fontawesome";
 export const metadata: Metadata = {
   title: "RPG System",
   description: "System",
+   icons: [
+    { rel: "icon", url: "/icon.png" }, 
+  ],
 };
 
 export default function RootLayout({

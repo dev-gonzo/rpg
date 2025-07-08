@@ -39,9 +39,10 @@ export default function Improvements() {
             name="kitValue"
             label="Valor Kit"
             control={control}
+            errors={errors}
           />
 
-          <GenericNumberInput name="cost" label="Custo" control={control} min={-100}/>
+          <GenericNumberInput name="cost" label="Custo" control={control} min={-100} errors={errors}/>
 
           <AlertMessage error={serverError} success={successMessage} />
 
