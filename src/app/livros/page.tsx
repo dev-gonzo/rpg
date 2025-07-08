@@ -22,7 +22,7 @@ export default function Livros() {
           </div>
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1L56hcpQIImpx0BLxYM1KxN9GRCOdt7hd/view?usp=drive_link"
+              href="/uploads/livros/daemon-grimorio.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -32,7 +32,7 @@ export default function Livros() {
           </div>
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1srsd3XOWa2cB-Tq5KOv9-yFkHNpXIbVn/view?usp=drive_link"
+              href="/uploads/livros/daemon-clube-de-caca.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -43,7 +43,7 @@ export default function Livros() {
 
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1l-Cq8uQpeIFav7AZSzNgI9oIbWmrejw2/view?usp=drive_link"
+              href="/uploads/livros/daemon-guia-de-armas.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -53,7 +53,7 @@ export default function Livros() {
           </div>
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1AO8sqnSEC3fBXu_DaYPjR4vP9YGPYuNq/view?usp=drive_link"
+              href="/uploads/livros/daemon-guia-de-armas-medievais.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -63,7 +63,7 @@ export default function Livros() {
           </div>
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1Gkgq3XrdtPHZgqy-gEjVAQid78bP1fl1/view?usp=drive_link"
+              href="/uploads/livros/daemon-guia-de-itens-magicos.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -74,7 +74,7 @@ export default function Livros() {
 
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1UfjvF_DaHxbnpRbRao88sjVAv55o-cGa/view?usp=drive_link"
+              href="/uploads/livros/daemon-anjos-a-cidade-de-prata.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -85,7 +85,7 @@ export default function Livros() {
 
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1SfzfCLSApvj6NGnUsLSMwsSe_KozJroi/view?usp=drive_link"
+              href="/uploads/livros/daemon-demonios-a-divina-comedia.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -96,7 +96,7 @@ export default function Livros() {
 
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/164ohqoDHxzAAR0YPsbyp_of1u98uvw3Q/view?usp=drive_link"
+              href="/uploads/livros/daemon-vampiros-mitologicos.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
@@ -107,7 +107,7 @@ export default function Livros() {
 
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/11IdevvzhyYZ6uNdyOgE-AG9tRDXMgHNh/view?usp=drive_link"
+              href="/uploads/livros/daemon-templarios.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
