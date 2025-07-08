@@ -27,7 +27,7 @@ export default function Ritual() {
 
   return (
     <MainLayout>
-      <Title back>Rituais</Title>
+      <Title back>Rituais e Poderes</Title>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ContainerWrap isLoading={isLoading}>
           <InputField

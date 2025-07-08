@@ -39,6 +39,7 @@ export default function Skills() {
             key={item?.id}
             skill={item}
             attributes={attributesData?.attribute ?? null}
+            control={isControl || isMaster}
           />
         ))}
       </ContainerWrap>

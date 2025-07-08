@@ -3,14 +3,13 @@
 
 import noImageCharacter from "@/assets/no-image-character.png";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { CharacterHome } from "../home/useHome";
 import { useUploadImage } from "../hooks/fetch/useUploadImage";
 import { useMasterOrControl } from "../hooks/useMasterOrControl";
 import { CharacterBasicInfo } from "./CharacterBasicInfo";
 import { CharacterInfo } from "./CharacterInfoButton";
 import RoundFileUploadButton from "./RoundFileUploadButton";
-import { useRouter } from "next/navigation";
 
 export function CharacterCard({
   character,
@@ -19,7 +18,6 @@ export function CharacterCard({
   character: CharacterHome;
   reload: () => void;
 }) {
-  const router = useRouter();
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
     characterId: character.id,
   });

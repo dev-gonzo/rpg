@@ -3,9 +3,13 @@ import Link from "next/link";
 
 type AttributesViewProps = {
   improvement: Improvement;
+  control: boolean;
 };
 
-export function ImprovementsView({ improvement }: AttributesViewProps) {
+export function ImprovementsView({
+  improvement,
+  control,
+}: AttributesViewProps) {
   return (
     <div className="col-12 col-md-6">
       <div className="card bg-gray">
@@ -27,12 +31,14 @@ export function ImprovementsView({ improvement }: AttributesViewProps) {
             </div>
 
             <div className="col-12 d-flex justify-content-start">
-              <Link
-                href={`/character-edit/improvements/${improvement?.characterId}/${improvement?.id}`}
-                className="btn btn-link link-edit ms-0 p-0 btn-sm"
-              >
-                Editar
-              </Link>
+              {control ? (
+                <Link
+                  href={`/character-edit/improvements/${improvement?.characterId}/${improvement?.id}`}
+                  className="btn btn-link link-edit ms-0 p-0 btn-sm"
+                >
+                  Editar
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>

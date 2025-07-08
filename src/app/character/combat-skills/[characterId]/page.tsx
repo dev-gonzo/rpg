@@ -27,7 +27,7 @@ export default function CombatSkills() {
         Perícias de Combate
       </Title>
 
-      <ContainerWrap gap isLoading={isLoading}>
+      <ContainerWrap gap isLoading={isLoading} justifyCenter>
         <AlertListEmpty
           list={data}
           message="Nenhuma perícia de combate cadastrada."
@@ -40,6 +40,7 @@ export default function CombatSkills() {
             key={item?.id}
             skill={item}
             attributes={attributesData?.attribute ?? null}
+            control={isControl || isMaster}
           />
         ))}
       </ContainerWrap>

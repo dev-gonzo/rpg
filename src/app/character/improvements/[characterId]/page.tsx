@@ -36,7 +36,7 @@ export default function Improvements() {
         <ImprovementTotal characterId={characterId} />
 
         {data?.improvements?.map((item) => {
-          return <ImprovementsView improvement={item} key={item?.id} />;
+          return <ImprovementsView improvement={item} key={item?.id} control={isControl || isMaster}/>;
         })}
       </ContainerWrap>
     </MainLayout>

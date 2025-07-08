@@ -64,7 +64,7 @@ export const CharacterInfo = ({
       onlyControl: false,
       link: "/character/rituais/",
       icon: faBookSkull,
-      label: "Grimório",
+      label: "Rituais e Poderes",
     },
     {
       onlyControl: false,

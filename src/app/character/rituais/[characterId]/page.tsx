@@ -23,13 +23,13 @@ export default function Rituais() {
         }}
         control={isControl || isMaster}
       >
-        Rituais
+        Rituais e Poderes
       </Title>
 
       <ContainerWrap gap justifyCenter isLoading={isLoading}>
         <AlertListEmpty
           list={data?.rituals ?? []}
-          message="Nenhum ritual cadastrado."
+          message="Nenhum ritual/poder cadastrado."
         />
 
         {data?.rituals?.map((item) => (

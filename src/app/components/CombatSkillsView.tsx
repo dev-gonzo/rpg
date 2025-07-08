@@ -8,9 +8,14 @@ import Link from "next/link";
 type Props = {
   skill: CombatSkill;
   attributes: Record<string, number> | null;
+  control: boolean;
 };
 
-export function CombatSkillsView({ skill, attributes }: Props) {
+export function CombatSkillsView({
+  skill,
+  attributes,
+  control = false,
+}: Props) {
   const attributeValue =
     attributes && skill?.attribute ? attributes[skill?.attribute] : null;
 
@@ -44,12 +49,14 @@ export function CombatSkillsView({ skill, attributes }: Props) {
               <small>Ataque / Defesa</small>
             </div>
             <div className="col-12 d-flex justify-content-start">
-              <Link
-                href={`/character-edit/combat-skills/${skill?.characterId}/${skill?.id}`}
-                className="btn btn-link link-edit ms-0 p-0 btn-sm"
-              >
-                Editar
-              </Link>
+              {control ? (
+                <Link
+                  href={`/character-edit/combat-skills/${skill?.characterId}/${skill?.id}`}
+                  className="btn btn-link link-edit ms-0 p-0 btn-sm"
+                >
+                  Editar
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>

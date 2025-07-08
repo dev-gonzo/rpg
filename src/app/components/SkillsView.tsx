@@ -7,9 +7,10 @@ import Link from "next/link";
 type Props = {
   skill: Skill;
   attributes: Record<string, number> | null;
+  control: boolean
 };
 
-export function SkillsView({ skill, attributes }: Props) {
+export function SkillsView({ skill, attributes, control }: Props) {
   const attributeValue =
     attributes && skill?.attribute ? attributes[skill?.attribute] : null;
 
@@ -38,12 +39,14 @@ export function SkillsView({ skill, attributes }: Props) {
             </div>
 
             <div className="col-12 d-flex justify-content-start">
-              <Link
-                href={`/character-edit/skills/${skill?.characterId}/${skill?.id}`}
-                className="btn btn-link link-edit ms-0 p-0 btn-sm"
-              >
-                Editar
-              </Link>
+              {control ? (
+                <Link
+                  href={`/character-edit/skills/${skill?.characterId}/${skill?.id}`}
+                  className="btn btn-link link-edit ms-0 p-0 btn-sm"
+                >
+                  Editar
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>
