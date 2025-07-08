@@ -1,21 +1,20 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faClipboardUser,
-  faClipboardList,
-  faFileLines,
-  faHatWizard,
-  faFeatherPointed,
-  faShieldAlt,
-  faBookSkull,
   faAddressBook,
+  faBookSkull,
+  faClipboardList,
+  faClipboardUser,
+  faFeatherPointed,
+  faFileLines,
+  faFilePen,
+  faHatWizard,
   faPersonRifle,
+  faShieldAlt,
   faToolbox,
   faUserSecret,
-  faFilePen,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Fragment } from "react";
-import { useCharacterPermission } from "../store/useCharacterPermission";
 
 type CharacterInfoProps = {
   characterId: string;

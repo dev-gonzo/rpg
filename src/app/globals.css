@@ -1,29 +1,16 @@
-/* Remove spinners no Chrome, Edge, Safari */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Remove spinners no Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
 .bg-gray {
-  background-color: #8d8b8b; /* cinza claro */
+  background-color: #8d8b8b;
 }
-
-/* .rdw-editor-wrapper {
-  background-color: #121212;
-  color: #eee;
-  border: 1px solid #333;
-}
-
-.rdw-editor-toolbar {
-  background-color: #222;
-  border-bottom: 1px solid #444;
-} */
 
 .rdw-editor-main {
   background-color: #8d8b8b;
@@ -43,5 +30,23 @@ input[type=number] {
 }
 
 .link-edit {
-    color: #343a40 !important;
+  color: #343a40 !important;
+}
+
+.card-grid-3,
+.card-grid-4,
+.card-grid-5 {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .card-grid-3 {
+    width: 32.5%;
+  }
+  .card-grid-4 {
+    width: 24.5%;
+  }
+  .card-grid-5 {
+    width: 19.5%;
+  }
 }

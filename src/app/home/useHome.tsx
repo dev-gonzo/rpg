@@ -29,6 +29,7 @@ export type CharacterHome = {
 };
 
 export function useHome() {
+  const [grid, setGrid] = useState<string>("grid-5");
   const [filter, setFilter] = useState("all");
 
   const { user } = useAuthStore();
@@ -41,6 +42,19 @@ export function useHome() {
   const { data, loading, error, onPath } = useGet<{
     characters: CharacterHome[];
   }>({ initialLoading: true });
+
+  const handleGrip = (value: string) => {
+    localStorage.setItem("cardGrip", JSON.stringify(value));
+    setGrid(value);
+  };
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem("cardGrip");
+    if (storedValue) {
+      const parsedValue = JSON.parse(storedValue);
+      setGrid(parsedValue);
+    }
+  }, []);
 
   useEffect(() => {
     handleHome();
@@ -97,5 +111,7 @@ export function useHome() {
     handleHome,
     filter,
     handleFilter,
+    grid,
+    setGrid: handleGrip,
   };
 }

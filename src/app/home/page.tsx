@@ -1,7 +1,7 @@
 "use client";
 
-import { faL } from "@fortawesome/free-solid-svg-icons";
-import { AlertListEmpty } from "../components/AlertListEmpty";
+import { faTable } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CharacterCard } from "../components/CharacterCard";
 import { ContainerWrap } from "../components/ContainerWrap";
 import LoadingWrapper from "../components/LoadingWrapper";
@@ -18,6 +18,8 @@ export default function HomePage() {
     handleHome,
     filter,
     handleFilter,
+    grid,
+    setGrid,
   } = useHome();
 
   const isEmpty =
@@ -43,60 +45,90 @@ export default function HomePage() {
             </div>
           )}
 
-          <div className="col-12 d-flex gap-3 justify-content-end align-items-start ">
-            <span style={{ fontSize: "10px" }} className="pt-2">
-              Filtrar:{" "}
-            </span>
-            <button
-              className={`btn btn-sm ${
-                filter != "npcs" ? "btn-light" : "btn-outline-light"
-              }`}
-              onClick={() => handleFilter("players")}
-            >
-              Players
-            </button>
-            <button
-              className={`btn btn-sm ${
-                filter != "players" ? "btn-light" : "btn-outline-light"
-              }`}
-              onClick={() => handleFilter("npcs")}
-            >
-              NPC's
-            </button>
+          <div className="col-12 d-flex gap-3 justify-content-between align-items-start ">
+            <div className="d-flex gap-2 align-items-center">
+              <button
+                className={`btn btn-sm btn-secondary d-none d-md-block`}
+                onClick={() => setGrid("grid-3")}
+              >
+                <FontAwesomeIcon icon={faTable} size="xl" /> 3
+              </button>
+              <button
+                className={`btn btn-sm btn-secondary  d-none d-md-block`}
+                onClick={() => setGrid("grid-4")}
+              >
+                <FontAwesomeIcon icon={faTable} size="xl" /> 4
+              </button>
+              <button
+                className={`btn btn-sm btn-secondary  d-none d-md-block`}
+                onClick={() => setGrid("grid-5")}
+              >
+                <FontAwesomeIcon icon={faTable} size="xl" /> 5
+              </button>
+            </div>
+            <div className="d-flex gap-3 justify-content-end align-items-start ">
+              <span style={{ fontSize: "10px" }} className="pt-2">
+                Filtrar:{" "}
+              </span>
+              <button
+                className={`btn btn-sm ${
+                  filter != "npcs" ? "btn-light" : "btn-outline-light"
+                }`}
+                onClick={() => handleFilter("players")}
+              >
+                Players
+              </button>
+              <button
+                className={`btn btn-sm ${
+                  filter != "players" ? "btn-light" : "btn-outline-light"
+                }`}
+                onClick={() => handleFilter("npcs")}
+              >
+                NPC's
+              </button>
+            </div>
           </div>
 
-          {filter != "npcs"
-            ? charactersPerson?.map((item) => {
-                return (
-                  <div className="col-12 col-md-3" key={item?.id}>
-                    <CharacterCard character={item} reload={handleHome} />
-                    <div></div>
-                  </div>
-                );
-              })
-            : null}
+          <div className="col-12 d-flex flex-wrap justify-content-around">
+            {filter != "npcs"
+              ? charactersPerson?.map((item) => {
+                  return (
+                    <CharacterCard
+                      character={item}
+                      reload={handleHome}
+                      key={item?.id}
+                      grid={grid}
+                    />
+                  );
+                })
+              : null}
 
-          {filter != "npcs"
-            ? charactersPlayers?.map((item) => {
-                return (
-                  <div className="col-12 col-md-3" key={item?.id}>
-                    <CharacterCard character={item} reload={handleHome} />
-                    <div></div>
-                  </div>
-                );
-              })
-            : null}
+            {filter != "npcs"
+              ? charactersPlayers?.map((item) => {
+                  return (
+                    <CharacterCard
+                      character={item}
+                      reload={handleHome}
+                      key={item?.id}
+                      grid={grid}
+                    />
+                  );
+                })
+              : null}
 
-          {filter != "players"
-            ? charactersNpcs?.map((item) => {
-                return (
-                  <div className="col-12 col-md-3" key={item?.id}>
-                    <CharacterCard character={item} reload={handleHome} />
-                    <div></div>
-                  </div>
-                );
-              })
-            : null}
+            {filter != "players"
+              ? charactersNpcs?.map((item) => {
+                  return (
+                    <CharacterCard
+                      character={item}
+                      reload={handleHome}
+                      key={item?.id}
+                      grid={grid}
+                    />
+                  );
+                })
+              : null}
+          </div>
         </ContainerWrap>
       </LoadingWrapper>
     </MainLayout>

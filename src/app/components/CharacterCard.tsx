@@ -14,9 +14,11 @@ import RoundFileUploadButton from "./RoundFileUploadButton";
 export function CharacterCard({
   character,
   reload,
+  grid
 }: {
   character: CharacterHome;
   reload: () => void;
+  grid: string
 }) {
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
     characterId: character.id,
@@ -31,8 +33,10 @@ export function CharacterCard({
     reload();
   };
 
+  console.log("card", grid)
+
   return (
-    <div className="card h-100 bg-dark text-light shadow-sm">
+    <div className={`card bg-dark text-light shadow-sm mb-3 card-${grid}`}>
       <img
         key={character.id}
         src={`${!!character?.image ? character?.image : noImageCharacter.src}`}
