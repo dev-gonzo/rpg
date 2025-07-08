@@ -26,7 +26,7 @@ export default function MainLayout({ children }: Props) {
     try {
       const parsed = JSON.parse(stored);
       const user = parsed?.state?.user;
-      const timestamp = Date.now() + 8 * 59 * 60 * 30 * 1000;
+      const timestamp = Date.now() + 8 * 59 * 60 * 1000;
       if (!user || !user.id || user?.timestamp < timestamp) {
         logout();
         router.push("/login");
