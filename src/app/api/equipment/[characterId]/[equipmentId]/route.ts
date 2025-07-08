@@ -6,12 +6,12 @@ const equipmentSchema = yup.object({
   name: yup.string().required(),
   quantity: yup.number().required().min(1),
   classification: yup.string().required(),
-  kineticProtection: yup.number().optional(),
-  ballisticProtection: yup.number().optional(),
-  dexterityPenalty: yup.number().optional(),
-  agilityPenalty: yup.number().optional(),
-  initiative: yup.number().optional(),
-  bookPage: yup.string().optional(),
+  kineticProtection: yup.number().nullable().optional(),
+  ballisticProtection: yup.number().nullable().optional(),
+  dexterityPenalty: yup.number().nullable().optional(),
+  agilityPenalty: yup.number().nullable().optional(),
+  initiative: yup.number().nullable().optional(),
+  bookPage: yup.string().nullable().optional(),
   description: yup.string().optional(),
 });
 

@@ -5,7 +5,10 @@ import * as yup from "yup";
 
 const extendedImprovementSchema = improvementSchema.concat(
   yup.object({
-    characterId: yup.string().uuid("ID inválido").required("Personagem é obrigatório"),
+    characterId: yup
+      .string()
+      .uuid("ID inválido")
+      .required("Personagem é obrigatório"),
   })
 );
 
@@ -62,7 +65,10 @@ export async function DELETE(req: NextRequest, context: any) {
       },
     });
 
-    return NextResponse.json({ message: "Improvement deleted" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Improvement deleted" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting improvement:", error);
     return NextResponse.json(
@@ -86,19 +92,6 @@ export async function PUT(req: NextRequest, context: any) {
     const body = await req.json();
 
     await extendedImprovementSchema.validate(body, { abortEarly: false });
-
-    const updatedImprovement = await prisma.improvement.updateMany({
-      where: {
-        id: improvementId,
-        characterId,
-      },
-      data: {
-        characterId: body.characterId,
-        name: body.name,
-        cost: body.cost,
-        kitValue: body.kitValue,
-      },
-    });
 
     const improvement = await prisma.improvement.findFirst({
       where: {

@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 
     if (isMaster) {
       journals = await prisma.journal.findMany({
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       });
     } else {
       journals = await prisma.journal.findMany({
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
           isPublic: true,
           status: { in: PUBLIC_STATUSES },
         },
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       });
     }
 
@@ -70,15 +70,16 @@ export async function POST(req: NextRequest) {
     // Validação Yup
     await journalSchema.validate(body, { abortEarly: false });
 
-    const { image1, image2, image3, text, status, isPublic } = body;
+    const { image1, image2, image3, text, status, isPublic, featured } = body;
 
     const newJournal = await prisma.journal.create({
       data: {
-        image1: "",
-        image2: "",
-        image3: "",
+        image1: image1 ?? null,
+        image2: image2 ?? null,
+        image3: image3 ?? null,
         text,
         status,
+        featured: featured ?? false,
         isPublic: isPublic ?? false,
       },
     });

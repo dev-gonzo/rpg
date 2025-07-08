@@ -2,10 +2,15 @@
 
 import { CharacterBasicData } from "@/shared/types/character/CharacterBasicData";
 import React from "react";
-import { FieldErrors, UseFormRegister, Path, FieldValues } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormRegister,
+  Path,
+  FieldValues,
+} from "react-hook-form";
 
 type SelectBoxOption = {
-  value: string;
+  value: string | number | boolean;
   label: string;
 };
 
@@ -22,11 +27,22 @@ export function SelectBox<T extends FieldValues>({
   name,
   label,
   options,
-  col= 12,
+  col = 12,
   register,
   errors,
 }: SelectBoxProps<T>) {
   const errorMessage = errors && errors[name]?.message;
+
+  const handleValue = (value: string | number | boolean) => {
+    if (typeof value == "boolean") {
+      if (value == true) {
+        return "true";
+      } else {
+        return "false";
+      }
+    }
+    return value;
+  };
 
   return (
     <div className={`mb-3 col-md-${col}`}>
@@ -42,13 +58,18 @@ export function SelectBox<T extends FieldValues>({
       >
         <option value="">Selecione</option>
         {options.map(({ value, label }) => (
-          <option key={value} value={value}>
+          <option
+            key={`option-${handleValue(value)}`}
+            value={handleValue(value)}
+          >
             {label}
           </option>
         ))}
       </select>
       {errorMessage && (
-        <div className="invalid-feedback">{errorMessage as React.ReactNode}</div>
+        <div className="invalid-feedback">
+          {errorMessage as React.ReactNode}
+        </div>
       )}
     </div>
   );

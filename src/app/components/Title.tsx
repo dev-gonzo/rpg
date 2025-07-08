@@ -17,10 +17,10 @@ export default function Title({
     <div className="container-fluid">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-3">
+          <div className="col-5">
             <h1 className={`fs-6 fw-bold mb-1 ms-0 ps-0 `}>{children}</h1>
           </div>
-          <div className="col-9 d-flex justify-content-end gap-2 flex-wrap">
+          <div className="col-7 d-flex justify-content-end gap-2 flex-wrap">
             {comp ? comp : null}
 
             {home ? (

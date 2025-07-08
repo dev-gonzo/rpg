@@ -17,11 +17,6 @@ export function useSkills() {
   const params = useParams();
   const characterId = params.characterId as string;
 
-  const [skills, setSkills] = useState<SkillType[]>([]);
-  const [attributes, setAttributes] = useState<Record<string, number> | null>(
-    null
-  );
-
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const { save, loading: saving, error: saveError } = useSave<any>();
@@ -63,8 +58,6 @@ export function useSkills() {
   );
 
   return {
-    skills,
-    attributes,
     successMessage,
     saving,
     serverError: saveError,
@@ -74,6 +67,6 @@ export function useSkills() {
     onSubmit,
     errors,
     isSubmitting,
-    characterId
+    characterId,
   };
 }

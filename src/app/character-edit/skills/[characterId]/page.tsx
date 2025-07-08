@@ -34,63 +34,61 @@ export default function Skills() {
     <MainLayout>
       <Title back>Perícias</Title>
 
-      <ContainerWrap>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <ContainerWrap gap justifyCenter>
-            <InputField
-              name="group"
-              label="Grupo"
-              md={12}
-              register={register}
-              errors={errors}
-            />
-            <InputField
-              name="skill"
-              label="Perícia"
-              md={12}
-              register={register}
-              errors={errors}
-            />
-            <SelectBox
-              name="attribute"
-              label="Atributo"
-              options={[
-                { label: "Constituição (CON)", value: "CON" },
-                { label: "Força (FR)", value: "FR" },
-                { label: "Destreza (DEX)", value: "DEX" },
-                { label: "Agilidade (AGI)", value: "AGI" },
-                { label: "Inteligência (INT)", value: "INT" },
-                { label: "Força de Vontade (WILL)", value: "WILL" },
-                { label: "Percepção (PER)", value: "PER" },
-                { label: "Carisma (CAR)", value: "CAR" },
-              ]}
-              col={12}
-              register={register}
-              errors={errors}
-            />
-            <GenericNumberInput
-              name="kitValue"
-              label="Valor Kit"
-              control={control}
-              errors={errors}
-            />
-            <GenericNumberInput
-              name="cost"
-              label="Custo"
-              control={control}
-              errors={errors}
-            />
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <ContainerWrap gap justifyCenter>
+          <InputField
+            name="group"
+            label="Grupo"
+            md={12}
+            register={register}
+            errors={errors}
+          />
+          <InputField
+            name="skill"
+            label="Perícia"
+            md={12}
+            register={register}
+            errors={errors}
+          />
+          <SelectBox
+            name="attribute"
+            label="Atributo"
+            options={[
+              { label: "Constituição (CON)", value: "CON" },
+              { label: "Força (FR)", value: "FR" },
+              { label: "Destreza (DEX)", value: "DEX" },
+              { label: "Agilidade (AGI)", value: "AGI" },
+              { label: "Inteligência (INT)", value: "INT" },
+              { label: "Força de Vontade (WILL)", value: "WILL" },
+              { label: "Percepção (PER)", value: "PER" },
+              { label: "Carisma (CAR)", value: "CAR" },
+            ]}
+            col={12}
+            register={register}
+            errors={errors}
+          />
+          <GenericNumberInput
+            name="kitValue"
+            label="Valor Kit"
+            control={control}
+            errors={errors}
+          />
+          <GenericNumberInput
+            name="cost"
+            label="Custo"
+            control={control}
+            errors={errors}
+          />
 
-            <AlertMessage error={serverError} success={successMessage} />
+          <AlertMessage error={serverError} success={successMessage} />
 
-            <SubmitButton
-              isLoading={isSubmitting}
-              isSubmitting={isSubmitting}
-              pathRedirect={`/character/skills/${characterId}`}
-            />
-          </ContainerWrap>
-        </form>
-      </ContainerWrap>
+          <SubmitButton
+            isLoading={isSubmitting}
+            isSubmitting={isSubmitting}
+            pathRedirect={`/character/skills/${characterId}`}
+          />
+        </ContainerWrap>
+      </form>
     </MainLayout>
   );
 }

@@ -68,6 +68,15 @@ export default function Menu() {
                 Diário de Bordo
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                href="/livros"
+                className="nav-link text-light"
+                onClick={closeMenu}
+              >
+                Livros
+              </Link>
+            </li>
             <li className="nav-item mt-3">
               <button
                 className="btn btn-outline-light w-100"
