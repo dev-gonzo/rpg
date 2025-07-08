@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Menu from "../components/menu/Menu";
 import Footer from "../components/Footer";
+import { useAuthStore } from "../store/useAuthStore";
 
 type Props = {
   children: ReactNode;
@@ -11,11 +12,13 @@ type Props = {
 
 export default function MainLayout({ children }: Props) {
   const router = useRouter();
+  const { logout } = useAuthStore();
 
   useEffect(() => {
     const stored = localStorage.getItem("auth-storage");
 
     if (!stored) {
+      logout();
       router.push("/login");
       return;
     }
@@ -23,12 +26,14 @@ export default function MainLayout({ children }: Props) {
     try {
       const parsed = JSON.parse(stored);
       const user = parsed?.state?.user;
-
-      if (!user || !user.id) {
+      const timestamp = Date.now() + 8 * 59 * 60 * 30 * 1000;
+      if (!user || !user.id || user?.timestamp < timestamp) {
+        logout();
         router.push("/login");
         return;
       }
     } catch {
+      logout();
       router.push("/login");
       return;
     }

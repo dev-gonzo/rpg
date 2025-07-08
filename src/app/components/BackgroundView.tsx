@@ -42,7 +42,7 @@ export function BackgroundView({ background, setPublic, control }: Props) {
               <div className="col-12">
                 <Link
                   href={`/character-edit/backgrounds/${background?.id}`}
-                  className="btn btn-link edit ms-0 ps-0"
+                  className="btn btn-link link-edit ms-0 ps-0"
                 >
                   Editar
                 </Link>
