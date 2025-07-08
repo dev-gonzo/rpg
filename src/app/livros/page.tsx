@@ -12,7 +12,7 @@ export default function Livros() {
         <div className="col-12">
           <div className="d-flex w-100 flex-column mb-3 mt-2">
             <a
-              href="https://drive.google.com/file/d/1ydlLnkR4NSsrXs9Cp1wOaRK1IkUKORrD/view?usp=sharing"
+              href="/uploads/livros/daemon-trevas.pdf"
               rel="noopener noreferrer"
               className="btn btn-outline-light btn-sm"
               target="_blank"
