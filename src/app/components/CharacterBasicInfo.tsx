@@ -8,7 +8,7 @@ type Props = {
 
 export const CharacterBasicInfo = ({ character, isPermission }: Props) => {
   return (
-    <div className="d-100 d-flex gap-1 flex-wrap justify-content-around">
+    <div className="d-100 d-flex flex-wrap justify-content-between ">
       <CharacterCardBasicInfo
         label="Pontos de Vida"
         value={character?.hitPoints || 0}
