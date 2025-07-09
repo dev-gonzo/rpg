@@ -68,7 +68,7 @@ export function useHome() {
     if (reload) {
       intervalId = setInterval(() => {
         onPath("/api/characters/home");
-      }, 15000);
+      }, 5000);
     }
 
     return () => {
