@@ -115,6 +115,16 @@ export default function Livros() {
               Daemon - Templários
             </a>
           </div>
+          <div className="d-flex w-100 flex-column mb-3 mt-2">
+            <a
+              href="/uploads/livros/daemon-inquisicao.pdf"
+              rel="noopener noreferrer"
+              className="btn btn-outline-light btn-sm"
+              target="_blank"
+            >
+              Daemon - Inquisição
+            </a>
+          </div>
         </div>
       </ContainerWrap>
     </MainLayout>

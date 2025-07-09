@@ -7,7 +7,10 @@ export async function GET(req: NextRequest) {
   const characterId = url.searchParams.get("characterId");
 
   if (!characterId) {
-    return NextResponse.json({ error: "characterId query param required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "characterId query param required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -16,13 +19,19 @@ export async function GET(req: NextRequest) {
     });
 
     if (!attribute) {
-      return NextResponse.json({ error: "Attributes not found for character" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Attributes not found for character" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ attribute }, { status: 200 });
   } catch (err: any) {
     console.error("Error fetching attributes:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -44,6 +53,14 @@ export async function POST(req: NextRequest) {
       WILL,
       PER,
       CAR,
+      con_mod,
+      fr_mod,
+      dex_mod,
+      agi_mod,
+      int_mod,
+      per_mod,
+      will_mod,
+      car_mod,
     } = body;
 
     const existing = await prisma.attribute.findUnique({
@@ -53,7 +70,24 @@ export async function POST(req: NextRequest) {
     if (existing) {
       const updated = await prisma.attribute.update({
         where: { characterId },
-        data: { CON, FR, DEX, AGI, INT, WILL, PER, CAR },
+        data: {
+          CON,
+          FR,
+          DEX,
+          AGI,
+          INT,
+          WILL,
+          PER,
+          CAR,
+          con_mod,
+          fr_mod,
+          dex_mod,
+          agi_mod,
+          int_mod,
+          per_mod,
+          will_mod,
+          car_mod,
+        },
       });
       return NextResponse.json({ attribute: updated }, { status: 200 });
     }
@@ -64,6 +98,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ attribute: created }, { status: 201 });
   } catch (err: any) {
     console.error("Error saving attributes:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

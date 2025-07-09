@@ -15,8 +15,6 @@ export default function Skills() {
     characterId: characterId,
   });
 
-  console.log(isControl, isMaster )
-
   return (
     <MainLayout>
       <Title

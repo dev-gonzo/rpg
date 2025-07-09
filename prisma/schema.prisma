@@ -115,6 +115,15 @@ model Attribute {
   PER  Int
   CAR  Int
 
+  con_mod  Int?
+  fr_mod   Int?
+  dex_mod  Int?
+  agi_mod  Int?
+  int_mod  Int?
+  will_mod Int?
+  per_mod  Int?
+  car_mod  Int?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

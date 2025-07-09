@@ -21,13 +21,12 @@ export default function Title({
             <h1 className={`fs-6 fw-bold mb-1 ms-0 ps-0 `}>{children}</h1>
           </div>
           <div className="col-7 d-flex justify-content-end gap-2 flex-wrap">
-            {comp ? comp : null}
-
             {home ? (
               <Link href={"/"} className="btn btn-sm btn-outline-light">
                 Home
               </Link>
             ) : null}
+            {comp ? comp : null}
             {link && control ? (
               <Link href={link.path} className="btn btn-sm btn-outline-light">
                 {link.label}

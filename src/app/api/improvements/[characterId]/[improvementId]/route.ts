@@ -93,10 +93,14 @@ export async function PUT(req: NextRequest, context: any) {
 
     await extendedImprovementSchema.validate(body, { abortEarly: false });
 
-    const improvement = await prisma.improvement.findFirst({
-      where: {
-        id: improvementId,
-        characterId,
+
+    const improvement = await prisma.improvement.update({
+      where: { id: improvementId },
+      data: {
+        characterId: body.characterId,
+        name: body.name,
+        cost: body.cost,
+        kitValue: body.kitValue,
       },
     });
 

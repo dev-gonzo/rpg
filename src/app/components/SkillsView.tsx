@@ -7,12 +7,17 @@ import Link from "next/link";
 type Props = {
   skill: Skill;
   attributes: Record<string, number> | null;
-  control: boolean
+  control: boolean;
 };
 
 export function SkillsView({ skill, attributes, control }: Props) {
   const attributeValue =
     attributes && skill?.attribute ? attributes[skill?.attribute] : null;
+
+  const attributeValueMod =
+    attributes && skill?.attribute
+      ? attributes[`${skill?.attribute.toLowerCase()}_mod`]
+      : null;
 
   return (
     <div className="col-12 col-md-6">
@@ -32,7 +37,10 @@ export function SkillsView({ skill, attributes, control }: Props) {
               <span className="h1 fw-bold">
                 {(skill?.kitValue ?? 0) +
                   (skill?.cost ?? 0) +
-                  (attributeValue ?? 0)}{" "}
+                  (attributeValue
+                    ? attributeValue +
+                      (attributeValueMod ? attributeValueMod : 0)
+                    : 0)}{" "}
                 %
               </span>
               <small>Total</small>

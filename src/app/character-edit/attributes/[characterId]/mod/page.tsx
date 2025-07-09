@@ -23,20 +23,20 @@ export default function CharacterAttributes() {
 
   return (
     <MainLayout>
-      <Title back>Atributos do Personagem</Title>
+      <Title back>Modificadores de Atributos</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ContainerWrap justifyCenter isLoading={isLoading}>
           <div className="col-12 text-center">
             <span>Total Gasto: {total}</span>
           </div>
-          <AttributeInput name="CON" control={control} />
-          <AttributeInput name="FR" control={control} />
-          <AttributeInput name="DEX" control={control} />
-          <AttributeInput name="AGI" control={control} />
-          <AttributeInput name="INT" control={control} />
-          <AttributeInput name="WILL" control={control} />
-          <AttributeInput name="PER" control={control} />
-          <AttributeInput name="CAR" control={control} />
+          <AttributeInput name="con_mod" control={control} />
+          <AttributeInput name="fr_mod" control={control} />
+          <AttributeInput name="dex_mod" control={control} />
+          <AttributeInput name="agi_mod" control={control} />
+          <AttributeInput name="int_mod" control={control} />
+          <AttributeInput name="will_mod" control={control} />
+          <AttributeInput name="per_mod" control={control} />
+          <AttributeInput name="car_mod" control={control} />
 
           <div className="col-12 text-center">
             <span>Total Gasto: {total}</span>

@@ -113,7 +113,6 @@ export const CharacterInfo = ({
                   <Link
                     href={{
                       pathname: `${item.link}/${characterId}`,
-                      query: { isControl: isControl },
                     }}
                     className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center mx-auto"
                     style={{ width: "45px", height: "45px" }}

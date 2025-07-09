@@ -12,11 +12,19 @@ type AttributeInputProps = {
 };
 
 export function AttributeInput({ name, control }: AttributeInputProps) {
-  const attributeKey = Object.keys(ATTRIBUTES).includes(name)
-    ? (name as keyof typeof ATTRIBUTES)
+  const upperCaseName = name.toUpperCase();
+  const attributeKeys = Object.keys(ATTRIBUTES) as Array<
+    keyof typeof ATTRIBUTES
+  >;
+  const attributeKey: keyof typeof ATTRIBUTES | null = attributeKeys.includes(
+    upperCaseName as keyof typeof ATTRIBUTES
+  )
+    ? (upperCaseName as keyof typeof ATTRIBUTES)
     : null;
-  const atributo = attributeKey ? ATTRIBUTES[attributeKey].atributo : name;
-  const abreviacao = attributeKey ? ATTRIBUTES[attributeKey].abreviacao : name;
+
+
+  const atributo = attributeKey ? ATTRIBUTES[attributeKey]?.atributo : name;
+  const abreviacao = attributeKey ? ATTRIBUTES[attributeKey]?.abreviacao : name;
 
   function handleBlurRemoveLeadingZeros2(value: string | number): number {
     if (value === "" || value === null || value === undefined) {
@@ -35,16 +43,16 @@ export function AttributeInput({ name, control }: AttributeInputProps) {
       render={({ field }) => {
         const value = field.value ?? 0;
 
-         const decrease = () => {
+        const decrease = () => {
           if (value > 0) {
             const newVal = value - 1;
             field.onChange(handleBlurRemoveLeadingZeros2(newVal));
           }
         };
-        
+
         const increase = () => {
-            const newVal = value + 1;
-            field.onChange(handleBlurRemoveLeadingZeros2(newVal));
+          const newVal = value + 1;
+          field.onChange(handleBlurRemoveLeadingZeros2(newVal));
         };
 
         const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -24,14 +24,14 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign(
       { userId: user.id, email: user.email, isMaster: user.isMaster },
       JWT_SECRET,
-      { expiresIn: "8h" }
+      { expiresIn: "1y" }
     );
 
     const res = NextResponse.json({ user: userSafe }, { status: 200 });
     res.cookies.set("session_token", token, {
       httpOnly: true,
       path: "/",
-      maxAge: 8 * 60 * 60 * 31,
+      maxAge: 365 * 24 * 60 * 60,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     });

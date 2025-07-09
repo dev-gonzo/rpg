@@ -7,4 +7,12 @@ export const ATTRIBUTES = {
   WILL: { atributo: "Força de Vontade", abreviacao: "WILL" },
   PER: { atributo: "Percepção", abreviacao: "PER" },
   CAR: { atributo: "Carisma", abreviacao: "CAR" },
+  CON_MOD: { atributo: "Mod. Constituição", abreviacao: "CON MOD" },
+  FR_MOD: { atributo: "Mod. Força", abreviacao: "FR MOD" },
+  DEX_MOD: { atributo: "Mod. Destreza", abreviacao: "DEX MOD" },
+  AGI_MOD: { atributo: "Mod. Agilidade", abreviacao: "AGI MOD" },
+  INT_MOD: { atributo: "Mod. Inteligência", abreviacao: "INT MOD" },
+  WILL_MOD: { atributo: "Mod. Força de Vontade", abreviacao: "WILL MOD" },
+  PER_MOD: { atributo: "Mod. Percepção", abreviacao: "PER MOD" },
+  CAR_MOD: { atributo: "Mod. Carisma", abreviacao: "CAR MOD" },
 } as const;
