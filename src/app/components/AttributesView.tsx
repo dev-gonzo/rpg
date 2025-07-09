@@ -18,11 +18,15 @@ export function AttributesView({
           <div className="row align-items-center my-2">
             <div className="col-6">
               <strong>{label}</strong>
-              <br />({abbreviation}) {valueMod && <small>{`[MOD.]`}</small>}
+              <br />({abbreviation}){" "}
+              {valueMod && valueMod > 0 ? <small>{`[MOD.]`}</small> : null}
             </div>
             <div className="col-2">
               <h1>
-                {value} {valueMod && <small>{`[${valueMod}]`}</small>}
+                {value}{" "}
+                {valueMod && valueMod > 0 ? (
+                  <small>{`[${valueMod}]`}</small>
+                ) : null}
               </h1>
             </div>
             <div className="col-4 text-end d-flex justify-content-end flex-column pe-3">
