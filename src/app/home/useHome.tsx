@@ -31,6 +31,7 @@ export type CharacterHome = {
 export function useHome() {
   const [grid, setGrid] = useState<string>("grid-5");
   const [filter, setFilter] = useState("all");
+  const [reload, setReload] = useState<boolean>(false);
 
   const { user } = useAuthStore();
   const [charactersPerson, setCharactersPerson] = useState<CharacterHome[]>([]);
@@ -38,6 +39,7 @@ export function useHome() {
     []
   );
   const [charactersNpcs, setCharactersNpcs] = useState<CharacterHome[]>([]);
+  const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   const { data, loading, error, onPath } = useGet<{
     characters: CharacterHome[];
@@ -59,6 +61,22 @@ export function useHome() {
   useEffect(() => {
     handleHome();
   }, []);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null;
+
+    if (reload) {
+      intervalId = setInterval(() => {
+        onPath("/api/characters/home");
+      }, 15000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [reload, onPath]);
 
   const handleHome = () => {
     onPath("/api/characters/home");
@@ -100,18 +118,23 @@ export function useHome() {
     setCharactersPerson(sortCharactersByName(filterPerson()));
     setCharactersPlayers(sortCharactersByName(filterPlayers()));
     setCharactersNpcs(sortCharactersByName(filterNpcs()));
+    if(loadingInitial && !loading){
+      setLoadingInitial(false)
+    }
   }, [data]);
 
   return {
     charactersPerson,
     charactersPlayers,
     charactersNpcs,
-    loading,
+    loading: loadingInitial,
     error,
     handleHome,
     filter,
     handleFilter,
     grid,
     setGrid: handleGrip,
+    reload,
+    setReload,
   };
 }

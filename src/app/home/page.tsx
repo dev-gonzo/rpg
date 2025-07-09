@@ -1,6 +1,6 @@
 "use client";
 
-import { faTable } from "@fortawesome/free-solid-svg-icons";
+import { faTable, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CharacterCard } from "../components/CharacterCard";
 import { ContainerWrap } from "../components/ContainerWrap";
@@ -8,6 +8,7 @@ import LoadingWrapper from "../components/LoadingWrapper";
 import Title from "../components/Title";
 import MainLayout from "../layouts/MainLayout";
 import { useHome } from "./useHome";
+import { useState } from "react";
 
 export default function HomePage() {
   const {
@@ -20,6 +21,8 @@ export default function HomePage() {
     handleFilter,
     grid,
     setGrid,
+    reload,
+    setReload,
   } = useHome();
 
   const isEmpty =
@@ -47,6 +50,19 @@ export default function HomePage() {
 
           <div className="col-12 d-flex gap-3 justify-content-between align-items-start ">
             <div className="d-flex gap-2 align-items-center">
+              <button
+                className={`btn btn-sm ${
+                  reload ? "btn-light" : "btn-outline-light"
+                } `}
+                onClick={() => setReload((prev) => !prev)}
+              >
+                {reload ? (
+                  <FontAwesomeIcon icon={faPause} size="lg" className="me-2" />
+                ) : (
+                  <FontAwesomeIcon icon={faPlay} size="lg" className="me-2" />
+                )}
+                Recarregar
+              </button>
               <button
                 className={`btn btn-sm btn-secondary d-none d-md-block`}
                 onClick={() => setGrid("grid-3")}

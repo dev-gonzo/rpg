@@ -33,6 +33,20 @@ input[type="number"] {
   color: #343a40 !important;
 }
 
+.text-orage{
+  color: #dd682e !important;
+}
+
+.text-green{
+  color: rgb(83 141 48) !important;
+
+}
+
+.text-yellow{
+  color:  rgb(189 150 34) !important;
+
+}
+
 .card-grid-3,
 .card-grid-4,
 .card-grid-5 {

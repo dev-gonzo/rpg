@@ -114,12 +114,9 @@ export function CharacterCard({
               <CharacterBasicInfo
                 character={character}
                 isPermission={isPermission}
+                isMaster={isMaster}
               />
-              <div className="d-flex justify-content-center pt-4 pb-2">
-                <button className="btn btn-outline-secondary">
-                  <FontAwesomeIcon icon={faRotateLeft} size="sm" /> Resetar todos os marcadores
-                </button>
-              </div>
+      
               <hr className="my-2" />
             </div>
           )}
