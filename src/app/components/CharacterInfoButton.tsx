@@ -122,6 +122,7 @@ export const CharacterInfo = ({
                     <FontAwesomeIcon icon={item.icon} size="xl" />
                   </Link>
                   <span
+                    className="text-truncate"
                     style={{
                       fontSize: "9px",
                       display: "block",
