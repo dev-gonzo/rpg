@@ -80,7 +80,9 @@ export function JournalView({ journal, isMaster, idx }: Props) {
                     ))}
                   </div>
                   <button
-                    className="carousel-control-prev"
+                    className={`carousel-control-prev ${
+                      position == 0 ? "d-none" : ""
+                    }`}
                     type="button"
                     onClick={handleControlPrev}
                   >
@@ -91,7 +93,9 @@ export function JournalView({ journal, isMaster, idx }: Props) {
                     <span className="visually-hidden">Previous</span>
                   </button>
                   <button
-                    className="carousel-control-next"
+                    className={`carousel-control-next ${
+                      position == images?.length - 1 ? "d-none" : ""
+                    }`}
                     type="button"
                     onClick={handleControlNext}
                   >
