@@ -3,7 +3,9 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Title from "@/app/components/Title";
 
-export default function AnchorScrollFix(doc: any) {
+export default function AnchorScrollFix({doc}: any) {
+
+  console.log("title", doc)
   const pathname = usePathname();
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function AnchorScrollFix(doc: any) {
 
   return (
     <>
-      <Title>{doc.title}</Title>
+      <Title>Regras: {doc.title}</Title>
     </>
   );
 }

@@ -64,3 +64,86 @@ input[type="number"] {
     width: 19.5%;
   }
 }
+
+
+
+/* src/app/globals.css ou arquivo de estilo similar */
+
+/* Estilos para o realce */
+.highlight-term {
+  background-color: yellow; /* Cor padrão para o realce */
+  color: black;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.active-highlight {
+  background-color: orange; /* Cor para o realce ativo/focado */
+  color: white;
+  border: 1px solid red; /* Opcional: Adicionar uma borda para mais visibilidade */
+  transition: background-color 0.3s, border 0.3s; /* Transição suave */
+}
+
+/* Estilos para a área de conteúdo scrollável */
+.doc-content-scroll-area {
+  /*
+  max-height: calc(100vh - 200px);
+    - '100vh' é 100% da altura da viewport.
+    - '200px' é um valor de exemplo que você deve ajustar.
+      Deve ser a altura combinada do seu cabeçalho, margens, barra de busca e rodapé,
+      para que a div ocupe o espaço restante e seja scrollável.
+      Se você já usa Tailwind CSS ou similar, pode ajustar isso diretamente no style attribute do div.
+  */
+  overflow-y: auto; /* Adiciona scroll vertical apenas quando o conteúdo exceder a max-height */
+  /* Opcional: Estilos para a barra de scroll */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Firefox */
+  /* border: 1px solid #e0e0e0; Opcional: Borda para a área de conteúdo */
+  border-radius: 8px; /* Opcional: Cantos arredondados */
+  padding: 20px; /* Espaçamento interno */
+  margin-top: 10px; /* Margem do topo */
+}
+
+
+
+
+
+.doc-content-scroll-area::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.doc-content-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.doc-content-scroll-area::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 3px;
+}
+
+.doc-content-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+.doc-content-scroll-area::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Firefox */
+.doc-content-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: #333333 transparent;
+}
+
+.doc-content-scroll-area::-webkit-scrollbar-button:vertical:increment,
+.doc-content-scroll-area::-webkit-scrollbar-button:vertical:decrement,
+.doc-content-scroll-area::-webkit-scrollbar-button:horizontal:increment,
+.doc-content-scroll-area::-webkit-scrollbar-button:horizontal:decrement {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

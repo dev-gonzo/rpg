@@ -1,71 +1,44 @@
 // src/app/docs/[slug]/page.tsx
+// Este é um Server Component - NENHUM "use client" aqui!
+
 import { notFound } from "next/navigation";
-import { getDocBySlug } from "@/lib/search";
+import { getDocBySlug } from "@/lib/search"; // getDocBySlug funciona no servidor
 import { MarkdownDoc } from "@/lib/types";
-import ReactMarkdown from "react-markdown";
-import AnchorScrollFix from "./AnchorScrollFix";
-import { JSX } from "react";
 import MainLayout from "@/app/layouts/MainLayout";
 import { ContainerWrap } from "@/app/components/ContainerWrap";
-import Title from "@/app/components/Title";
-
-// Função para transformar o texto do heading em id (slug)
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .replace(/--+/g, "-");
-}
-
-// Heading customizado com id anchor
-function HeadingWithAnchor(props: React.PropsWithChildren<any>) {
-  const { level, children } = props;
-  // Converter children para texto plano para gerar o id
-  const flatText = Array.isArray(children)
-    ? children.map((child) => (typeof child === "string" ? child : "")).join("")
-    : typeof children === "string"
-    ? children
-    : "";
-  const id = slugify(flatText);
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
-  return <Tag id={id}>{children}</Tag>;
-}
+import DocContentRenderer from "./DocContentRenderer"; // Importa o componente cliente
 
 interface Props {
+  // Correção: `params` é uma Promise que resolve para um objeto com `slug`
   params: Promise<{ slug: string | string[] }>;
 }
 
+// Este componente é assíncrono e executa no servidor para buscar os dados
 export default async function DocPage({ params }: Props) {
+  // **CORREÇÃO:** Aguarde a resolução do objeto params antes de acessá-lo
   const resolvedParams = await params;
-  const slug = Array.isArray(resolvedParams.slug)
-    ? resolvedParams.slug.join("/")
-    : resolvedParams.slug;
 
+  // Use resolvedParams.slug agora que ele foi resolvido
+  const slug = Array.isArray(resolvedParams.slug) ? resolvedParams.slug.join("/") : resolvedParams.slug;
+
+  // Busca o documento no servidor
   const doc: MarkdownDoc | null = await getDocBySlug(slug);
 
   if (!doc) {
-    notFound();
+    notFound(); // Redireciona para 404 se o documento não for encontrado
   }
 
+  // Passa os dados do documento para o componente cliente
   return (
     <MainLayout>
       <ContainerWrap justifyCenter>
         <div className="col-12 col-md-8">
-          <AnchorScrollFix doc={doc} />
-
-          <ReactMarkdown
-            components={{
-              h1: (props) => <HeadingWithAnchor level={1} {...props} />,
-              h2: (props) => <HeadingWithAnchor level={2} {...props} />,
-              h3: (props) => <HeadingWithAnchor level={3} {...props} />,
-              h4: (props) => <HeadingWithAnchor level={4} {...props} />,
-              h5: (props) => <HeadingWithAnchor level={5} {...props} />,
-              h6: (props) => <HeadingWithAnchor level={6} {...props} />,
-            }}
-          >
-            {doc.content}
-          </ReactMarkdown>
+          {/* DocContentRenderer é um componente cliente */}
+          <DocContentRenderer
+            initialContent={doc.content}
+            docTitle={doc.title}
+            docSlug={doc.slug}
+          />
         </div>
       </ContainerWrap>
     </MainLayout>
