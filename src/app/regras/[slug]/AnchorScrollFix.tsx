@@ -1,8 +1,9 @@
 "use client";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Title from "@/app/components/Title";
 
-export default function AnchorScrollFix() {
+export default function AnchorScrollFix(doc: any) {
   const pathname = usePathname();
 
   useEffect(() => {
@@ -30,5 +31,9 @@ export default function AnchorScrollFix() {
     }
   }, [pathname]); // Executa toda vez que o pathname muda
 
-  return null;
+  return (
+    <>
+      <Title>{doc.title}</Title>
+    </>
+  );
 }

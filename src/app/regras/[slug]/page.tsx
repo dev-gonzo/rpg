@@ -5,6 +5,9 @@ import { MarkdownDoc } from "@/lib/types";
 import ReactMarkdown from "react-markdown";
 import AnchorScrollFix from "./AnchorScrollFix";
 import { JSX } from "react";
+import MainLayout from "@/app/layouts/MainLayout";
+import { ContainerWrap } from "@/app/components/ContainerWrap";
+import Title from "@/app/components/Title";
 
 // Função para transformar o texto do heading em id (slug)
 function slugify(text: string): string {
@@ -46,21 +49,25 @@ export default async function DocPage({ params }: Props) {
   }
 
   return (
-    <div style={{ padding: 32, maxWidth: 800, margin: "auto" }}>
-      <AnchorScrollFix />
-      <h1>{doc.title}</h1>
-      <ReactMarkdown
-        components={{
-          h1: (props) => <HeadingWithAnchor level={1} {...props} />,
-          h2: (props) => <HeadingWithAnchor level={2} {...props} />,
-          h3: (props) => <HeadingWithAnchor level={3} {...props} />,
-          h4: (props) => <HeadingWithAnchor level={4} {...props} />,
-          h5: (props) => <HeadingWithAnchor level={5} {...props} />,
-          h6: (props) => <HeadingWithAnchor level={6} {...props} />,
-        }}
-      >
-        {doc.content}
-      </ReactMarkdown>
-    </div>
+    <MainLayout>
+      <ContainerWrap justifyCenter>
+        <div className="col-12 col-md-8">
+          <AnchorScrollFix doc={doc} />
+
+          <ReactMarkdown
+            components={{
+              h1: (props) => <HeadingWithAnchor level={1} {...props} />,
+              h2: (props) => <HeadingWithAnchor level={2} {...props} />,
+              h3: (props) => <HeadingWithAnchor level={3} {...props} />,
+              h4: (props) => <HeadingWithAnchor level={4} {...props} />,
+              h5: (props) => <HeadingWithAnchor level={5} {...props} />,
+              h6: (props) => <HeadingWithAnchor level={6} {...props} />,
+            }}
+          >
+            {doc.content}
+          </ReactMarkdown>
+        </div>
+      </ContainerWrap>
+    </MainLayout>
   );
 }
