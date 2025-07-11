@@ -29,20 +29,51 @@ export async function GET(req: NextRequest) {
 
   try {
     let journals;
+    let totalPages;
+    let totalJournals;
+    const pageParam = req.nextUrl.searchParams.get("pag");
+    const page = parseInt(pageParam || "1", 10);
 
+    const pageSize = 3;
+    const skip = (page - 1) * pageSize;
     if (isMaster) {
+      totalJournals = await prisma.journal.count();
+      totalPages = Math.ceil(totalJournals / pageSize);
+
       journals = await prisma.journal.findMany({
+        skip: skip,
+        take: pageSize,
         orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       });
     } else {
+      totalJournals = await prisma.journal.count({
+        where: {
+          isPublic: true,
+          status: { in: PUBLIC_STATUSES },
+        },
+      });
+      totalPages = Math.ceil(totalJournals / pageSize);
+
       journals = await prisma.journal.findMany({
         where: {
           isPublic: true,
           status: { in: PUBLIC_STATUSES },
         },
+        skip: skip,
+        take: pageSize,
         orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       });
     }
+
+    return NextResponse.json({
+      journals,
+      pagination: {
+        page: page,
+        totalPages: totalPages,
+        pageSize: pageSize,
+        totalItems: totalJournals,
+      },
+    });
 
     return NextResponse.json({ journals });
   } catch (error) {

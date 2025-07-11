@@ -4,14 +4,18 @@ import { useGet } from "@/app/hooks/fetch/useGet";
 import { Adventure } from "@prisma/client";
 
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMasterOrControl } from "../hooks/useMasterOrControl";
+import { PaginationType } from "@/shared/types/PaginationType";
+import { Pagination } from "react-bootstrap";
 
 export const useAdventure = () => {
   const { isMaster } = useMasterOrControl({});
+  const [pageCurrent, setPageCurrent] = useState(1);
 
-  const { data, loading, onPath } = useGet<{
+  const { data, loading, onPath, onParams } = useGet<{
     adventures: Adventure[];
+    pagination: PaginationType;
   }>({ initialLoading: true });
 
   const onGet = () => {
@@ -59,12 +63,30 @@ export const useAdventure = () => {
   };
 
   useEffect(() => {
+    if (data?.pagination?.page && pageCurrent != data?.pagination?.page) {
+      setPageCurrent(data.pagination.page);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data?.pagination?.page && pageCurrent != data?.pagination?.page) {
+      onParams("/api/adventure", { pag: String(pageCurrent) });
+    }
+  }, [pageCurrent]);
+
+  useEffect(() => {
     onGet();
   }, []);
+
+  const changePage = (value: number) => {
+    setPageCurrent(value)
+  }
 
   return {
     isLoading: loading,
     data: sortAdventures(data?.adventures),
     isMaster,
+    pagination: data?.pagination,
+    pageCurrent, changePage
   };
 };

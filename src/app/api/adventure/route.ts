@@ -12,6 +12,7 @@ const adventureSchema = Yup.object({
   status: Yup.string().required("O campo status é obrigatório."),
 });
 
+
 export async function GET(req: NextRequest) {
   const payload = verifyJwt(req);
 
@@ -32,13 +33,30 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let adventures;
+    const pageParam = req.nextUrl.searchParams.get("pag");
+    const page = parseInt(pageParam || "1", 10);
 
-    adventures = await prisma.adventure.findMany({
+    const pageSize = 3;
+    const skip = (page - 1) * pageSize;
+
+    const totalAdventures = await prisma.adventure.count();
+    const totalPages = Math.ceil(totalAdventures / pageSize);
+
+    const adventures = await prisma.adventure.findMany({
+      skip: skip,
+      take: pageSize,
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     });
 
-    return NextResponse.json({ adventures });
+    return NextResponse.json({
+      adventures,
+      pagination: {
+        page: page,
+        totalPages: totalPages,
+        pageSize: pageSize, 
+        totalItems: totalAdventures, 
+      },
+    });
   } catch (error) {
     console.error("Erro ao buscar adventures: ", error);
     return NextResponse.json(
@@ -47,6 +65,7 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
 
 export async function POST(req: NextRequest, context: any) {
   const payload = verifyJwt(req);

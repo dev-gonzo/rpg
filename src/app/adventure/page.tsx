@@ -7,10 +7,11 @@ import MainLayout from "@/app/layouts/MainLayout";
 import { JournalView } from "../components/JournalView";
 import { useAdventure } from "./useAdventure";
 import { AdventureView } from "../components/AdventureView";
+import { PaginationNav } from "../components/PaginationNav";
 
-export default function Jounals() {
-  const { data, isLoading, isMaster } = useAdventure();
-
+export default function Adventures() {
+  const { data, isLoading, isMaster, pagination, pageCurrent, changePage } =
+    useAdventure();
 
   return (
     <MainLayout>
@@ -23,15 +24,25 @@ export default function Jounals() {
       </Title>
 
       <ContainerWrap gap justifyCenter isLoading={isLoading}>
-    
         <AlertListEmpty
           list={data ?? []}
           message="Nenhuma história cadastrada."
         />
 
         {data?.map((item) => (
-          <AdventureView adventure={item} key={item.id} isMaster={isMaster} idx={item?.id}/>
+          <AdventureView
+            adventure={item}
+            key={item.id}
+            isMaster={isMaster}
+            idx={item?.id}
+          />
         ))}
+
+        <PaginationNav
+          changePage={changePage}
+          pageCurrent={pageCurrent}
+          pagination={pagination}
+        />
       </ContainerWrap>
     </MainLayout>
   );
