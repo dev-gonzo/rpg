@@ -23,12 +23,16 @@ export default function Attributes() {
           path: `/character-edit/attributes/${characterId}`,
         }}
         comp={
-          <Link
-            href={`/character-edit/attributes/${characterId}/mod`}
-            className="btn btn-sm btn-outline-light"
-          >
-            Editar Mod.
-          </Link>
+          isControl || isMaster ? (
+            <Link
+              href={`/character-edit/attributes/${characterId}/mod`}
+              className="btn btn-sm btn-outline-light"
+            >
+              Editar Mod.
+            </Link>
+          ) : (
+            <></>
+          )
         }
         control={isControl || isMaster}
       >
