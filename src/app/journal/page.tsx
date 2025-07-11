@@ -15,7 +15,6 @@ export default function Jounals() {
     <MainLayout>
       <Title
         link={{ label: "Incluir", path: `/journal/edit` }}
-        home={false}
         control={isMaster}
       >
         Diário de Bordo
