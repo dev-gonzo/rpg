@@ -1,8 +1,5 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/generated/prisma"  // mantenha comentado para usar padrão
 }
 
 datasource db {
@@ -24,28 +21,23 @@ model User {
 model Character {
   id String @id @default(uuid())
 
-  // Dados básicos
-  name        String
-  profession  String?
-  birthDate   DateTime
-  birthPlace  String?
-  gender      String?
-  heightCm    Int?
-  weightKg    Int?
-  age         Int?
-  apparentAge Int?
-  religion    String?
-
-  // Dados místicos
+  name          String
+  profession    String?
+  birthDate     DateTime
+  birthPlace    String?
+  gender        String?
+  heightCm      Int?
+  weightKg      Int?
+  age           Int?
+  apparentAge   Int?
   secretSociety String?
+  religion      String?
   cabala        String?
   rank          String?
   mentor        String?
   societyAllies String[] @default([])
 
-  // Relacionamentos complementares
-  relevantPeople RelevantPerson[]
-
+  relevantPeople      RelevantPerson[]
   attributes          Attribute?            @relation("CharacterAttribute")
   improvements        Improvement[]
   skills              Skill[]
@@ -77,8 +69,7 @@ model Character {
 
   image String?
 
-  // Relacionamento com usuário controlador (opcional)
-  controlUserId String? // FK opcional
+  controlUserId String?
   controlUser   User?   @relation(fields: [controlUserId], references: [id])
 
   createdAt DateTime @default(now())
@@ -90,7 +81,7 @@ model RelevantPerson {
   characterId String
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 
-  category         String // "enemies", "allies", "contacts", "relevantPeople"
+  category         String
   name             String
   apparentAge      Int?
   city             String?
@@ -160,9 +151,9 @@ model CombatSkill {
   characterId String
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 
-  group           String? // opcional
+  group           String?
   skill           String
-  attribute       String? // "CON", "FR", "DEX", "AGI", "INT", "WILL", "PER", "CAR"
+  attribute       String?
   attackCost      Int
   defenseCost     Int
   attackKitValue  Int
@@ -256,7 +247,7 @@ model Weapon {
   damage      String
   initiative  Int
   range       String?
-  rof         String? // Rate of Fire
+  rof         String?
   ammunition  String?
 
   bookPage String?
@@ -277,7 +268,7 @@ model Note {
 model Journal {
   id String @id @default(uuid())
 
-  image1 String? // Base64 ou URL
+  image1 String?
   image2 String?
   image3 String?
   text   String
@@ -286,6 +277,21 @@ model Journal {
 
   status    String
   isPublic  Boolean  @default(false) @map("ispublic")
+  createdAt DateTime @default(now()) @map("createdat")
+  updatedAt DateTime @default(now()) @map("updatedat")
+}
+
+model Adventure {
+  id String @id @default(uuid())
+
+  image1 String?
+  image2 String?
+  image3 String?
+  text   String
+
+  order Int?
+
+  status    String
   createdAt DateTime @default(now()) @map("createdat")
   updatedAt DateTime @default(now()) @map("updatedat")
 }

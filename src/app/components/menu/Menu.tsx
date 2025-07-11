@@ -7,7 +7,7 @@ import logo from "@/assets/logo-white.png";
 import React from "react";
 
 export default function Menu() {
-  const { show, openMenu, closeMenu, handleLogout } = useMenu();
+  const { show, openMenu, closeMenu, handleLogout, isMaster } = useMenu();
 
   return (
     <>
@@ -50,6 +50,17 @@ export default function Menu() {
         </div>
         <div className="offcanvas-body bg-dark">
           <ul className="navbar-nav">
+            {isMaster ? (
+              <li className="nav-item">
+                <Link
+                  href="/adventure"
+                  className="nav-link text-light"
+                  onClick={closeMenu}
+                >
+                  Aventura
+                </Link>
+              </li>
+            ) : null}
             <li className="nav-item">
               <Link
                 href="/"
