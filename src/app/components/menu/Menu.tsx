@@ -22,7 +22,7 @@ export default function Menu() {
             <span className="navbar-toggler-icon" />
           </button>
           <Link href="/" className="navbar-brand mb-0 h1">
-            <img src={logo.src} alt="RPG System" width={120}/>
+            <img src={logo.src} alt="RPG System" width={120} />
           </Link>
         </div>
       </nav>
@@ -66,6 +66,15 @@ export default function Menu() {
                 onClick={closeMenu}
               >
                 Diário de Bordo
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                href="/regras/indice"
+                className="nav-link text-light"
+                onClick={closeMenu}
+              >
+                Regras
               </Link>
             </li>
             <li className="nav-item">

@@ -11,6 +11,60 @@ interface DocContentRendererProps {
   docSlug: string;
 }
 
+function sortMarkdownSections(markdownContent: any) {
+  const sections = [];
+  let preamble = "";
+
+  // Encontra a posição do primeiro título '###'
+  const firstHeadingIndex = markdownContent.indexOf("###");
+
+  if (firstHeadingIndex === -1) {
+    // Se não houver nenhum título '###', retorna o conteúdo original
+    return markdownContent;
+  }
+
+  // Extrai o conteúdo que está antes do primeiro título '###' (o preâmbulo)
+  preamble = markdownContent.substring(0, firstHeadingIndex).trim();
+
+  // Expressão regular para encontrar blocos que começam com '###' e seu conteúdo.
+  // Captura:
+  // Grupo 0 (match[0]): O bloco completo da seção (ex: "### Título A\nConteúdo A\n\n")
+  // Grupo 1 (match[1]): A linha completa do cabeçalho (ex: "### Título A")
+  // Grupo 2 (match[2]): O texto do cabeçalho (ex: "Título A")
+  // Grupo 3 (match[3]): O conteúdo da seção, incluindo quebras de linha.
+  const sectionRegex = /(###\s*([^\n]+))([\s\S]*?)(?=(?:\n###\s*[^\n]+)|$)/g;
+
+  // Itera sobre todas as correspondências encontradas no conteúdo Markdown
+  for (const match of markdownContent.matchAll(sectionRegex)) {
+    sections.push({
+      title: match[2].trim(), // O texto do título para ordenação
+      fullBlock: match[0], // O bloco completo da seção para reconstrução
+    });
+  }
+
+  // Ordena as seções alfabeticamente com base no texto do título,
+  // usando `localeCompare` para lidar corretamente com caracteres acentuados do português.
+  sections.sort((a, b) =>
+    a.title.localeCompare(b.title, "pt", { sensitivity: "base" })
+  );
+
+  // Reconstrói o conteúdo Markdown ordenado
+  let sortedMarkdown = preamble;
+
+  // Adiciona quebras de linha após o preâmbulo se ele existir e houverem seções
+  if (sortedMarkdown.length > 0 && sections.length > 0) {
+    sortedMarkdown += "\n\n";
+  }
+
+  // Adiciona cada bloco de seção ordenado ao resultado
+  for (const section of sections) {
+    sortedMarkdown += section.fullBlock;
+  }
+
+  // Remove quaisquer espaços em branco excessivos no início ou no fim do documento final.
+  return sortedMarkdown.trim();
+}
+
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -28,7 +82,15 @@ function HeadingWithAnchor(props: React.PropsWithChildren<any>) {
     : "";
   const id = slugify(flatText);
   const Tag = `h${level}` as keyof JSX.IntrinsicElements;
-  return <Tag id={id}>{children}</Tag>;
+
+  // Aqui você pode definir a classe condicionalmente
+  const className = level === 3 ? "text-uppercase fs-5" : undefined;
+
+  return (
+    <Tag id={id} className={className}>
+      {children}
+    </Tag>
+  );
 }
 
 export default function DocContentRenderer({
@@ -36,34 +98,45 @@ export default function DocContentRenderer({
   docTitle,
   docSlug,
 }: DocContentRendererProps) {
+  // Usa useMemo para aplicar a ordenação no initialContent.
+  // Isso garante que a ordenação só ocorra se initialContent mudar.
+  const sortedBaseContent = React.useMemo(() => {
+    return sortMarkdownSections(initialContent);
+  }, [initialContent]);
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [highlightedContent, setHighlightedContent] = useState(initialContent);
+  // highlightedContent agora é inicializado com o conteúdo já ordenado
+  const [highlightedContent, setHighlightedContent] =
+    useState(sortedBaseContent);
   const [currentHighlightIndex, setCurrentHighlightIndex] = useState(0);
-  const [highlightCount, setHighlightCount] = useState(0); // 👈 novo estado
+  const [highlightCount, setHighlightCount] = useState(0);
   const highlightedElementsRef = useRef<HTMLElement[]>([]);
   const contentScrollAreaRef = useRef<HTMLDivElement>(null);
   const [fixedSearch, seFixedSearch] = useState(false);
 
+  // O useEffect para a lógica de busca agora depende de sortedBaseContent
   useEffect(() => {
-    if (!initialContent) return;
+    if (!sortedBaseContent) return; // Garante que há conteúdo base para trabalhar
 
     if (!searchQuery) {
-      setHighlightedContent(initialContent);
+      // Se não há termo de busca, exibe o conteúdo base ordenado
+      setHighlightedContent(sortedBaseContent);
       highlightedElementsRef.current = [];
       setCurrentHighlightIndex(0);
-      setHighlightCount(0); // zera também o contador
+      setHighlightCount(0);
       return;
     }
 
+    // Aplica a marcação de destaque sobre o conteúdo base ordenado
     const regex = new RegExp(`(${searchQuery})`, "gi");
-    const newHighlightedContent = initialContent.replace(
+    const newHighlightedContent = sortedBaseContent.replace(
       regex,
       `<mark class="highlight-term">$1</mark>`
     );
     setHighlightedContent(newHighlightedContent);
     setCurrentHighlightIndex(0);
     highlightedElementsRef.current = [];
-  }, [initialContent, searchQuery]);
+  }, [sortedBaseContent, searchQuery]); // Dependências atualizadas para sortedBaseContent
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -72,7 +145,7 @@ export default function DocContentRenderer({
       ) as HTMLElement[];
 
       highlightedElementsRef.current = highlights;
-      setHighlightCount(highlights.length); // 👈 atualiza o contador
+      setHighlightCount(highlights.length);
 
       if (highlights.length > 0) {
         highlights[0].classList.add("active-highlight");
@@ -115,11 +188,8 @@ export default function DocContentRenderer({
       <AnchorScrollFix doc={{ title: docTitle, slug: docSlug }} />
 
       <div
-        className={`d-flex flex-column align-items-center ${
-          fixedSearch || searchQuery
-            // ? "position-fixed justify-content-center top-0 start-0 mt-2 w-100"
-            ? ""
-            : "mb-4 flex items-center"
+        className={`d-flex flex-column align-items-center  ${
+          fixedSearch || searchQuery ? "" : "mb-4 flex items-center"
         }`}
       >
         <input
@@ -130,7 +200,7 @@ export default function DocContentRenderer({
           onFocus={() => seFixedSearch(true)}
           onBlur={() => seFixedSearch(false)}
           className={`form-control p-2 border border-gray-300 rounded-md flex-grow ${
-            fixedSearch || searchQuery? "w-100" : ""
+            fixedSearch || searchQuery ? "w-100" : ""
           }`}
         />
         {searchQuery && highlightCount > 0 && (
