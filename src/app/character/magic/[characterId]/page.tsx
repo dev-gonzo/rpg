@@ -37,7 +37,7 @@ export default function Magic() {
           home={false}
           link={{
             label: "Editar",
-            path: `http://localhost:3000/character-edit/magic/${characterId}/paths-forms`,
+            path: `/character-edit/magic/${characterId}/paths-forms`,
           }}
           control={isControl || isMaster}
         >
