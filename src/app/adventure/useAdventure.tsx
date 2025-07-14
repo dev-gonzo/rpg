@@ -12,6 +12,7 @@ import { Pagination } from "react-bootstrap";
 export const useAdventure = () => {
   const { isMaster } = useMasterOrControl({});
   const [pageCurrent, setPageCurrent] = useState(1);
+  const [pageLoading, setPageLoading] = useState(false);
 
   const { data, loading, onPath, onParams } = useGet<{
     adventures: Adventure[];
@@ -65,6 +66,7 @@ export const useAdventure = () => {
   useEffect(() => {
     if (data?.pagination?.page && pageCurrent != data?.pagination?.page) {
       setPageCurrent(data.pagination.page);
+      setPageLoading(false);
     }
   }, [data]);
 
@@ -79,14 +81,16 @@ export const useAdventure = () => {
   }, []);
 
   const changePage = (value: number) => {
-    setPageCurrent(value)
-  }
+    setPageLoading(true)
+    setPageCurrent(value);
+  };
 
   return {
-    isLoading: loading,
+    isLoading: loading || pageLoading,
     data: sortAdventures(data?.adventures),
     isMaster,
     pagination: data?.pagination,
-    pageCurrent, changePage
+    pageCurrent,
+    changePage,
   };
 };

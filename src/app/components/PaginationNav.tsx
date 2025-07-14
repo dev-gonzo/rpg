@@ -44,46 +44,39 @@ export const PaginationNav = ({
 
   return (
     <div className="col-12 d-flex justify-content-center">
-      <nav aria-label="Navegação de página ">
-        <ul className="btn-group ps-0">
-          <li className="btn btn-outline-secondary">
-            <button
-              className="page-link"
-              onClick={() => changePage(currentPage - 1)}
-              disabled={currentPage === 1}
-              aria-label="Página anterior"
-            >
-              <FontAwesomeIcon icon={faCaretLeft} size="xl" />
-            </button>
-          </li>
+      <div aria-label="Navegação de página " className="btn-group">
+        <button
+          className="btn btn-outline-secondary"
+          onClick={() => changePage(currentPage - 1)}
+          disabled={currentPage === 1}
+          aria-label="Página anterior"
+        >
+          <FontAwesomeIcon icon={faCaretLeft} size="xl" />
+        </button>
 
-          {pageNumbers.map((page) => (
-            <li
-              key={page}
-              className={`btn btn-outline-secondary ${currentPage === page ? "active" : ""}`}
-            >
-              <button
-                className="page-link"
-                onClick={() => changePage(page)}
-                aria-current={currentPage === page ? "page" : undefined}
-              >
-                {page}
-              </button>
-            </li>
-          ))}
+        {pageNumbers.map((page, index) => (
+          <button
+            className={`btn btn-outline-secondary ${
+              currentPage === page ? "active" : ""
+            }`}
+            onClick={() => {
+              changePage(page);
+            }}
+            key={`btn-nav-${page}`}
+          >
+            {page}
+          </button>
+        ))}
 
-          <li className="btn btn-outline-secondary">
-            <button
-              className="page-link"
-              onClick={() => changePage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              aria-label="Próxima página"
-            >
-              <FontAwesomeIcon icon={faCaretRight} size="xl" />
-            </button>
-          </li>
-        </ul>
-      </nav>
+        <button
+          className="btn btn-outline-secondary"
+          onClick={() => changePage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          aria-label="Próxima página"
+        >
+          <FontAwesomeIcon icon={faCaretRight} size="xl" />
+        </button>
+      </div>
     </div>
   );
 };

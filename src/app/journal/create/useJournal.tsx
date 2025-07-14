@@ -33,8 +33,22 @@ export const useJournal = () => {
 
     try {
       const url = "/api/journal";
+      const featured =
+        formData?.featured == true ||
+        (formData.featured as unknown as string) == "true"
+          ? true
+          : false;
+      const isPublic =
+        formData?.isPublic == true ||
+        (formData.isPublic as unknown as string) == "true"
+          ? true
+          : false;
 
-      await save(url, { ...formData }, "POST");
+      await save(
+        url,
+        { ...formData, featured: featured, isPublic: isPublic },
+        "POST"
+      );
 
       setSuccessMessage("Diario de Bordo criado com sucesso!");
 

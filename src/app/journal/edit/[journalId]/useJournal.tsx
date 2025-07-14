@@ -47,7 +47,6 @@ export const useJournal = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader.result);
         setValue(field, reader.result as string, { shouldValidate: true });
       };
       reader.readAsDataURL(file);
@@ -76,14 +75,20 @@ export const useJournal = () => {
     try {
       const url = `/api/journal/${journalId}`;
 
-      const featured = formData?.featured as string | boolean;
+      const featured =
+        formData?.featured == true ||
+        (formData.featured as unknown as string) == "true"
+          ? true
+          : false;
+      const isPublic =
+        formData?.isPublic == true ||
+        (formData.isPublic as unknown as string) == "true"
+          ? true
+          : false;
 
       await save(
         url,
-        {
-          ...formData,
-          featured: featured == "true" || featured == true ? true : false,
-        },
+        { ...formData, featured: featured, isPublic: isPublic },
         "PUT"
       );
 

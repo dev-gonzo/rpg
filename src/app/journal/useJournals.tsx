@@ -10,6 +10,7 @@ import { PaginationType } from "@/shared/types/PaginationType";
 export const useJournals = () => {
   const { isMaster } = useMasterOrControl({});
   const [pageCurrent, setPageCurrent] = useState(1);
+  const [pageLoading, setPageLoading] = useState(false);
 
   const { data, loading, onPath, onParams } = useGet<{
     journals: Journal[];
@@ -27,15 +28,22 @@ export const useJournals = () => {
   }, [pageCurrent]);
 
   useEffect(() => {
+    if(data){
+      setPageLoading(false);
+    }
+  }, [data])
+
+  useEffect(() => {
     onGet();
   }, []);
 
   const changePage = (value: number) => {
+    setPageLoading(true);
     setPageCurrent(value);
   };
 
   return {
-    isLoading: loading,
+    isLoading: loading || pageLoading,
     data: data?.journals ?? [],
     isMaster,
     pagination: data?.pagination,
