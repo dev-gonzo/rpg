@@ -11,59 +11,59 @@ interface DocContentRendererProps {
   docSlug: string;
 }
 
-function sortMarkdownSections(markdownContent: any) {
-  const sections = [];
-  let preamble = "";
+// function sortMarkdownSections(markdownContent: any) {
+//   const sections = [];
+//   let preamble = "";
 
-  // Encontra a posição do primeiro título '###'
-  const firstHeadingIndex = markdownContent.indexOf("###");
+//   // Encontra a posição do primeiro título '###'
+//   const firstHeadingIndex = markdownContent.indexOf("###");
 
-  if (firstHeadingIndex === -1) {
-    // Se não houver nenhum título '###', retorna o conteúdo original
-    return markdownContent;
-  }
+//   if (firstHeadingIndex === -1) {
+//     // Se não houver nenhum título '###', retorna o conteúdo original
+//     return markdownContent;
+//   }
 
-  // Extrai o conteúdo que está antes do primeiro título '###' (o preâmbulo)
-  preamble = markdownContent.substring(0, firstHeadingIndex).trim();
+//   // Extrai o conteúdo que está antes do primeiro título '###' (o preâmbulo)
+//   preamble = markdownContent.substring(0, firstHeadingIndex).trim();
 
-  // Expressão regular para encontrar blocos que começam com '###' e seu conteúdo.
-  // Captura:
-  // Grupo 0 (match[0]): O bloco completo da seção (ex: "### Título A\nConteúdo A\n\n")
-  // Grupo 1 (match[1]): A linha completa do cabeçalho (ex: "### Título A")
-  // Grupo 2 (match[2]): O texto do cabeçalho (ex: "Título A")
-  // Grupo 3 (match[3]): O conteúdo da seção, incluindo quebras de linha.
-  const sectionRegex = /(###\s*([^\n]+))([\s\S]*?)(?=(?:\n###\s*[^\n]+)|$)/g;
+//   // Expressão regular para encontrar blocos que começam com '###' e seu conteúdo.
+//   // Captura:
+//   // Grupo 0 (match[0]): O bloco completo da seção (ex: "### Título A\nConteúdo A\n\n")
+//   // Grupo 1 (match[1]): A linha completa do cabeçalho (ex: "### Título A")
+//   // Grupo 2 (match[2]): O texto do cabeçalho (ex: "Título A")
+//   // Grupo 3 (match[3]): O conteúdo da seção, incluindo quebras de linha.
+//   const sectionRegex = /(###\s*([^\n]+))([\s\S]*?)(?=(?:\n###\s*[^\n]+)|$)/g;
 
-  // Itera sobre todas as correspondências encontradas no conteúdo Markdown
-  for (const match of markdownContent.matchAll(sectionRegex)) {
-    sections.push({
-      title: match[2].trim(), // O texto do título para ordenação
-      fullBlock: match[0], // O bloco completo da seção para reconstrução
-    });
-  }
+//   // Itera sobre todas as correspondências encontradas no conteúdo Markdown
+//   for (const match of markdownContent.matchAll(sectionRegex)) {
+//     sections.push({
+//       title: match[2].trim(), // O texto do título para ordenação
+//       fullBlock: match[0], // O bloco completo da seção para reconstrução
+//     });
+//   }
 
-  // Ordena as seções alfabeticamente com base no texto do título,
-  // usando `localeCompare` para lidar corretamente com caracteres acentuados do português.
-  sections.sort((a, b) =>
-    a.title.localeCompare(b.title, "pt", { sensitivity: "base" })
-  );
+//   // Ordena as seções alfabeticamente com base no texto do título,
+//   // usando `localeCompare` para lidar corretamente com caracteres acentuados do português.
+//   sections.sort((a, b) =>
+//     a.title.localeCompare(b.title, "pt", { sensitivity: "base" })
+//   );
 
-  // Reconstrói o conteúdo Markdown ordenado
-  let sortedMarkdown = preamble;
+//   // Reconstrói o conteúdo Markdown ordenado
+//   let sortedMarkdown = preamble;
 
-  // Adiciona quebras de linha após o preâmbulo se ele existir e houverem seções
-  if (sortedMarkdown.length > 0 && sections.length > 0) {
-    sortedMarkdown += "\n\n";
-  }
+//   // Adiciona quebras de linha após o preâmbulo se ele existir e houverem seções
+//   if (sortedMarkdown.length > 0 && sections.length > 0) {
+//     sortedMarkdown += "\n\n";
+//   }
 
-  // Adiciona cada bloco de seção ordenado ao resultado
-  for (const section of sections) {
-    sortedMarkdown += section.fullBlock;
-  }
+//   // Adiciona cada bloco de seção ordenado ao resultado
+//   for (const section of sections) {
+//     sortedMarkdown += section.fullBlock;
+//   }
 
-  // Remove quaisquer espaços em branco excessivos no início ou no fim do documento final.
-  return sortedMarkdown.trim();
-}
+//   // Remove quaisquer espaços em branco excessivos no início ou no fim do documento final.
+//   return sortedMarkdown.trim();
+// }
 
 function slugify(text: string): string {
   return text
@@ -101,7 +101,8 @@ export default function DocContentRenderer({
   // Usa useMemo para aplicar a ordenação no initialContent.
   // Isso garante que a ordenação só ocorra se initialContent mudar.
   const sortedBaseContent = React.useMemo(() => {
-    return sortMarkdownSections(initialContent);
+    // return sortMarkdownSections(initialContent);
+    return initialContent;
   }, [initialContent]);
 
   const [searchQuery, setSearchQuery] = useState("");
