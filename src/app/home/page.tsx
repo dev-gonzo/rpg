@@ -23,6 +23,8 @@ export default function HomePage() {
     setGrid,
     reload,
     setReload,
+    handleIsKnown,
+    loadingSave
   } = useHome();
 
   const isEmpty =
@@ -114,6 +116,8 @@ export default function HomePage() {
                       reload={handleHome}
                       key={item?.id}
                       grid={grid}
+                      handleIsKnown={handleIsKnown}
+                      loadingSave={loadingSave}
                     />
                   );
                 })
@@ -127,6 +131,8 @@ export default function HomePage() {
                       reload={handleHome}
                       key={item?.id}
                       grid={grid}
+                      handleIsKnown={handleIsKnown}
+                      loadingSave={loadingSave}
                     />
                   );
                 })
@@ -140,6 +146,8 @@ export default function HomePage() {
                       reload={handleHome}
                       key={item?.id}
                       grid={grid}
+                      handleIsKnown={handleIsKnown}
+                      loadingSave={loadingSave}
                     />
                   );
                 })

@@ -1,7 +1,11 @@
 // components/character/CharacterCard.tsx
 "use client";
 
-import { faCircleMinus, faCirclePlus, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleMinus,
+  faCirclePlus,
+  faRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import noImageCharacter from "@/assets/no-image-character.png";
 import Link from "next/link";
@@ -12,15 +16,20 @@ import { useMasterOrControl } from "../hooks/useMasterOrControl";
 import { CharacterBasicInfo } from "./CharacterBasicInfo";
 import { CharacterInfo } from "./CharacterInfoButton";
 import RoundFileUploadButton from "./RoundFileUploadButton";
+import { ButtonSwitch } from "./ButtonSwitch";
 
 export function CharacterCard({
   character,
   reload,
   grid,
+  handleIsKnown,
+  loadingSave = true,
 }: {
   character: CharacterHome;
   reload: () => void;
   grid: string;
+  handleIsKnown: (id: string) => void;
+  loadingSave: boolean;
 }) {
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
     characterId: character.id,
@@ -46,7 +55,7 @@ export function CharacterCard({
             }`}
             className="card-img-top"
             alt={`Foto do personagem ${character.name}`}
-            style={{ objectFit: "cover", height: "220px" }}
+            style={{ objectFit: "cover", height: "300px" }}
           />
           {isPermission && (
             <RoundFileUploadButton fnUpload={handleImageChange} />
@@ -67,6 +76,33 @@ export function CharacterCard({
               ? character?.controlUser?.name
               : "NPC"}
           </span>
+
+          {isNpc && isMaster ? (
+            <div
+              style={{
+                position: "absolute",
+                top: "240px",
+                right: "20px",
+                zIndex: 10,
+              }}
+              className="text-end"
+            >
+              {loadingSave ? (
+                <div className="spinner-border" role="status" style={{width: "20px", height: "20px"}}>
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              ) : (
+                <>
+                  <ButtonSwitch
+                    onChange={() => handleIsKnown(character?.id)}
+                    value={character?.isKnown ?? false}
+                  />
+                  <small style={{ fontSize: "10px" }}>Público</small>
+                </>
+              )}
+            </div>
+          ) : null}
+
           <div className="d-flex flex-column justify-content-between px-3 pt-2 flex-grow-1">
             <div>
               <h5 className="card-title">{character.name}</h5>
@@ -116,7 +152,7 @@ export function CharacterCard({
                 isPermission={isPermission}
                 isMaster={isMaster}
               />
-      
+
               <hr className="my-2" />
             </div>
           )}

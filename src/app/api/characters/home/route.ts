@@ -41,6 +41,8 @@ export async function GET(req: NextRequest) {
 
           controlUserId: true,
           controlUser: true,
+
+          isKnown: true,
         },
       });
 
@@ -101,6 +103,57 @@ export async function GET(req: NextRequest) {
     console.error("Erro ao listar personagens:", error);
     return NextResponse.json(
       { error: "Erro ao buscar personagens." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const payload = verifyJwt(req);
+  if (!payload)
+    return NextResponse.json(
+      { error: "Usuário não autenticado" },
+      { status: 401 }
+    );
+
+  try {
+    const body = await req.json();
+    if (!body.id)
+      return NextResponse.json(
+        { error: "Id do personagem é obrigatório para atualização" },
+        { status: 400 }
+      );
+
+    const existingCharacter = await prisma.character.findUnique({
+      where: { id: body.id },
+    });
+    if (!existingCharacter)
+      return NextResponse.json(
+        { error: "Personagem não encontrado" },
+        { status: 404 }
+      );
+
+    const updateData = {
+      ...existingCharacter,
+      isKnown: !existingCharacter?.isKnown,
+    };
+
+    const character = await prisma.character.update({
+      where: { id: body.id },
+      data: updateData,
+    });
+
+    return NextResponse.json({ character }, { status: 200 });
+  } catch (err: any) {
+    console.error("Erro na atualização do personagem:", err);
+    if (err.name === "ValidationError") {
+      return NextResponse.json(
+        { error: err.errors?.[0] ?? "Validation error" },
+        { status: 400 }
+      );
+    }
+    return NextResponse.json(
+      { error: "Internal server error." },
       { status: 500 }
     );
   }

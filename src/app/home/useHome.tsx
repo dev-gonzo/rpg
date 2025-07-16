@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useGet } from "../hooks/fetch/useGet";
 import { useAuthStore } from "../store/useAuthStore";
 import { User } from "@prisma/client";
+import { useSave } from "../hooks/fetch/useSave";
 
 export type CharacterHome = {
   id: string;
@@ -26,6 +27,7 @@ export type CharacterHome = {
   controlUserId: string;
   controlUser?: User;
   image: string;
+  isKnown: boolean;
 };
 
 export function useHome() {
@@ -40,6 +42,8 @@ export function useHome() {
   );
   const [charactersNpcs, setCharactersNpcs] = useState<CharacterHome[]>([]);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
+
+  const { data: dataSave, save, loading: loadingSave } = useSave();
 
   const { data, loading, error, onPath } = useGet<{
     characters: CharacterHome[];
@@ -118,16 +122,27 @@ export function useHome() {
     setCharactersPerson(sortCharactersByName(filterPerson()));
     setCharactersPlayers(sortCharactersByName(filterPlayers()));
     setCharactersNpcs(sortCharactersByName(filterNpcs()));
-    if(loadingInitial && !loading){
-      setLoadingInitial(false)
+    if (loadingInitial && !loading) {
+      setLoadingInitial(false);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (dataSave) {
+      handleHome();
+    }
+  }, [dataSave]);
+
+  const handleIsKnown = async (characterId: string) => {
+    await save("/api/characters/home", { id: characterId }, "PUT");
+  };
 
   return {
     charactersPerson,
     charactersPlayers,
     charactersNpcs,
     loading: loadingInitial,
+    loadingSave,
     error,
     handleHome,
     filter,
@@ -136,5 +151,6 @@ export function useHome() {
     setGrid: handleGrip,
     reload,
     setReload,
+    handleIsKnown,
   };
 }
