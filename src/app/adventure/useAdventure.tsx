@@ -68,6 +68,10 @@ export const useAdventure = () => {
       setPageCurrent(data.pagination.page);
       setPageLoading(false);
     }
+
+    if (pageLoading) {
+      setPageLoading(false);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -81,7 +85,7 @@ export const useAdventure = () => {
   }, []);
 
   const changePage = (value: number) => {
-    setPageLoading(true)
+    setPageLoading(true);
     setPageCurrent(value);
   };
 
