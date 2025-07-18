@@ -19,6 +19,11 @@ export function CombatSkillsView({
   const attributeValue =
     attributes && skill?.attribute ? attributes[skill?.attribute] : null;
 
+  const attributeValueMod =
+    attributes && skill?.attribute
+      ? attributes[`${skill?.attribute.toLowerCase()}_mod`]
+      : null;
+
   return (
     <div className="col-12 col-md-6">
       <div className="card bg-gray">
@@ -38,10 +43,12 @@ export function CombatSkillsView({
             <div className="col-6 text-end d-flex justify-content-end flex-column">
               <span className="h2 fw-bold">
                 {(skill?.attackKitValue ?? 0) +
+                  (attributeValueMod ?? 0) +
                   (skill?.attackCost ?? 0) +
                   (attributeValue ?? 0)}{" "}
                 % /{" "}
                 {(skill?.defenseKitValue ?? 0) +
+                  (attributeValueMod ?? 0) +
                   (skill?.defenseCost ?? 0) +
                   (attributeValue ?? 0)}{" "}
                 %
