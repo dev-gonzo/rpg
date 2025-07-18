@@ -21,6 +21,7 @@ export async function GET(
       select: {
         id: true,
         controlUserId: true,
+        edit: true
       },
     });
 
@@ -32,7 +33,7 @@ export async function GET(
     }
 
     return NextResponse.json(
-      { characterId: character.id, controlUserId: character.controlUserId },
+      { characterId: character.id, controlUserId: character.controlUserId, edit: character.edit },
       { status: 200 }
     );
   } catch (error) {

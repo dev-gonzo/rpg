@@ -11,17 +11,21 @@ import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Skills() {
   const { data, attributesData, characterId, isLoading } = useSkillView();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
   return (
     <MainLayout>
       <Title
-        link={{
-          label: "Incluir",
-          path: `/character-edit/skills/${characterId}`,
-        }}
+        link={
+          (isControl || isMaster) && edit
+            ? {
+                label: "Incluir",
+                path: `/character-edit/skills/${characterId}`,
+              }
+            : undefined
+        }
         control={isControl || isMaster}
       >
         Perícias
@@ -37,7 +41,7 @@ export default function Skills() {
             key={item?.id}
             skill={item}
             attributes={attributesData?.attribute ?? null}
-            control={isControl || isMaster}
+            control={(isControl || isMaster) && (edit ?? true)}
           />
         ))}
       </ContainerWrap>

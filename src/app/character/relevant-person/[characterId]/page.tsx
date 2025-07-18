@@ -11,7 +11,7 @@ import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Rituais() {
   const { data, isLoading, characterId } = useRelevantPerson();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
@@ -22,7 +22,7 @@ export default function Rituais() {
           label: "Incluir",
           path: `/character-edit/relevant-person/${characterId}`,
         }}
-        control={isControl || isMaster}
+        control={(isControl || isMaster) && (edit ?? true)}
       >
         Contatos, alidos ou relevantes
       </Title>
@@ -37,7 +37,7 @@ export default function Rituais() {
           <CardRelevantPerson
             person={item}
             key={item?.id}
-            control={isControl || isMaster}
+            control={(isControl || isMaster) && (edit ?? true)}
           />
         ))}
       </ContainerWrap>

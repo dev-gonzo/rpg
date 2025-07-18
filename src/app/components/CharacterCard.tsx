@@ -1,40 +1,36 @@
 // components/character/CharacterCard.tsx
 "use client";
 
-import {
-  faCircleMinus,
-  faCirclePlus,
-  faRotateLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import noImageCharacter from "@/assets/no-image-character.png";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { CharacterHome } from "../home/useHome";
+import { useSave } from "../hooks/fetch/useSave";
 import { useUploadImage } from "../hooks/fetch/useUploadImage";
 import { useMasterOrControl } from "../hooks/useMasterOrControl";
+import { ButtonSwitch } from "./ButtonSwitch";
 import { CharacterBasicInfo } from "./CharacterBasicInfo";
 import { CharacterInfo } from "./CharacterInfoButton";
 import RoundFileUploadButton from "./RoundFileUploadButton";
-import { ButtonSwitch } from "./ButtonSwitch";
 
 export function CharacterCard({
   character,
   reload,
   grid,
-  handleIsKnown,
-  loadingSave = true,
 }: {
   character: CharacterHome;
   reload: () => void;
   grid: string;
-  handleIsKnown: (id: string) => void;
-  loadingSave: boolean;
 }) {
+  const [isKnown, setIsKnown] = useState<boolean>(character?.isKnown ?? false);
+  const [edit, setEdit] = useState<boolean>(character?.edit ?? false);
+
   const { isPermission, isControl, isNpc, isMaster } = useMasterOrControl({
     characterId: character.id,
   });
   const { upload } = useUploadImage();
+
+  const { data: dataSave, save, loading } = useSave();
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,6 +38,24 @@ export function CharacterCard({
 
     await upload(file, character.id);
     reload();
+  };
+
+  const handleIsKnown = async () => {
+    await save(
+      "/api/characters/home",
+      { id: character?.id, isKnown: !isKnown },
+      "PUT"
+    );
+    setIsKnown(prev => !prev)
+  };
+
+  const handleEdit = async () => {
+    await save(
+      "/api/characters/home",
+      { id: character?.id, edit: !edit },
+      "PUT"
+    );
+    setEdit(prev => !prev)
   };
 
   return (
@@ -77,31 +91,46 @@ export function CharacterCard({
               : "NPC"}
           </span>
 
-          {isNpc && isMaster ? (
-            <div
-              style={{
-                position: "absolute",
-                top: "240px",
-                right: "20px",
-                zIndex: 10,
-              }}
-              className="text-end"
-            >
-              {loadingSave ? (
-                <div className="spinner-border" role="status" style={{width: "20px", height: "20px"}}>
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              ) : (
-                <>
-                  <ButtonSwitch
-                    onChange={() => handleIsKnown(character?.id)}
-                    value={character?.isKnown ?? false}
-                  />
-                  <small style={{ fontSize: "10px" }}>Público</small>
-                </>
-              )}
-            </div>
-          ) : null}
+          <div
+            style={{
+              position: "absolute",
+              top: "240px",
+              right: "20px",
+              zIndex: 10,
+            }}
+            className="text-end"
+          >
+            {loading ? (
+              <div
+                className="spinner-border"
+                role="status"
+                style={{ width: "20px", height: "20px" }}
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              <>
+                {isNpc && isMaster ? (
+                  <>
+                    <ButtonSwitch
+                      onChange={handleIsKnown}
+                      value={isKnown}
+                    />
+                    <small style={{ fontSize: "10px" }}>Público</small>
+                  </>
+                ) : null}
+                {!isNpc && isMaster ? (
+                  <>
+                    <ButtonSwitch
+                      onChange={handleEdit}
+                      value={edit}
+                    />
+                    <small style={{ fontSize: "10px" }}>Edição</small>
+                  </>
+                ) : null}
+              </>
+            )}
+          </div>
 
           <div className="d-flex flex-column justify-content-between px-3 pt-2 flex-grow-1">
             <div>

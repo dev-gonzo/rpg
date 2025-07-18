@@ -43,6 +43,7 @@ export async function GET(req: NextRequest) {
           controlUser: true,
 
           isKnown: true,
+          edit: true
         },
       });
 
@@ -76,6 +77,7 @@ export async function GET(req: NextRequest) {
 
           controlUserId: true,
           controlUser: true,
+          edit: true
         },
       });
 
@@ -92,6 +94,7 @@ export async function GET(req: NextRequest) {
           apparentAge: true,
           profession: true,
           image: true,
+          edit: true
         },
       });
 
@@ -135,7 +138,8 @@ export async function PUT(req: NextRequest) {
 
     const updateData = {
       ...existingCharacter,
-      isKnown: !existingCharacter?.isKnown,
+      isKnown: body?.isKnown ?? existingCharacter?.isKnown,
+      edit: body?.edit ?? existingCharacter?.edit,
     };
 
     const character = await prisma.character.update({

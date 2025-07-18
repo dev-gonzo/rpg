@@ -13,6 +13,7 @@ type Props = {
 type GetResponse = {
   characterId?: string;
   controlUserId?: string;
+  edit: boolean;
 };
 
 export const useMasterOrControl = ({ characterUser, characterId }: Props) => {
@@ -80,5 +81,6 @@ export const useMasterOrControl = ({ characterUser, characterId }: Props) => {
     isControl,
     isNpc,
     isMaster: user?.isMaster ?? false,
+    edit: data?.edit,
   };
 };

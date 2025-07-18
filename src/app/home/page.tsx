@@ -1,6 +1,6 @@
 "use client";
 
-import { faTable, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { faPause, faPlay, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CharacterCard } from "../components/CharacterCard";
 import { ContainerWrap } from "../components/ContainerWrap";
@@ -8,7 +8,6 @@ import LoadingWrapper from "../components/LoadingWrapper";
 import Title from "../components/Title";
 import MainLayout from "../layouts/MainLayout";
 import { useHome } from "./useHome";
-import { useState } from "react";
 
 export default function HomePage() {
   const {
@@ -23,8 +22,6 @@ export default function HomePage() {
     setGrid,
     reload,
     setReload,
-    handleIsKnown,
-    loadingSave
   } = useHome();
 
   const isEmpty =
@@ -116,8 +113,6 @@ export default function HomePage() {
                       reload={handleHome}
                       key={item?.id}
                       grid={grid}
-                      handleIsKnown={handleIsKnown}
-                      loadingSave={loadingSave}
                     />
                   );
                 })
@@ -131,8 +126,6 @@ export default function HomePage() {
                       reload={handleHome}
                       key={item?.id}
                       grid={grid}
-                      handleIsKnown={handleIsKnown}
-                      loadingSave={loadingSave}
                     />
                   );
                 })
@@ -146,8 +139,6 @@ export default function HomePage() {
                       reload={handleHome}
                       key={item?.id}
                       grid={grid}
-                      handleIsKnown={handleIsKnown}
-                      loadingSave={loadingSave}
                     />
                   );
                 })

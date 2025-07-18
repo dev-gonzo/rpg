@@ -10,17 +10,21 @@ import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Equipment() {
   const { data, characterId, isLoading } = useEquipment();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
   return (
     <MainLayout>
       <Title
-        link={{
-          label: "Incluir",
-          path: `/character-edit/equipment/${characterId}`,
-        }}
+        link={
+          (isControl || isMaster) && edit
+            ? {
+                label: "Incluir",
+                path: `/character-edit/equipment/${characterId}`,
+              }
+            : undefined
+        }
         control={isControl || isMaster}
       >
         Equipamentos
@@ -35,7 +39,7 @@ export default function Equipment() {
           <CardEquipment
             equipment={item}
             key={item?.id}
-            control={isControl || isMaster}
+            control={(isControl || isMaster) && (edit ?? true)}
           />
         ))}
       </ContainerWrap>

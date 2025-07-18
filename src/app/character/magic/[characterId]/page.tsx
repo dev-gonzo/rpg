@@ -9,14 +9,18 @@ import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Magic() {
   const { isLoading, data, dataPathsForms, characterId } = useMagic();
-  const { isControl, isMaster } = useMasterOrControl({
-      characterId: characterId,
-    });
+  const { isControl, isMaster, edit } = useMasterOrControl({
+    characterId: characterId,
+  });
 
   return (
     <MainLayout>
       <Title
-        link={{ label: "Editar", path: `/character-edit/magic/${characterId}` }}
+        link={
+          (isControl || isMaster) && edit
+            ? { label: "Editar", path: `/character-edit/magic/${characterId}` }
+            : undefined
+        }
         control={isControl || isMaster}
       >
         Magia
@@ -32,19 +36,19 @@ export default function Magic() {
         <FieldView label="Cabala" content={data?.cabala} col={6} />
         <FieldView label="Mentor" content={data?.mentor} col={6} />
 
-
         <Title
           home={false}
-          link={{
-            label: "Editar",
-            path: `/character-edit/magic/${characterId}/paths-forms`,
-          }}
+          link={
+            (isControl || isMaster) && edit
+              ? {
+                  label: "Editar",
+                  path: `/character-edit/magic/${characterId}/paths-forms`,
+                }
+              : undefined
+          }
           control={isControl || isMaster}
         >
-          <div className="pt-5">
-
-          Formas
-          </div>
+          <div className="pt-5">Formas</div>
         </Title>
 
         <FieldView

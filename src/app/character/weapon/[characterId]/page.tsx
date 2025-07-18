@@ -10,17 +10,21 @@ import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Weapon() {
   const { data, characterId, isLoading } = useWeapon();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
   return (
     <MainLayout>
       <Title
-        link={{
-          label: "Inserir",
-          path: `/character-edit/weapon/${characterId}`,
-        }}
+        link={
+          (isControl || isMaster) && edit
+            ? {
+                label: "Inserir",
+                path: `/character-edit/weapon/${characterId}`,
+              }
+            : undefined
+        }
         control={isControl || isMaster}
       >
         Armas
@@ -32,7 +36,7 @@ export default function Weapon() {
           <CardWeapon
             weapon={item}
             key={item?.id}
-            control={isControl || isMaster}
+            control={(isControl || isMaster) && (edit ?? true)}
           />
         ))}
       </ContainerWrap>

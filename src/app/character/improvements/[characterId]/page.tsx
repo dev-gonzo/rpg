@@ -11,17 +11,17 @@ import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function Improvements() {
   const { data, characterId, isLoading } = useImprovementsView();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
   return (
     <MainLayout>
       <Title
-        link={{
+        link={ (isControl || isMaster) && edit ? {
           label: "Incluir",
           path: `/character-edit/improvements/${characterId}`,
-        }}
+        } : undefined}
         control={isControl || isMaster}
       >
         Aprimoramentos
@@ -36,7 +36,7 @@ export default function Improvements() {
         <ImprovementTotal characterId={characterId} />
 
         {data?.improvements?.map((item) => {
-          return <ImprovementsView improvement={item} key={item?.id} control={isControl || isMaster}/>;
+          return <ImprovementsView improvement={item} key={item?.id} control={(isControl || isMaster) && (edit ?? true)} />;
         })}
       </ContainerWrap>
     </MainLayout>

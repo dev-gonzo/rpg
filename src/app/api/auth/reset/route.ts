@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
+    await userRegisterSchema.validate(body);
 
     const existing = await prisma.user.findUnique({
       where: { email: body.email },

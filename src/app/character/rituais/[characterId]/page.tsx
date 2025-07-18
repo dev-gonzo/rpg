@@ -17,17 +17,21 @@ export default function Rituais() {
     isDropdownOpen,
     handleItemClick,
   } = useRitual();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
   return (
     <MainLayout>
       <Title
-        link={{
-          label: "Incluir",
-          path: `/character-edit/ritual/${characterId}`,
-        }}
+        link={
+          (isControl || isMaster) && edit
+            ? {
+                label: "Incluir",
+                path: `/character-edit/ritual/${characterId}`,
+              }
+            : undefined
+        }
         control={isControl || isMaster}
       >
         Rituais e Poderes
@@ -56,7 +60,6 @@ export default function Rituais() {
                 <li>
                   <button
                     className="dropdown-item"
-                    // Mude de "Nome" para "name"
                     onClick={() => handleItemClick("name")}
                   >
                     Nome
@@ -65,7 +68,6 @@ export default function Rituais() {
                 <li>
                   <button
                     className="dropdown-item"
-                    // Mude de "Formas e Caminhos" para "pathsForms"
                     onClick={() => handleItemClick("pathsForms")}
                   >
                     Formas e Caminhos
@@ -74,7 +76,6 @@ export default function Rituais() {
                 <li>
                   <button
                     className="dropdown-item"
-                    // Mude de "Livro e Página" para "bookPage"
                     onClick={() => handleItemClick("bookPage")}
                   >
                     Livro e Página
@@ -89,7 +90,7 @@ export default function Rituais() {
           <CardRitual
             ritual={item}
             key={item?.id}
-            control={isControl || isMaster}
+            control={(isControl || isMaster) && (edit ?? true)}
           />
         ))}
       </ContainerWrap>

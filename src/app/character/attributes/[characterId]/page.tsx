@@ -11,19 +11,23 @@ import Link from "next/link";
 
 export default function Attributes() {
   const { data, characterId, total, loading } = useAttributesView();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
   return (
     <MainLayout>
       <Title
-        link={{
-          label: "Editar",
-          path: `/character-edit/attributes/${characterId}`,
-        }}
+        link={
+          (isControl || isMaster) && edit
+            ? {
+                label: "Editar",
+                path: `/character-edit/attributes/${characterId}`,
+              }
+            : undefined
+        }
         comp={
-          isControl || isMaster ? (
+          (isControl || isMaster) && edit ? (
             <Link
               href={`/character-edit/attributes/${characterId}/mod`}
               className="btn btn-sm btn-outline-light"

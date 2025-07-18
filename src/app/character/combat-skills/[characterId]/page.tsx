@@ -11,17 +11,21 @@ import { useMasterOrControl } from "@/app/hooks/useMasterOrControl";
 
 export default function CombatSkills() {
   const { data, attributesData, characterId, isLoading } = useCombatSkillView();
-  const { isControl, isMaster } = useMasterOrControl({
+  const { isControl, isMaster, edit } = useMasterOrControl({
     characterId: characterId,
   });
 
   return (
     <MainLayout>
       <Title
-        link={{
-          label: "Incluir",
-          path: `/character-edit/combat-skills/${characterId}`,
-        }}
+        link={
+          (isControl || isMaster) && edit
+            ? {
+                label: "Incluir",
+                path: `/character-edit/combat-skills/${characterId}`,
+              }
+            : undefined
+        }
         control={isControl || isMaster}
       >
         Perícias de Combate
@@ -40,7 +44,7 @@ export default function CombatSkills() {
             key={item?.id}
             skill={item}
             attributes={attributesData?.attribute ?? null}
-            control={isControl || isMaster}
+            control={(isControl || isMaster) && (edit ?? true)}
           />
         ))}
       </ContainerWrap>
